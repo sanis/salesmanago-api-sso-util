@@ -42,10 +42,10 @@ class SalesManagoController
         }
     }
 
-    public function contactId($userEmail)
+    public function getContactId($userEmail)
     {
         try {
-            $responseData = $this->service->contactId($this->settings, $userEmail);
+            $responseData = $this->service->getContactId($this->settings, $userEmail);
             return $responseData;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();

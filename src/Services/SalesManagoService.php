@@ -14,18 +14,18 @@ use SALESmanago\Exception\SalesManagoException;
 class SalesManagoService
 {
     const METHOD_UPSERT = "/api/contact/upsert",
-        METHOD_DELETE = "/api/contact/delete",
-        METHOD_BATCH_UPSERT = "/api/contact/batchupsert",
-        METHOD_ADD_EXT_EVENT = "/api/contact/addContactExtEvent",
-        METHOD_BATCH_ADD_EXT_EVENT = "/api/contact/batchAddContactExtEvent",
-        METHOD_UPDATE_EXT_EVENT = "/api/contact/updateContactExtEvent",
-        METHOD_ACCOUNT_ITEMS = "/api/contact/updateContactExtEvent",
-        METHOD_ADD_NOTE = "/api/contact/addNote",
-        METHOD_STATUS = "/api/contact/basic",
-        METHOD_STATUS_BY_ID = "/api/contact/basicById",
+          METHOD_DELETE = "/api/contact/delete",
+          METHOD_BATCH_UPSERT = "/api/contact/batchupsert",
+          METHOD_ADD_EXT_EVENT = "/api/contact/addContactExtEvent",
+          METHOD_BATCH_ADD_EXT_EVENT = "/api/contact/batchAddContactExtEvent",
+          METHOD_UPDATE_EXT_EVENT = "/api/contact/updateContactExtEvent",
+          METHOD_ACCOUNT_ITEMS = "/api/contact/updateContactExtEvent",
+          METHOD_ADD_NOTE = "/api/contact/addNote",
+          METHOD_STATUS = "/api/contact/basic",
+          METHOD_STATUS_BY_ID = "/api/contact/basicById",
 
-        EVENT_TYPE_CART = "CART",
-        EVENT_TYPE_PURCHASE = "PURCHASE";
+          EVENT_TYPE_CART = "CART",
+          EVENT_TYPE_PURCHASE = "PURCHASE";
 
     /** @var GuzzleClient $guzzle */
     protected $guzzle;
@@ -59,7 +59,7 @@ class SalesManagoService
      * @param string $userEmail
      * @return array
      */
-    public function contactId(Settings $settings, $userEmail)
+    public function getContactId(Settings $settings, $userEmail)
     {
         $data = array_merge(
             $this->__getDefaultApiData($settings),
@@ -156,6 +156,12 @@ class SalesManagoService
         }
     }
 
+    public function checkForceOptions($options)
+    {
+        return !(isset($options['forceOptIn']) && $options['forceOptIn'] == true) ||
+            (isset($options['forceOptOut']) && $options['forceOptOut'] == true);
+    }
+
     /**
      * @throws SalesManagoException
      * @var Settings $settings
@@ -166,51 +172,76 @@ class SalesManagoService
      */
     public function contactUpsert(Settings $settings, $user, $options = array(), $properties = array())
     {
-        $data = array_merge($this->__getDefaultApiData($settings), array(
-            'contact' => $this->__getContactData($user),
-        ));
+        try {
+            $data = $this->__getDefaultApiData($settings);
 
-        $tag = array(
-            'tags' => array(),
-            'removeTags' => array(),
-        );
+            $guzzle = $this->getGuzzleClient($settings);
 
-        if (count($settings->getTags()) > 0) {
-            $tag['tags'] = $settings->getTags();
-        }
+            if ($this->checkForceOptions($options)) {
 
-        if (count($settings->getRemoveTags()) > 0) {
-            $tag['removeTags'] = $settings->getRemoveTags();
-        }
+                $userData = array_merge($data, array('email' => array($user['email'])));
 
-        if (!empty($options)) {
-            foreach ($options as $key => $value) {
-                if ($key == 'tags') {
-                    $tag['tags'] = array_merge($tag['tags'], $this->__prepareTags($value));
-                } elseif ($key == 'removeTags') {
-                    $tag['removeTags'] = array_merge($tag['removeTags'], $this->__prepareTags($value));
-                } else {
-                    $data[$key] = $value;
+                $guzzleResponse = $guzzle->request('POST', self::METHOD_STATUS, array(
+                    'json' => $userData,
+                ));
+
+                $rawResponse = $guzzleResponse->getBody()->getContents();
+
+                $response = json_decode($rawResponse, true);
+
+                if (is_array($response)
+                    && array_key_exists('success', $response)
+                    && count($response['contacts']) === 1
+                ) {
+                    $user = array_pop($response['contacts']);
+                    if ($user['optedOut'] == false){
+                        $options['forceOptIn'] = true;
+                        $options['forceOptOut'] = false;
+                    }
+                }
+            } else {
+                $data = array_merge($data, array('contact' => $this->__getContactData($user)));
+            }
+
+            $tag = array(
+                'tags' => array(),
+                'removeTags' => array(),
+            );
+
+            if (count($settings->getTags()) > 0) {
+                $tag['tags'] = $settings->getTags();
+            }
+
+            if (count($settings->getRemoveTags()) > 0) {
+                $tag['removeTags'] = $settings->getRemoveTags();
+            }
+
+            if (!empty($options)) {
+                foreach ($options as $key => $value) {
+                    if ($key == 'tags') {
+                        $tag['tags'] = array_merge($tag['tags'], $this->__prepareTags($value));
+                    } elseif ($key == 'removeTags') {
+                        $tag['removeTags'] = array_merge($tag['removeTags'], $this->__prepareTags($value));
+                    } else {
+                        $data[$key] = $value;
+                    }
                 }
             }
-        }
 
-        if (!empty($tag['tags'])) {
-            $data['tags'] = $tag['tags'];
-        }
-
-        if (!empty($tag['removeTags'])) {
-            $data['removeTags'] = $tag['removeTags'];
-        }
-
-        if (!empty($properties)) {
-            foreach ($properties as $key => $value) {
-                $data['properties'][$key] = $value;
+            if (!empty($tag['tags'])) {
+                $data['tags'] = $tag['tags'];
             }
-        }
 
-        try {
-            $guzzle = $this->getGuzzleClient($settings);
+            if (!empty($tag['removeTags'])) {
+                $data['removeTags'] = $tag['removeTags'];
+            }
+
+            if (!empty($properties)) {
+                foreach ($properties as $key => $value) {
+                    $data['properties'][$key] = $value;
+                }
+            }
+
 
             $guzzleResponse = $guzzle->request('POST', self::METHOD_UPSERT, array(
                 'json' => $data,
