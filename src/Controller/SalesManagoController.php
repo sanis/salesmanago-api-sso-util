@@ -15,12 +15,12 @@ class SalesManagoController
     protected $settings;
     protected $service;
 
-    protected function createCookie($name, $value)
+    public function createCookie($name, $value)
     {
         $period = time() + (3600 * 86400);
         setcookie($name, $value, $period, '/');
     }
-    protected function deleteCookie($name)
+    public function deleteCookie($name)
     {
         unset($_COOKIE[$name]);
         setcookie($name, null, -1, '/');
