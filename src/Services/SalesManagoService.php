@@ -198,6 +198,9 @@ class SalesManagoService
                         $options['forceOptIn'] = true;
                         $options['forceOptOut'] = false;
                     }
+                } else {
+                    $options['forceOptIn'] = false;
+                    $options['forceOptOut'] = true;
                 }
             } else {
                 $data = array_merge($data, array('contact' => $this->__getContactData($user)));
