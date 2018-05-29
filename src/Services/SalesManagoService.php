@@ -229,6 +229,8 @@ class SalesManagoService
                         $tag['tags'] = array_merge($tag['tags'], $this->__prepareTags($value));
                     } elseif ($key == 'removeTags') {
                         $tag['removeTags'] = array_merge($tag['removeTags'], $this->__prepareTags($value));
+                    } elseif ($key == 'force') {
+                        continue;
                     } else {
                         $data[$key] = $value;
                     }
