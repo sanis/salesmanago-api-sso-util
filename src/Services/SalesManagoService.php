@@ -158,6 +158,10 @@ class SalesManagoService
 
     public function checkForceOptions($options)
     {
+        if (isset($options['force']) && $options['force'] == true) {
+            return false;
+        }
+
         return !(isset($options['forceOptIn']) && $options['forceOptIn'] == true) ||
             (isset($options['forceOptOut']) && $options['forceOptOut'] == true);
     }
