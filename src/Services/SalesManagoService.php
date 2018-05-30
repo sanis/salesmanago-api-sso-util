@@ -208,8 +208,8 @@ class SalesManagoService
                     && array_key_exists('success', $response)
                     && count($response['contacts']) === 1
                 ) {
-                    $user = array_pop($response['contacts']);
-                    if ($user['optedOut'] == false){
+                    $contactData = array_pop($response['contacts']);
+                    if ($contactData['optedOut'] == false){
                         $options['forceOptIn'] = true;
                         $options['forceOptOut'] = false;
                     }
