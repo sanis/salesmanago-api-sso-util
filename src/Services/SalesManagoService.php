@@ -30,6 +30,8 @@ class SalesManagoService
     /** @var GuzzleClient $guzzle */
     protected $guzzle;
 
+    protected $eventType = array("CART","PURCHASE", "VISIT", "PHONE_CALL", "OTHER", "RESERVATION", "CANCELLED", "ACTIVATION", "MEETING", "OFFER", "DOWNLOAD", "LOGIN", "TRANSACTION");
+
     /**
      * instantiate guzzle connection
      * @var Settings $settings
@@ -51,6 +53,15 @@ class SalesManagoService
             ]);
         }
         return $this->guzzle;
+    }
+
+    public function checkAccessEventType($name)
+    {
+        $name = strtoupper($name);
+        if (!in_array($name, $this->eventType)) {
+            return new SalesManagoException('cannot find external event', 13);
+        }
+        return $name;
     }
 
     /**
@@ -253,7 +264,7 @@ class SalesManagoService
 
 
             $guzzleResponse = $guzzle->request('POST', self::METHOD_UPSERT, array(
-                'json' => $data,
+                'json' => $this->filterData($data),
             ));
 
             $rawResponse = $guzzleResponse->getBody()->getContents();
@@ -405,7 +416,7 @@ class SalesManagoService
             $guzzle = $this->getGuzzleClient($settings);
 
             $guzzleResponse = $guzzle->request('POST', $method, array(
-                'json' => $data,
+                'json' => $this->filterData($data),
             ));
 
             $rawResponse = $guzzleResponse->getBody()->getContents();
@@ -641,6 +652,15 @@ class SalesManagoService
             $error = $e->getResponse();
             throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
         }
+    }
+
+    public function filterData($data)
+    {
+        $data = array_filter($data);
+        $data = array_map(function ($var) {
+            return is_array($var) ? filterData($var) : $var;
+        }, $data);
+        return $data;
     }
 
     protected function __getDefaultApiData(Settings $settings)

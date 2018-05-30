@@ -42,6 +42,16 @@ class SalesManagoController
         }
     }
 
+    public function contactDelete($userEmail)
+    {
+        try {
+            $responseData = $this->service->contactDelete($this->settings, $userEmail);
+            return $responseData;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
+
     public function getContactId($userEmail)
     {
         try {
@@ -86,16 +96,10 @@ class SalesManagoController
     public function contactExtEvent($type, $product, $user, $eventId = null)
     {
         try {
-            switch ($type) {
-                case SalesManagoService::EVENT_TYPE_CART:
-                    $responseData = $this->service->contactExtEvent($this->settings, $type, $product, $user, $eventId);
-                    break;
-                case SalesManagoService::EVENT_TYPE_PURCHASE:
-                    $responseData = $this->service->contactExtEvent($this->settings, $type, $product, $user, $eventId);
-                    break;
-                default:
-                    throw new SalesManagoException('Unsupported data source type');
-            }
+
+            $eventTypeName = $this->service->checkAccessEventType($type);
+
+            $responseData = $this->service->contactExtEvent($this->settings, $eventTypeName, $product, $user, $eventId);
 
             return $responseData;
         } catch (SalesManagoException $e) {
