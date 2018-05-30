@@ -43,7 +43,7 @@ class SalesManagoService
             $this->guzzle = new GuzzleClient([
                 'base_uri' => $settings->getRequestEndpoint(),
                 'verify' => false,
-                'timeout' => 15.0,
+                'timeout' => 45.0,
                 'defaults' => [
                     'headers' => [
                         'Accept' => 'application/json, application/json',
