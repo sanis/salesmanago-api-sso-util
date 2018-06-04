@@ -656,12 +656,12 @@ class SalesManagoService
 
     public function filterData($data)
     {
-        $data = array_filter($data, function ($value) {
-            return !empty($value) || $value === false;
-        });
         $data = array_map(function ($var) {
             return is_array($var) ? $this->filterData($var) : $var;
         }, $data);
+        $data = array_filter($data, function ($value) {
+            return !empty($value) || $value === false;
+        });
         return $data;
     }
 
