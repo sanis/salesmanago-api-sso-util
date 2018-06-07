@@ -5,7 +5,6 @@ namespace SALESmanago\Controller;
 use SALESmanago\Entity\Settings;
 use SALESmanago\Services\CreateAppStoreAccountService;
 use SALESmanago\Exception\SalesManagoException;
-use SALESmanago\DependencyManagement\IoC as Container;
 use SALESmanago\Provider\UserProvider;
 
 
