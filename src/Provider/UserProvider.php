@@ -4,7 +4,6 @@ namespace SALESmanago\Provider;
 
 use SALESmanago\DependencyManagement\IoC as Container;
 use SALESmanago\Entity\Settings;
-use SALESmanago\Exception\Exception;
 use SALESmanago\Exception\SalesManagoException;
 
 
@@ -29,7 +28,7 @@ class UserProvider
     }
 
     /**
-     * @throws Exception
+     * @throws SalesManagoException
      * @return Settings object
      **/
     public static function settingsUser()
@@ -44,15 +43,11 @@ class UserProvider
             return $settings;
         });
 
-        try {
-            return $container::resolve($name);
-        } catch (SalesManagoException $e) {
-            throw new Exception($e->getSalesManagoMessage());
-        }
+        return $container::resolve($name);
     }
 
     /**
-     * @throws Exception
+     * @throws SalesManagoException
      * @param array $userData
      * @return Settings object
      **/
@@ -73,11 +68,7 @@ class UserProvider
             return $settings;
         });
 
-        try {
-            return $container::resolve($name);
-        } catch (SalesManagoException $e) {
-            throw new Exception($e->getSalesManagoMessage());
-        }
+        return $container::resolve($name);
     }
 
     /**
@@ -101,19 +92,15 @@ class UserProvider
     }
 
     /**
-     * @throws Exception
+     * @throws SalesManagoException
      * @param string $name
      * @return Settings object
-     **/
+     */
     public static function getSettingsContainer($name)
     {
         $container = Container::init();
 
-        try {
-            return $container::resolve($name);
-        } catch (SalesManagoException $e) {
-            throw new Exception($e->getSalesManagoMessage());
-        }
+        return $container::resolve($name);
     }
 
     /**
