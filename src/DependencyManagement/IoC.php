@@ -2,6 +2,7 @@
 
 namespace SALESmanago\DependencyManagement;
 
+use SALESmanago\Entity\Settings;
 use SALESmanago\Exception\SalesManagoException;
 
 
@@ -24,7 +25,7 @@ class IoC
      * @throws SalesManagoException
      * @param string $name
      * @var $resolve
-     * @return Settings[]
+     * @return Settings object
      */
     public static function extend($name, \Closure $resolve)
     {
@@ -42,7 +43,7 @@ class IoC
     /**
      * @throws SalesManagoException
      * @param string $name
-     * @return Settings[]
+     * @return Settings object
      */
     public static function resolve($name)
     {

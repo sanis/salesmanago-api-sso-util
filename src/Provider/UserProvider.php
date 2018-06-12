@@ -12,6 +12,9 @@ class UserProvider
 {
     protected $settings;
 
+    /**
+     * @return Settings object
+     **/
     public static function settingsAccount()
     {
         $settingsAccount = new Settings();
@@ -27,7 +30,7 @@ class UserProvider
 
     /**
      * @throws Exception
-     * @return object
+     * @return Settings object
      **/
     public static function settingsUser()
     {
@@ -51,7 +54,7 @@ class UserProvider
     /**
      * @throws Exception
      * @param array $userData
-     * @return object
+     * @return Settings object
      **/
     public static function initSettingsUser($userData)
     {
@@ -77,6 +80,10 @@ class UserProvider
         }
     }
 
+    /**
+     * @param string $name
+     * @param array $userData
+     */
     public static function createSettingsContainer($name, $userData)
     {
         $container = Container::init();
@@ -93,6 +100,11 @@ class UserProvider
         });
     }
 
+    /**
+     * @throws Exception
+     * @param string $name
+     * @return Settings object
+     **/
     public static function getSettingsContainer($name)
     {
         $container = Container::init();
@@ -100,10 +112,14 @@ class UserProvider
         try {
             return $container::resolve($name);
         } catch (SalesManagoException $e) {
-            return $e->getSalesManagoMessage();
+            throw new Exception($e->getSalesManagoMessage());
         }
     }
 
+    /**
+     * @param Settings $settings
+     * @return array
+     **/
     public static function getConfig(Settings $settings)
     {
         return [
@@ -116,6 +132,11 @@ class UserProvider
         ];
     }
 
+    /**
+     * @param Settings $settings
+     * @param array $extra
+     * @return array
+     **/
     public static function mergeConfig($settings, $extra)
     {
         return array_merge(self::getConfig($settings), $extra);
