@@ -104,7 +104,7 @@ class UserProvider
     }
 
     /**
-     * @param Settings $settings
+     * @var Settings $settings
      * @return array
      **/
     public static function getConfig(Settings $settings)
@@ -120,7 +120,7 @@ class UserProvider
     }
 
     /**
-     * @param Settings $settings
+     * @var Settings $settings
      * @param array $extra
      * @return array
      **/

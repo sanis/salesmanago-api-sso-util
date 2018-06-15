@@ -3,19 +3,22 @@
 namespace SALESmanago\Controller;
 
 use SALESmanago\Entity\Settings;
-use SALESmanago\Services\BasicAccountService;
+use SALESmanago\Services\UserAccountService;
 use SALESmanago\Exception\SalesManagoException;
+use SALESmanago\Model\UserInterface;
 
 
-class BasicAccountController
+class UserAccountController
 {
     protected $settings;
     protected $service;
+    protected $model;
 
-    public function __construct(Settings $settings)
+    public function __construct(Settings $settings, UserInterface $model)
     {
-        $this->service = new BasicAccountService();
+        $this->service = new UserAccountService($settings);
         $this->settings = $settings;
+        $this->model = $model;
     }
 
     public function refreshToken()
@@ -28,20 +31,89 @@ class BasicAccountController
         }
     }
 
-    public function getIntegrationProperties()
+    public function getToken($userProperties)
+    {
+        $data = $this->model->getUserToken($userProperties);
+
+        if (is_array($data)
+            && array_key_exists('success', $data)
+            && $data['success'] == true
+            && $data['refresh'] == true
+        ) {
+            $responseData = $this->refreshToken();
+
+            if (is_array($responseData)
+                && array_key_exists('success', $responseData)
+                && $responseData['success'] == true
+            ) {
+                $this->model->refreshUserToken($userProperties);
+            }
+        }
+
+        return $data;
+    }
+
+    public function logout($userProperties)
+    {
+        $this->model->delete($userProperties);
+    }
+
+    public function userIntegration($userProperties)
+    {
+        $this->model->setCustomProperties($userProperties);
+        return $this->setUserCustomProperties($userProperties);
+    }
+
+    public function createMonitorVisitorsCode($webPush='')
+    {
+        $code = "<script>var _smid ='{$this->settings->getClientId()}';
+             (function(w, r, a, sm, s ) {
+             w['SalesmanagoObject'] = r; 
+             w[r] = w[r] || function () {( w[r].q = w[r].q || [] ).push(arguments)};
+             sm = document.createElement('script'); 
+             sm.type = 'text/javascript'; sm.async = true; sm.src = a;
+             s = document.getElementsByTagName('script')[0]; 
+             s.parentNode.insertBefore(sm, s);
+             })(window, 'sm', ('https:' == document.location.protocol ? 'https://' : 'http://')
+             + '{$this->settings->getEndpoint()}/static/sm.js');{$webPush}</script>";
+
+        return trim(preg_replace('/\s+/', ' ', $code));
+    }
+
+    public function getAccountUserData($userProperties)
+    {
+        return $this->model->getAccountUserData($userProperties);
+    }
+
+    public function setAccountUserData($userProperties)
+    {
+        return $this->model->setAccountUserData($userProperties);
+    }
+
+    public function getPlatformUserData($userProperties)
+    {
+        return $this->model->getPlatformUserData($userProperties);
+    }
+
+    public function setPlatformUserData($userProperties)
+    {
+        return $this->model->setPlatformUserData($userProperties);
+    }
+
+    public function getUserCustomProperties()
     {
         try {
-            $responseData = $this->service->getIntegrationProperties($this->settings);
+            $responseData = $this->service->getUserCustomProperties($this->settings);
             return $responseData;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
         }
     }
 
-    public function setIntegrationProperties($properties)
+    public function setUserCustomProperties($properties)
     {
         try {
-            $responseData = $this->service->setIntegrationProperties($this->settings, $properties);
+            $responseData = $this->service->setUserCustomProperties($this->settings, $properties);
             return $responseData;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
@@ -93,7 +165,7 @@ class BasicAccountController
                 case "LIVE_CHAT":
                     $response = $this->service->createProduct(
                         $this->settings,
-                        BasicAccountService::METHOD_CREATE_LIVE_CHAT,
+                        UserAccountService::METHOD_CREATE_LIVE_CHAT,
                         array_merge(
                             $properties,
                             array(
@@ -105,7 +177,7 @@ class BasicAccountController
                 case "WEB_PUSH":
                     $response = $this->service->createProduct(
                         $this->settings,
-                        BasicAccountService::METHOD_CREATE_WEB_PUSH_CONSENT,
+                        UserAccountService::METHOD_CREATE_WEB_PUSH_CONSENT,
                         array_merge(
                             $properties,
                             array(
@@ -119,7 +191,7 @@ class BasicAccountController
                 case "CF_P_LP":
                     $response = $this->service->createProduct(
                         $this->settings,
-                        BasicAccountService::METHOD_CREATE_BASIC_POPUP,
+                        UserAccountService::METHOD_CREATE_BASIC_POPUP,
                         array_merge(
                             $properties,
                             array(

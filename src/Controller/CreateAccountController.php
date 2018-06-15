@@ -3,42 +3,31 @@
 namespace SALESmanago\Controller;
 
 use SALESmanago\Entity\Settings;
-use SALESmanago\Services\CreateAppStoreAccountService;
+use SALESmanago\Services\CreateAccountService;
 use SALESmanago\Exception\SalesManagoException;
 use SALESmanago\Provider\UserProvider;
+use SALESmanago\Model\CreateInterface;
 
 
 class CreateAccountController
 {
     protected $settings;
     protected $service;
+    protected $model;
 
-    public function __construct(Settings $settings)
+    public function __construct(Settings $settings, CreateInterface $model)
     {
-        $this->service = new CreateAppStoreAccountService();
+        $this->service = new CreateAccountService($settings);
         $this->settings = $settings;
+        $this->model = $model;
     }
 
-    public function refreshToken($user)
+    public function createAccount($user, $modulesId, $modelOptions = array())
     {
         try {
-            $this->settings->setToken(
-                $this->service->refreshToken($this->settings, $user)
-            );
-
-            $responseData = array(
-                'success' => true
-            );
-
-            return $responseData;
-        } catch (SalesManagoException $e) {
-            return $e->getSalesManagoMessage();
-        }
-    }
-
-    public function createAccount($user, $modulesId)
-    {
-        try {
+            /**
+             * @var array $userData
+             */
             $userData = $this->service->createAccount($this->settings, $user, $modulesId);
 
             $userData['endpoint'] = $this->settings->getEndpoint();
@@ -48,10 +37,16 @@ class CreateAccountController
             }
 
             UserProvider::createSettingsContainer("user-settings", $userData);
-
             $settings = UserProvider::getSettingsContainer("user-settings");
-            $settings->setTags(($user['lang'] == "PL") ? "SALESMANAGO-R-B2C-SSO_PL" : "SALESMANAGO-R-B2C-SSO_ZG");
 
+            $this->model->insert(
+                UserProvider::mergeConfig(
+                    $settings,
+                    $modelOptions
+                )
+            );
+
+            $settings->setTags(($user['lang'] == "PL") ? "SALESMANAGO-R-B2C-SSO_PL" : "SALESMANAGO-R-B2C-SSO_ZG");
             $this->service->contactToSupport($settings);
 
             $responseData = array(

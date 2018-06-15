@@ -3,11 +3,11 @@
 namespace SALESmanago\Controller;
 
 use SALESmanago\Exception\SalesManagoException;
-use SALESmanago\Services\SalesManagoService;
+use SALESmanago\Services\ConnectSalesManagoService;
 use SALESmanago\Entity\Settings;
 
 
-class SalesManagoController
+class ConnectSalesManagoController
 {
     const COOKIES_CLIENT = "smclient",
           COOKIES_EXT_EVENT = "smevent";
@@ -28,7 +28,7 @@ class SalesManagoController
 
     public function __construct(Settings $settings)
     {
-        $this->service = new SalesManagoService();
+        $this->service = new ConnectSalesManagoService($settings);
         $this->settings = $settings;
     }
 
@@ -52,20 +52,10 @@ class SalesManagoController
         }
     }
 
-    public function getContactId($userEmail)
+    public function getContactByEmail($userEmail)
     {
         try {
-            $responseData = $this->service->getContactId($this->settings, $userEmail);
-            return $responseData;
-        } catch (SalesManagoException $e) {
-            return $e->getSalesManagoMessage();
-        }
-    }
-
-    public function accountItems()
-    {
-        try {
-            $responseData = $this->service->accountItems($this->settings);
+            $responseData = $this->service->getContactByEmail($this->settings, $userEmail);
             return $responseData;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
@@ -116,7 +106,7 @@ class SalesManagoController
         foreach ($orders as $order) {
             array_push(
                 $data,
-                $this->service->prepareContactEvents(SalesManagoService::EVENT_TYPE_CART, $order, $user)
+                $this->service->prepareContactEvents(ConnectSalesManagoService::EVENT_TYPE_CART, $order, $user)
             );
         }
         try {
@@ -125,24 +115,5 @@ class SalesManagoController
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
         }
-    }
-
-    public function createMonitorVisitorsCode($webPush='', $shopId)
-    {
-        $endpoint = $this->settings->getEndpoint();
-        $code = "<script type=\"text/javascript\">
-var _smid = '" . $this->settings->getClientId() . "';
-(function(w, r, a, sm, s ) {
-    w['SalesmanagoObject'] = r;
-    w[r] = w[r] || function () {( w[r].q = w[r].q || [] ).push(arguments)};
-    sm = document.createElement('script');
-    sm.type = 'text/javascript'; sm.async = true; sm.src = a;
-    s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(sm, s);
- })(window, 'sm', ('https:' == document.location.protocol ? 'https://' : 'http://') 
- + '" . $endpoint . "/static/sm.js');
- {$webPush}</script>";
-
-        return $code;
     }
 }

@@ -3,28 +3,31 @@
 namespace SALESmanago\Controller;
 
 use SALESmanago\Entity\Settings;
-use SALESmanago\Services\LoginAccountService;
-use SALESmanago\Exception\Exception;
+use SALESmanago\Services\LoginAccountAccountService;
 use SALESmanago\Exception\SalesManagoError;
 use SALESmanago\Exception\SalesManagoException;
 use SALESmanago\DependencyManagement\IoC as Container;
+use SALESmanago\Model\LoginInterface;
+use SALESmanago\Provider\UserProvider;
 
 
 class LoginAccountController
 {
     protected $settings;
     protected $service;
+    protected $model;
 
-    public function __construct(Settings $settings)
+    public function __construct(Settings $settings, LoginInterface $model)
     {
-        $this->service = new LoginAccountService();
+        $this->service = new LoginAccountAccountService($settings);
         $this->settings = $settings;
+        $this->model = $model;
     }
 
-    public function accessToken($user)
+    public function loginUser($user, $modelOptions = array())
     {
         try {
-            $responseData = $this->service->accessToken($this->settings, $user);
+            $responseData = $this->service->accountAuthorize($user);
 
             $container = Container::init();
             $settings = $this->settings;
@@ -40,11 +43,23 @@ class LoginAccountController
                     return $settings;
                 });
 
-                $this->integrationSettings();
+                $settingsIntegrationData = $this->service->accountIntegrationSettings($this->settings);
 
-                $integration = $this->service->getIntegrationProperties($this->settings);
+                if ($responseData['success'] == true) {
+                    $this->settings
+                        ->setClientId($settingsIntegrationData['shortId'])
+                        ->setSha($settingsIntegrationData['sha1']);
+
+                    $this->updateUserSettings($modelOptions);
+                } else {
+                    throw SalesManagoError::handleError($settingsIntegrationData['message'], $settingsIntegrationData['status']);
+                }
+
+                $integration = $this->service->getUserCustomProperties($this->settings);
 
                 if ($integration['success'] == true) {
+                    $this->updateUserCustomProperties($modelOptions, $integration['properties']);
+
                     $data = array(
                         'success' => true,
                         'token' => $responseData['token'],
@@ -68,28 +83,33 @@ class LoginAccountController
             } else {
                 throw SalesManagoError::handleError($responseData['message'], $responseData['status']);
             }
-
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
         }
-//        catch (Exception $e) {
-//            return $e->getMessage();
-//        }
     }
 
-    /**
-     * @throws Exception
-     **/
-    protected function integrationSettings()
+    protected function updateUserCustomProperties($modelOptions, $properties)
     {
-        try {
-            $responseData = $this->service->integrationSettings($this->settings);
+        $userSettings = UserProvider::mergeConfig(
+            $this->settings,
+            $modelOptions
+        );
 
-            $this->settings
-                ->setClientId($responseData['shortId'])
-                ->setSha($responseData['sha1']);
-        } catch (SalesManagoException $e) {
-            throw new Exception(json_encode($e->getSalesManagoMessage()));
+        $this->model->updateProperties($userSettings, $properties);
+    }
+
+    protected function updateUserSettings($modelOptions)
+    {
+        $userSettings = UserProvider::mergeConfig(
+            $this->settings,
+            $modelOptions
+        );
+
+        $id = $this->model->checkUser($userSettings);
+        if ($id){
+            $this->model->update($id, $userSettings);
+        } else {
+            $this->model->insert($userSettings);
         }
     }
 }

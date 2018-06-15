@@ -2,86 +2,27 @@
 
 namespace SALESmanago\Services;
 
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use SALESmanago\Entity\Settings;
-use SALESmanago\Exception\SalesManagoError;
 use SALESmanago\Exception\SalesManagoException;
 
 
-class BasicAccountService
+class UserAccountService extends AbstractClient implements UserCustomPropertiesInterface
 {
     const METHOD_CREATE_LIVE_CHAT = "/api/wm/createLiveChat",
           METHOD_CREATE_BASIC_POPUP = "/api/wm/createBasicPopup",
           METHOD_CREATE_WEB_PUSH_CONSENT = "/api/wm/createWebPushConsentForm",
           METHOD_CREATE_WEB_PUSH_NOTIFICATION = "/api/wm/createWebPushNotification",
           METHOD_CREATE_WEB_PUSH_CONSENT_AND_NOTIFICATION = "/api/wm/createWebPushConsentFormAndNotification",
-          METHOD_GET_INTEGRATION_PROPERTIES = '/api/account/integration/properties',
-          METHOD_SET_INTEGRATION_PROPERTIES = '/api/account/integration/setProperties',
+
           METHOD_ADD_SUBSCRIBE_PRODUCTS = "/api/appstore/subscribeProducts",
-          METHOD_GET_ACCOUNT_ITEMS = "/api/account/items",
+          METHOD_ACCOUNT_ITEMS = "/api/account/items",
 
           REDIRECT_APP = "/api/authorization/authorize",
           REFRESH_TOKEN = "/api/authorization/refreshToken";
 
-    /** @var GuzzleClient $guzzle */
-    protected $guzzle;
-
-    protected $modules = array("EMAIL_MARKETING","LIVE_CHAT", "WEB_PUSH", "CF_P_LP");
-
-    /**
-     * instantiate guzzle connection
-     * @var Settings $settings
-     * @return GuzzleClient
-     */
-    protected function getGuzzleClient(Settings $settings)
+    public function __construct(Settings $settings)
     {
-        if (!$this->guzzle) {
-            $this->guzzle = new GuzzleClient([
-                'base_uri' => $settings->getRequestEndpoint(),
-                'verify' => false,
-                'timeout'  => 45.0,
-                'defaults' => [
-                    'headers' => [
-                        'Accept' => 'application/json, application/json',
-                        'Content-Type' => 'application/json;charset=UTF-8'
-                    ],
-                ]
-            ]);
-        }
-        return $this->guzzle;
-    }
-
-    protected function __getDefaultApiData(Settings $settings)
-    {
-        $data = array(
-            'clientId' => $settings->getClientId(),
-            'apiKey' => $settings->getApiKey(),
-            'requestTime' => time(),
-            'sha' => $settings->getSha(),
-            'owner' => $settings->getOwner()
-        );
-        return $data;
-    }
-
-    protected function __getModulesData($modulesId)
-    {
-        $modules = array();
-
-        foreach ($modulesId as $value) {
-            $obj = array("name" => $this->modules[$value]);
-
-            if ($value == 0) {
-                $obj = array_merge($obj, array(
-                    "contactLimit"=> 1000
-                ));
-            }
-            array_push($modules, $obj);
-        }
-
-        return $modules;
+        $this->setClient($settings);
     }
 
     protected function __getLiveChatData($options)
@@ -315,7 +256,6 @@ class BasicAccountService
     /**
      * @throws SalesManagoException
      * @var Settings $settings
-     * @return array
      */
     public function userItems(Settings $settings)
     {
@@ -324,41 +264,13 @@ class BasicAccountService
             "apiKey" => $settings->getApiKey()
         );
 
-        try {
-            $guzzle = $this->getGuzzleClient($settings);
-
-            $guzzleResponse = $guzzle->request('POST', self::METHOD_GET_ACCOUNT_ITEMS, array(
-                'json' => $data,
-            ));
-
-            $rawResponse = $guzzleResponse->getBody()->getContents();
-
-            $response = json_decode($rawResponse, true);
-
-            if (is_array($response)
-                && array_key_exists('success', $response)
-                && $response['success'] == true
-            ) {
-                return $response;
-            } else {
-                throw SalesManagoError::handleError($response['message'], $guzzleResponse->getStatusCode());
-            }
-        } catch (ConnectException $e) {
-            $error = $e->getHandlerContext();
-            throw SalesManagoError::handleError($e->getMessage(),0, true, $error['errno']);
-        } catch (ClientException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        } catch (ServerException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        }
+        $response = $this->request(self::METHOD_POST, self::METHOD_ACCOUNT_ITEMS, $data);
+        $this->validateResponse($response);
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
-     * @return array
      */
     public function refreshToken(Settings $settings)
     {
@@ -366,125 +278,8 @@ class BasicAccountService
             "token" => $settings->getToken()
         );
 
-        try {
-            $guzzle = $this->getGuzzleClient($settings);
-
-            $guzzleResponse = $guzzle->request('POST', self::REFRESH_TOKEN, array(
-                'json' => $data,
-            ));
-
-            $rawResponse = $guzzleResponse->getBody()->getContents();
-
-            $response = json_decode($rawResponse, true);
-
-            if (is_array($response)
-                && array_key_exists('success', $response)
-                && $response['success'] == true
-            ) {
-                return $response;
-            } else {
-                throw SalesManagoError::handleError($response['message'], $guzzleResponse->getStatusCode());
-            }
-        } catch (ConnectException $e) {
-            $error = $e->getHandlerContext();
-            throw SalesManagoError::handleError($e->getMessage(),0, true, $error['errno']);
-        } catch (ClientException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        } catch (ServerException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        }
-    }
-
-    /**
-     * @throws SalesManagoException
-     * @var Settings $settings
-     * @return array
-     */
-    public function getIntegrationProperties(Settings $settings)
-    {
-        $data = array(
-            "token" => $settings->getToken(),
-            "clientId" => $settings->getClientId()
-        );
-
-        try {
-            $guzzle = $this->getGuzzleClient($settings);
-
-            $guzzleResponse = $guzzle->request('POST', self::METHOD_GET_INTEGRATION_PROPERTIES, array(
-                'json' => $data,
-            ));
-
-            $rawResponse = $guzzleResponse->getBody()->getContents();
-
-            $response = json_decode($rawResponse, true);
-
-            if (is_array($response)
-                && array_key_exists('success', $response)
-                && $response['success'] == true
-            ) {
-                $response['properties'] = json_decode($response['properties'], true);
-                return $response;
-            } else {
-//                throw SalesManagoError::handleError($response['message'], $guzzleResponse->getStatusCode());
-                return $response;
-            }
-        } catch (ConnectException $e) {
-            $error = $e->getHandlerContext();
-            throw SalesManagoError::handleError($e->getMessage(),0, true, $error['errno']);
-        } catch (ClientException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        } catch (ServerException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        }
-    }
-
-    /**
-     * @throws SalesManagoException
-     * @var Settings $settings
-     * @param string $properties
-     * @return array
-     */
-    public function setIntegrationProperties(Settings $settings, $properties)
-    {
-        $data = array(
-            "token" => $settings->getToken(),
-            "clientId" => $settings->getClientId(),
-            "properties" => json_encode($properties)
-        );
-
-        try {
-            $guzzle = $this->getGuzzleClient($settings);
-
-            $guzzleResponse = $guzzle->request('POST', self::METHOD_SET_INTEGRATION_PROPERTIES, array(
-                'json' => $data,
-            ));
-
-            $rawResponse = $guzzleResponse->getBody()->getContents();
-
-            $response = json_decode($rawResponse, true);
-
-            if (is_array($response)
-                && array_key_exists('success', $response)
-                && $response['success'] == true
-            ) {
-                return $response;
-            } else {
-                throw SalesManagoError::handleError($response['message'], $guzzleResponse->getStatusCode());
-            }
-        } catch (ConnectException $e) {
-            $error = $e->getHandlerContext();
-            throw SalesManagoError::handleError($e->getMessage(),0, true, $error['errno']);
-        } catch (ClientException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        } catch (ServerException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        }
+        $response = $this->request(self::METHOD_POST, self::REFRESH_TOKEN, $data);
+        $this->validateResponse($response);
     }
 
     /**
@@ -501,7 +296,6 @@ class BasicAccountService
      * @var Settings $settings
      * @param string $method
      * @param array $options
-     * @return array
      */
     public function createProduct(Settings $settings, $method, $options = array())
     {
@@ -533,55 +327,14 @@ class BasicAccountService
             $productProperties
         );
 
-        try {
-            $guzzle = $this->getGuzzleClient($settings);
-
-            $guzzleResponse = $guzzle->request('POST', $method, array(
-                'json' => $data,
-            ));
-
-            $rawResponse = $guzzleResponse->getBody()->getContents();
-
-            $response = json_decode($rawResponse, true);
-
-            if (is_array($response)
-                && array_key_exists('success', $response)
-                && $response['success'] == true
-            ) {
-                $item = array(
-                    "success" => true,
-                );
-                return $item;
-            } elseif (is_array($response)
-                && array_key_exists('success', $response)
-                && $response['success'] == false
-                && $response['message'][1] == 'STORE'
-            ) {
-                $response = array(
-                    'success' => false,
-                    'type' => $response['message'][1]
-                );
-                return $response;
-            } else {
-                throw SalesManagoError::handleError($response['message'], $guzzleResponse->getStatusCode());
-            }
-        } catch (ConnectException $e) {
-            $error = $e->getHandlerContext();
-            throw SalesManagoError::handleError($e->getMessage(),0, true, $error['errno']);
-        } catch (ClientException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        } catch (ServerException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        }
+        $response = $this->request(self::METHOD_POST, $method, $data);
+        $this->validateResponse($response);
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
      * @param array $modulesId
-     * @return string
      */
     public function addSubscribeProducts(Settings $settings, $modulesId)
     {
@@ -589,34 +342,39 @@ class BasicAccountService
             'items' => json_encode($this->__getModulesData($modulesId))
         ));
 
-        try {
-            $guzzle = $this->getGuzzleClient($settings);
+        $response = $this->request(self::METHOD_POST, self::METHOD_ADD_SUBSCRIBE_PRODUCTS, $data);
+        $this->validateResponse($response);
+    }
 
-            $guzzleResponse = $guzzle->request('POST', self::METHOD_ADD_SUBSCRIBE_PRODUCTS, array(
-                'json' => $data,
-            ));
+    /**
+     * @throws SalesManagoException
+     * @var Settings $settings
+     */
+    public function getUserCustomProperties(Settings $settings)
+    {
+        $data = array(
+            "token" => $settings->getToken(),
+            "clientId" => $settings->getClientId()
+        );
 
-            $rawResponse = $guzzleResponse->getBody()->getContents();
+        $response = $this->request(self::METHOD_POST, self::METHOD_GET_INTEGRATION_PROPERTIES, $data);
+        $this->validateResponse($response);
+    }
 
-            $response = json_decode($rawResponse, true);
+    /**
+     * @throws SalesManagoException
+     * @var Settings $settings
+     * @param string $properties
+     */
+    public function setUserCustomProperties(Settings $settings, $properties)
+    {
+        $data = array(
+            "token" => $settings->getToken(),
+            "clientId" => $settings->getClientId(),
+            "properties" => json_encode($properties)
+        );
 
-            if (is_array($response)
-                && array_key_exists('success', $response)
-                && $response['success'] == true
-            ) {
-                return $response;
-            } else {
-                throw SalesManagoError::handleError($response['message'], $guzzleResponse->getStatusCode());
-            }
-        } catch (ConnectException $e) {
-            $error = $e->getHandlerContext();
-            throw SalesManagoError::handleError($e->getMessage(),0, true, $error['errno']);
-        } catch (ClientException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        } catch (ServerException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
-        }
+        $response = $this->request(self::METHOD_POST, self::METHOD_SET_INTEGRATION_PROPERTIES, $data);
+        $this->validateResponse($response);
     }
 }
