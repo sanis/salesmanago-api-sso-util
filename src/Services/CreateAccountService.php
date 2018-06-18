@@ -18,6 +18,7 @@ class CreateAccountService extends AbstractClient implements CreateAccountInterf
      * @var Settings $settings
      * @param array $user
      * @param array $modulesId
+     * @return array
      */
     public function createAccount(Settings $settings, $user, $modulesId)
     {
@@ -33,13 +34,14 @@ class CreateAccountService extends AbstractClient implements CreateAccountInterf
         }
 
         $response = $this->request(self::METHOD_POST, self::METHOD_CREATE_ACCOUNT, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
+     * @return array
      */
     public function contactToSupport(Settings $settings)
     {
@@ -58,6 +60,6 @@ class CreateAccountService extends AbstractClient implements CreateAccountInterf
         }
 
         $response = $this->request(self::METHOD_POST, self::METHOD_CONTACT_SUPPORT, $data);
-        $this->validateCustomResponse($response, array(array_key_exists('contactId', $response)));
+        return $this->validateCustomResponse($response, array(array_key_exists('contactId', $response)));
     }
 }

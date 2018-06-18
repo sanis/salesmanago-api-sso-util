@@ -62,6 +62,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
      * @throws SalesManagoException
      * @var Settings $settings
      * @param string $contactId
+     * @return array
      */
     public function getContactById(Settings $settings, $contactId)
     {
@@ -70,7 +71,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         ));
 
         $response = $this->request(self::METHOD_POST, self::METHOD_STATUS_BY_ID, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     public function checkForceOptions($options)
@@ -89,6 +90,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
      * @param array $user
      * @param array $options
      * @param array $properties
+     * @return array
      */
     public function contactUpsert(Settings $settings, $user, $options = array(), $properties = array())
     {
@@ -158,13 +160,14 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         }
 
         $response = $this->request(self::METHOD_POST, self::METHOD_UPSERT, $this->filterData($data));
-        $this->validateCustomResponse($response, array(array_key_exists('contactId', $response)));
+        return $this->validateCustomResponse($response, array(array_key_exists('contactId', $response)));
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
      * @param string $userEmail
+     * @return array
      */
     public function contactDelete(Settings $settings, $userEmail = '')
     {
@@ -173,13 +176,14 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         ));
 
         $response = $this->request(self::METHOD_POST, self::METHOD_DELETE, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
      * @param array $user
+     * @return array
      */
     public function contactAddNote(Settings $settings, $user)
     {
@@ -195,7 +199,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         }
 
         $response = $this->request(self::METHOD_POST, self::METHOD_ADD_NOTE, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     /**
@@ -205,7 +209,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
      * @param array $product
      * @param array $user
      * @param string $eventId
-     * @return string
+     * @return array
      */
     public function contactExtEvent(Settings $settings, $type, $product, $user, $eventId)
     {
@@ -226,7 +230,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         }
 
         $response = $this->request(self::METHOD_POST, $method, $this->filterData($data));
-        $this->validateCustomResponse($response, array(array_key_exists('eventId', $response)));
+        return $this->validateCustomResponse($response, array(array_key_exists('eventId', $response)));
     }
 
     /**
@@ -293,6 +297,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
      * @throws SalesManagoException
      * @var Settings $settings
      * @param array $upsertDetails
+     * @return array
      */
     public function exportContacts(Settings $settings, $upsertDetails)
     {
@@ -301,7 +306,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         ));
 
         $response = $this->request(self::METHOD_POST, self::METHOD_BATCH_UPSERT, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     /**
@@ -329,6 +334,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
      * @throws SalesManagoException
      * @var Settings $settings
      * @param array $events
+     * @return array
      */
     public function exportContactExtEvents(Settings $settings, $events)
     {
@@ -337,7 +343,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         ));
 
         $response = $this->request(self::METHOD_POST, self::METHOD_BATCH_ADD_EXT_EVENT, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     protected function __getContactData($user)

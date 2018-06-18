@@ -256,6 +256,7 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
     /**
      * @throws SalesManagoException
      * @var Settings $settings
+     * @return array
      */
     public function userItems(Settings $settings)
     {
@@ -265,12 +266,13 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_ACCOUNT_ITEMS, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
+     * @return array
      */
     public function refreshToken(Settings $settings)
     {
@@ -279,7 +281,7 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
         );
 
         $response = $this->request(self::METHOD_POST, self::REFRESH_TOKEN, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     /**
@@ -296,6 +298,7 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
      * @var Settings $settings
      * @param string $method
      * @param array $options
+     * @return array
      */
     public function createProduct(Settings $settings, $method, $options = array())
     {
@@ -328,13 +331,14 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
         );
 
         $response = $this->request(self::METHOD_POST, $method, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
      * @param array $modulesId
+     * @return array
      */
     public function addSubscribeProducts(Settings $settings, $modulesId)
     {
@@ -343,12 +347,13 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
         ));
 
         $response = $this->request(self::METHOD_POST, self::METHOD_ADD_SUBSCRIBE_PRODUCTS, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
+     * @return array
      */
     public function getUserCustomProperties(Settings $settings)
     {
@@ -358,13 +363,14 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_GET_INTEGRATION_PROPERTIES, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
      * @param string $properties
+     * @return array
      */
     public function setUserCustomProperties(Settings $settings, $properties)
     {
@@ -375,6 +381,6 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_SET_INTEGRATION_PROPERTIES, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 }

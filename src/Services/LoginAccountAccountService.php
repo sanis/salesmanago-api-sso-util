@@ -16,6 +16,7 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
     /**
      * @throws SalesManagoException
      * @param array $user
+     * @return array
      */
     public function accountAuthorize($user = array())
     {
@@ -25,12 +26,13 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_LOGIN_AUTHORIZE, $data);
-        $this->validateCustomResponse($response, array(array_key_exists('token', $response)));
+        return $this->validateCustomResponse($response, array(array_key_exists('token', $response)));
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
+     * @return array
      */
     public function accountIntegrationSettings(Settings $settings)
     {
@@ -42,12 +44,13 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_ACCOUNT_INTEGRATION, $data);
-        $this->validateCustomResponse($response, array(array_key_exists('shortId', $response)));
+        return $this->validateCustomResponse($response, array(array_key_exists('shortId', $response)));
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
+     * @return array
      */
     public function getUserCustomProperties(Settings $settings)
     {
@@ -57,13 +60,14 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_GET_INTEGRATION_PROPERTIES, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 
     /**
      * @throws SalesManagoException
      * @var Settings $settings
      * @param string $properties
+     * @return array
      */
     public function setUserCustomProperties(Settings $settings, $properties)
     {
@@ -74,6 +78,6 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_SET_INTEGRATION_PROPERTIES, $data);
-        $this->validateResponse($response);
+        return $this->validateResponse($response);
     }
 }
