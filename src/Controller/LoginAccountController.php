@@ -12,6 +12,8 @@ use SALESmanago\Provider\UserProvider;
 
 class LoginAccountController
 {
+    use ControllerTrait;
+
     protected $settings;
     protected $service;
     protected $model;
@@ -34,7 +36,7 @@ class LoginAccountController
                     $this->settings
                         ->setOwner($user['username'])
                         ->setDefaultApiKey()
-                        ->setToken($responseData['token'])
+                        ->setToken($responseData[Settings::TOKEN])
                         ->setEndpoint($responseData['endpoint'])
                 );
 
@@ -55,29 +57,27 @@ class LoginAccountController
 
                 $integration = $this->service->getUserCustomProperties($this->settings);
 
+                $buildResponse = $this->buildResponse();
+
+                $buildResponse
+                    ->addStatus(true)
+                    ->addField(Settings::TOKEN, $responseData[Settings::TOKEN])
+                    ->addField('properties', array('success' => false));
+
                 if ($integration['success'] == true) {
                     $this->updateUserCustomProperties($modelOptions, $integration['properties']);
 
-                    $data = array(
-                        'success' => true,
-                        'token' => $responseData['token'],
-                        'properties' => array(
+                    $buildResponse->addField(
+                        'properties',
+                        array(
                             'success' => true,
-                            'lang' => $integration['properties']['lang'],
-                            'color' => $integration['properties']['color']
-                        )
-                    );
-                } else {
-                    $data = array(
-                        'success' => true,
-                        'token' => $responseData['token'],
-                        'properties' => array(
-                            'success' => false
+                            'lang'    => $integration['properties']['lang'],
+                            'color'   => $integration['properties']['color']
                         )
                     );
                 }
 
-                return $data;
+                return $buildResponse->build();
             } else {
                 throw SalesManagoError::handleError($responseData['message'], $responseData['status']);
             }

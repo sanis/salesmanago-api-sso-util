@@ -26,7 +26,7 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_LOGIN_AUTHORIZE, $data);
-        return $this->validateCustomResponse($response, array(array_key_exists('token', $response)));
+        return $this->validateCustomResponse($response, array(array_key_exists(Settings::TOKEN, $response)));
     }
 
     /**
@@ -39,8 +39,8 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
         $this->setClient($settings);
 
         $data = array(
-            'token' => $settings->getToken(),
-            'apiKey' => $settings->getApiKey(),
+            Settings::TOKEN => $settings->getToken(),
+            Settings::API_KEY => $settings->getApiKey(),
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_ACCOUNT_INTEGRATION, $data);
@@ -55,8 +55,8 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
     public function getUserCustomProperties(Settings $settings)
     {
         $data = array(
-            "token" => $settings->getToken(),
-            "clientId" => $settings->getClientId()
+            Settings::TOKEN => $settings->getToken(),
+            Settings::CLIENT_ID => $settings->getClientId()
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_GET_INTEGRATION_PROPERTIES, $data);
@@ -75,8 +75,8 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
     public function setUserCustomProperties(Settings $settings, $properties)
     {
         $data = array(
-            "token" => $settings->getToken(),
-            "clientId" => $settings->getClientId(),
+            Settings::TOKEN => $settings->getToken(),
+            Settings::CLIENT_ID => $settings->getClientId(),
             "properties" => json_encode($properties)
         );
 

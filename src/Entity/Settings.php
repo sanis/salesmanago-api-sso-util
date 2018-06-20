@@ -5,6 +5,16 @@ namespace SALESmanago\Entity;
 
 class Settings
 {
+    const ACTIVE     = 'active';
+    const ENDPOINT   = 'endpoint';
+    const CLIENT_ID  = 'clientId';
+    const API_KEY    = 'apiKey';
+    const API_SECRET = 'apiSecret';
+    const OWNER      = 'owner';
+    const EMAIL      = 'email';
+    const SHA        = 'sha';
+    const TOKEN      = 'token';
+
     /**
      * @var boolean
      */
@@ -347,5 +357,17 @@ class Settings
     public function setProperties($properties)
     {
         $this->properties = $properties;
+    }
+
+    public function getConfig()
+    {
+        return [
+            self::CLIENT_ID => $this->getClientId(),
+            self::SHA       => $this->getSha(),
+            self::API_KEY   => $this->getApiKey(),
+            self::OWNER     => $this->getOwner(),
+            self::ENDPOINT  => $this->getEndpoint(),
+            self::TOKEN     => $this->getToken()
+        ];
     }
 }

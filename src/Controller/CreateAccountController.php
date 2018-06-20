@@ -11,6 +11,8 @@ use SALESmanago\Model\CreateInterface;
 
 class CreateAccountController
 {
+    use ControllerTrait;
+
     protected $settings;
     protected $service;
     protected $model;
@@ -49,13 +51,13 @@ class CreateAccountController
             $settings->setTags(($user['lang'] == "PL") ? "SALESMANAGO-R-B2C-SSO_PL" : "SALESMANAGO-R-B2C-SSO_ZG");
             $this->service->contactToSupport($settings);
 
-            $responseData = array(
-                'success' => $userData['success'],
-                'message' => $userData['message'],
-                'token' => $userData['token']
-            );
+            $buildResponse = $this->buildResponse();
+            $buildResponse
+                ->addStatus($userData['success'])
+                ->addField(Settings::TOKEN, $userData[Settings::TOKEN])
+                ->build();
 
-            return $responseData;
+            return $buildResponse;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
         }

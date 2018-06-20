@@ -261,8 +261,8 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
     public function userItems(Settings $settings)
     {
         $data = array(
-            "token" => $settings->getToken(),
-            "apiKey" => $settings->getApiKey()
+            Settings::TOKEN   => $settings->getToken(),
+            Settings::API_KEY => $settings->getApiKey()
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_ACCOUNT_ITEMS, $data);
@@ -277,7 +277,7 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
     public function refreshToken(Settings $settings)
     {
         $data = array(
-            "token" => $settings->getToken()
+            Settings::TOKEN => $settings->getToken()
         );
 
         $response = $this->request(self::METHOD_POST, self::REFRESH_TOKEN, $data);
@@ -358,8 +358,8 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
     public function getUserCustomProperties(Settings $settings)
     {
         $data = array(
-            "token" => $settings->getToken(),
-            "clientId" => $settings->getClientId()
+            Settings::TOKEN     => $settings->getToken(),
+            Settings::CLIENT_ID => $settings->getClientId()
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_GET_INTEGRATION_PROPERTIES, $data);
@@ -378,9 +378,9 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
     public function setUserCustomProperties(Settings $settings, $properties)
     {
         $data = array(
-            "token" => $settings->getToken(),
-            "clientId" => $settings->getClientId(),
-            "properties" => json_encode($properties)
+            Settings::TOKEN     => $settings->getToken(),
+            Settings::CLIENT_ID => $settings->getClientId(),
+            "properties"        => json_encode($properties)
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_SET_INTEGRATION_PROPERTIES, $data);

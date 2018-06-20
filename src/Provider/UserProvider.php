@@ -5,6 +5,7 @@ namespace SALESmanago\Provider;
 use SALESmanago\DependencyManagement\IoC as Container;
 use SALESmanago\Entity\Settings;
 use SALESmanago\Exception\SalesManagoException;
+use SALESmanago\Model\IntegrationInterface;
 
 
 class UserProvider
@@ -63,22 +64,25 @@ class UserProvider
 
     /**
      * @throws SalesManagoException
-     * @param array $userData
+     * @var IntegrationInterface $model
+     * @param array $userProperties
      * @return Settings object
      **/
-    public static function initSettingsUser($userData)
+    public static function initSettingsUser(IntegrationInterface $model, $userProperties = array())
     {
+        $userData = $model->getAccountUserData($userProperties);
+
         $container = Container::init();
 
         $container::register(self::USER_NAME, function () use ($userData) {
             $settings = new Settings();
             $settings
-                ->setClientId($userData['clientId'])
-                ->setApiKey($userData['apiKey'])
-                ->setEndpoint($userData['endpoint'])
-                ->setOwner($userData['owner'])
-                ->setSha($userData['sha'])
-                ->setToken($userData['token']);
+                ->setClientId($userData[Settings::CLIENT_ID])
+                ->setApiKey($userData[Settings::API_KEY])
+                ->setEndpoint($userData[Settings::ENDPOINT])
+                ->setOwner($userData[Settings::OWNER])
+                ->setSha($userData[Settings::SHA])
+                ->setToken($userData[Settings::TOKEN]);
             return $settings;
         });
 
@@ -95,11 +99,11 @@ class UserProvider
         $container::register($name, function () use ($userData) {
             $settings = new Settings();
             $settings
-                ->setEndpoint($userData['endpoint'])
-                ->setClientId($userData['clientId'])
-                ->setApiSecret($userData['apiSecret'])
-                ->setOwner($userData['email'])
-                ->setToken($userData['token'])
+                ->setEndpoint($userData[Settings::ENDPOINT])
+                ->setClientId($userData[Settings::CLIENT_ID])
+                ->setApiSecret($userData[Settings::API_SECRET])
+                ->setOwner($userData[Settings::EMAIL])
+                ->setToken($userData[Settings::TOKEN])
                 ->setDefaultApiKey();
             return $settings;
         });
@@ -123,14 +127,7 @@ class UserProvider
      **/
     public static function getConfig(Settings $settings)
     {
-        return [
-            'clientId' => $settings->getClientId(),
-            'sha' => $settings->getSha(),
-            'apiKey' => $settings->getApiKey(),
-            'owner' => $settings->getOwner(),
-            'endpoint' => $settings->getEndpoint(),
-            'token' => $settings->getToken()
-        ];
+        return $settings->getConfig();
     }
 
     /**

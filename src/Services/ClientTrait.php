@@ -32,11 +32,11 @@ trait ClientTrait
     final protected function __getDefaultApiData(Settings $settings)
     {
         $data = array(
-            'clientId' => $settings->getClientId(),
-            'apiKey' => $settings->getApiKey(),
+            Settings::CLIENT_ID => $settings->getClientId(),
+            Settings::API_KEY => $settings->getApiKey(),
+            Settings::SHA => $settings->getSha(),
+            Settings::OWNER => $settings->getOwner(),
             'requestTime' => time(),
-            'sha' => $settings->getSha(),
-            'owner' => $settings->getOwner()
         );
         return $data;
     }

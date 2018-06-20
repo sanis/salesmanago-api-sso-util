@@ -53,11 +53,6 @@ class UserAccountController
         return $data;
     }
 
-    public function logout($userProperties)
-    {
-        $this->model->delete($userProperties);
-    }
-
     public function userIntegration($userProperties)
     {
         $this->model->setCustomProperties($userProperties);
@@ -80,25 +75,7 @@ class UserAccountController
         return trim(preg_replace('/\s+/', ' ', $code));
     }
 
-    public function getAccountUserData($userProperties)
-    {
-        return $this->model->getAccountUserData($userProperties);
-    }
 
-    public function setAccountUserData($userProperties)
-    {
-        return $this->model->setAccountUserData($userProperties);
-    }
-
-    public function getPlatformUserData($userProperties)
-    {
-        return $this->model->getPlatformUserData($userProperties);
-    }
-
-    public function setPlatformUserData($userProperties)
-    {
-        return $this->model->setPlatformUserData($userProperties);
-    }
 
     public function getUserCustomProperties()
     {
