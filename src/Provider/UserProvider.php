@@ -9,6 +9,8 @@ use SALESmanago\Exception\SalesManagoException;
 
 class UserProvider
 {
+    const USER_NAME = "user-settings";
+
     protected $settings;
 
     /**
@@ -33,17 +35,30 @@ class UserProvider
      **/
     public static function settingsUser()
     {
-        $name = "user-settings";
         $container = Container::init();
 
-        $container::register($name, function () {
+        $container::register(self::USER_NAME, function () {
             $settings = new Settings();
             $settings
                 ->setEndpoint("app2.salesmanago.pl");
             return $settings;
         });
 
-        return $container::resolve($name);
+        return $container::resolve(self::USER_NAME);
+    }
+
+    /**
+     * @throws SalesManagoException
+     * @var Settings $settings
+     **/
+    public static function settingsUserExtend(Settings $settings)
+    {
+        $container = Container::init();
+
+        $container::extend(self::USER_NAME, function () use ($settings) {
+            return $settings;
+        });
+
     }
 
     /**
@@ -53,10 +68,9 @@ class UserProvider
      **/
     public static function initSettingsUser($userData)
     {
-        $name = "user-settings";
         $container = Container::init();
 
-        $container::register($name, function () use ($userData) {
+        $container::register(self::USER_NAME, function () use ($userData) {
             $settings = new Settings();
             $settings
                 ->setClientId($userData['clientId'])
@@ -68,7 +82,7 @@ class UserProvider
             return $settings;
         });
 
-        return $container::resolve($name);
+        return $container::resolve(self::USER_NAME);
     }
 
     /**

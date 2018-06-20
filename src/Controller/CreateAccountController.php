@@ -36,8 +36,8 @@ class CreateAccountController
                 $userData['email'] = $user['email'];
             }
 
-            UserProvider::createSettingsContainer("user-settings", $userData);
-            $settings = UserProvider::getSettingsContainer("user-settings");
+            UserProvider::createSettingsContainer(UserProvider::USER_NAME, $userData);
+            $settings = UserProvider::getSettingsContainer(UserProvider::USER_NAME);
 
             $this->model->insert(
                 UserProvider::mergeConfig(

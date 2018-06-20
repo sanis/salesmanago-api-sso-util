@@ -6,7 +6,6 @@ use SALESmanago\Entity\Settings;
 use SALESmanago\Services\LoginAccountAccountService;
 use SALESmanago\Exception\SalesManagoError;
 use SALESmanago\Exception\SalesManagoException;
-use SALESmanago\DependencyManagement\IoC as Container;
 use SALESmanago\Model\LoginInterface;
 use SALESmanago\Provider\UserProvider;
 
@@ -29,26 +28,25 @@ class LoginAccountController
         try {
             $responseData = $this->service->accountAuthorize($user);
 
-            $container = Container::init();
-            $settings = $this->settings;
-
             if ($responseData['success'] == true) {
 
-                $container::extend("user-settings", function () use ($settings, $user, $responseData) {
-                    $settings
+                UserProvider::settingsUserExtend(
+                    $this->settings
                         ->setOwner($user['username'])
                         ->setDefaultApiKey()
                         ->setToken($responseData['token'])
-                        ->setEndpoint($responseData['endpoint']);
-                    return $settings;
-                });
+                        ->setEndpoint($responseData['endpoint'])
+                );
 
                 $settingsIntegrationData = $this->service->accountIntegrationSettings($this->settings);
 
                 if ($responseData['success'] == true) {
-                    $this->settings
-                        ->setClientId($settingsIntegrationData['shortId'])
-                        ->setSha($settingsIntegrationData['sha1']);
+
+                    UserProvider::settingsUserExtend(
+                        $this->settings
+                            ->setClientId($settingsIntegrationData['shortId'])
+                            ->setSha($settingsIntegrationData['sha1'])
+                    );
 
                     $this->updateUserSettings($modelOptions);
                 } else {

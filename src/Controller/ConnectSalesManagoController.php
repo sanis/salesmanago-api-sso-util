@@ -15,6 +15,13 @@ class ConnectSalesManagoController
     protected $settings;
     protected $service;
 
+
+    public function __construct(Settings $settings)
+    {
+        $this->service = new ConnectSalesManagoService($settings);
+        $this->settings = $settings;
+    }
+
     public function createCookie($name, $value)
     {
         $period = time() + (3600 * 86400);
@@ -24,12 +31,6 @@ class ConnectSalesManagoController
     {
         unset($_COOKIE[$name]);
         setcookie($name, null, -1, '/');
-    }
-
-    public function __construct(Settings $settings)
-    {
-        $this->service = new ConnectSalesManagoService($settings);
-        $this->settings = $settings;
     }
 
     public function contactUpsert($user, $options = array(), $properties = array())
@@ -86,11 +87,8 @@ class ConnectSalesManagoController
     public function contactExtEvent($type, $product, $user, $eventId = null)
     {
         try {
-
             $eventTypeName = $this->service->checkAccessEventType($type);
-
             $responseData = $this->service->contactExtEvent($this->settings, $eventTypeName, $product, $user, $eventId);
-
             return $responseData;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();

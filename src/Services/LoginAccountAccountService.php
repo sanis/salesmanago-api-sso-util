@@ -60,6 +60,9 @@ class LoginAccountAccountService extends AbstractClient implements LoginAccountI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_GET_INTEGRATION_PROPERTIES, $data);
+        if (isset($response["properties"])) {
+            $response["properties"] = json_decode($response["properties"], true);
+        }
         return $this->validateResponse($response);
     }
 
