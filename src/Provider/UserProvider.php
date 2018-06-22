@@ -5,7 +5,7 @@ namespace SALESmanago\Provider;
 use SALESmanago\DependencyManagement\IoC as Container;
 use SALESmanago\Entity\Settings;
 use SALESmanago\Exception\SalesManagoException;
-use SALESmanago\Model\IntegrationInterface;
+use SALESmanago\Model\SettingsInterface;
 
 
 class UserProvider
@@ -64,13 +64,13 @@ class UserProvider
 
     /**
      * @throws SalesManagoException
-     * @var IntegrationInterface $model
+     * @var SettingsInterface $model
      * @param array $userProperties
      * @return Settings object
      **/
-    public static function initSettingsUser(IntegrationInterface $model, $userProperties = array())
+    public static function initSettingsUser(SettingsInterface $model, $userProperties = array())
     {
-        $userData = $model->getAccountUserData($userProperties);
+        $userData = $model->getUserSettings($userProperties);
 
         $container = Container::init();
 

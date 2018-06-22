@@ -31,7 +31,7 @@ class UserAccountController
         }
     }
 
-    public function getToken($userProperties)
+    public function getToken($userProperties = array())
     {
         $data = $this->model->getUserToken($userProperties);
 

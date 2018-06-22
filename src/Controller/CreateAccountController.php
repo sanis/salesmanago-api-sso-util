@@ -54,10 +54,9 @@ class CreateAccountController
             $buildResponse = $this->buildResponse();
             $buildResponse
                 ->addStatus($userData['success'])
-                ->addField(Settings::TOKEN, $userData[Settings::TOKEN])
-                ->build();
+                ->addField(Settings::TOKEN, $userData[Settings::TOKEN]);
 
-            return $buildResponse;
+            return $buildResponse->build();
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
         }
