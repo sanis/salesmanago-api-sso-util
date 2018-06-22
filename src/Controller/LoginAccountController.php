@@ -3,7 +3,7 @@
 namespace SALESmanago\Controller;
 
 use SALESmanago\Entity\Settings;
-use SALESmanago\Services\LoginAccountAccountService;
+use SALESmanago\Services\LoginAccountService;
 use SALESmanago\Exception\SalesManagoError;
 use SALESmanago\Exception\SalesManagoException;
 use SALESmanago\Model\LoginInterface;
@@ -20,7 +20,7 @@ class LoginAccountController
 
     public function __construct(Settings $settings, LoginInterface $model)
     {
-        $this->service = new LoginAccountAccountService($settings);
+        $this->service = new LoginAccountService($settings);
         $this->settings = $settings;
         $this->model = $model;
     }

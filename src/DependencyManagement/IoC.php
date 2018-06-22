@@ -30,7 +30,7 @@ class IoC
     public static function extend($name, \Closure $resolve)
     {
         if (!static::registered($name)) {
-            throw new SalesManagoException(sprintf('%s Is not registered', $name), 9);
+            throw new SalesManagoException('Container is not registered', 9);
         }
 
         static::$registry[$name] = $resolve;
@@ -48,7 +48,7 @@ class IoC
     public static function resolve($name)
     {
         if (!static::registered($name)) {
-            throw new SalesManagoException(sprintf('%s Is not registered', $name), 9);
+            throw new SalesManagoException('Container is not registered', 9);
         }
 
         $name = static::$registry[$name];

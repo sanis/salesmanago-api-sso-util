@@ -5,6 +5,7 @@ namespace SALESmanago\Provider;
 use SALESmanago\DependencyManagement\IoC as Container;
 use SALESmanago\Entity\Settings;
 use SALESmanago\Exception\SalesManagoException;
+use SALESmanago\Exception\UserAccessException;
 use SALESmanago\Model\SettingsInterface;
 
 
@@ -63,6 +64,7 @@ class UserProvider
     }
 
     /**
+     * @throws UserAccessException
      * @throws SalesManagoException
      * @var SettingsInterface $model
      * @param array $userProperties

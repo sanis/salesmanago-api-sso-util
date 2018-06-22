@@ -6,7 +6,7 @@ use SALESmanago\Exception\SalesManagoException;
 use SALESmanago\Entity\Settings;
 
 
-class LoginAccountAccountService extends AbstractClient implements LoginAccountInterface, UserCustomPropertiesInterface
+class LoginAccountService extends AbstractClient implements LoginAccountInterface, UserCustomPropertiesInterface
 {
     public function __construct(Settings $settings)
     {
