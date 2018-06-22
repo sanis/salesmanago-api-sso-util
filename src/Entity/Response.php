@@ -26,6 +26,12 @@ class Response
         return $this;
     }
 
+    public function addArray($arr)
+    {
+        $this->response = array_merge($this->response, $arr);
+        return $this;
+    }
+
     public function build()
     {
         return $this->response;
