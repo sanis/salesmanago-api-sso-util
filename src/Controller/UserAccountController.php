@@ -194,4 +194,24 @@ class UserAccountController
             return $e->getSalesManagoMessage();
         }
     }
+
+    public function exportContacts($data)
+    {
+        try {
+            $response = $this->service->exportContacts($this->settings, $data);
+            return json_encode($response);
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
+
+    public function exportContactExtEvents($data)
+    {
+        try {
+            $response = $this->service->exportContactExtEvents($this->settings, $data);
+            return json_encode($response);
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
 }

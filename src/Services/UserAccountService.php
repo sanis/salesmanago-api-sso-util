@@ -6,20 +6,8 @@ use SALESmanago\Entity\Settings;
 use SALESmanago\Exception\SalesManagoException;
 
 
-class UserAccountService extends AbstractClient implements UserCustomPropertiesInterface
+class UserAccountService extends AbstractClient implements UserAccountInterface, UserCustomPropertiesInterface
 {
-    const METHOD_CREATE_LIVE_CHAT = "/api/wm/createLiveChat",
-          METHOD_CREATE_BASIC_POPUP = "/api/wm/createBasicPopup",
-          METHOD_CREATE_WEB_PUSH_CONSENT = "/api/wm/createWebPushConsentForm",
-          METHOD_CREATE_WEB_PUSH_NOTIFICATION = "/api/wm/createWebPushNotification",
-          METHOD_CREATE_WEB_PUSH_CONSENT_AND_NOTIFICATION = "/api/wm/createWebPushConsentFormAndNotification",
-
-          METHOD_ADD_SUBSCRIBE_PRODUCTS = "/api/appstore/subscribeProducts",
-          METHOD_ACCOUNT_ITEMS = "/api/account/items",
-
-          REDIRECT_APP = "/api/authorization/authorize",
-          REFRESH_TOKEN = "/api/authorization/refreshToken";
-
     public function __construct(Settings $settings)
     {
         $this->setClient($settings);
@@ -384,6 +372,38 @@ class UserAccountService extends AbstractClient implements UserCustomPropertiesI
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_SET_INTEGRATION_PROPERTIES, $data);
+        return $this->validateResponse($response);
+    }
+
+    /**
+     * @throws SalesManagoException
+     * @var Settings $settings
+     * @param array $upsertDetails
+     * @return array
+     */
+    public function exportContacts(Settings $settings, $upsertDetails)
+    {
+        $data = array_merge($this->__getDefaultApiData($settings), array(
+            'upsertDetails' => $upsertDetails,
+        ));
+
+        $response = $this->request(self::METHOD_POST, self::METHOD_BATCH_UPSERT, $data);
+        return $this->validateResponse($response);
+    }
+
+    /**
+     * @throws SalesManagoException
+     * @var Settings $settings
+     * @param array $events
+     * @return array
+     */
+    public function exportContactExtEvents(Settings $settings, $events)
+    {
+        $data = array_merge($this->__getDefaultApiData($settings), array(
+            'events' => $events,
+        ));
+
+        $response = $this->request(self::METHOD_POST, self::METHOD_BATCH_ADD_EXT_EVENT, $data);
         return $this->validateResponse($response);
     }
 }

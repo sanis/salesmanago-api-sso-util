@@ -63,27 +63,6 @@ class ConnectSalesManagoController
         }
     }
 
-    public function exportContacts()
-    {
-        $data = array();
-        $users = array();
-        $options = array();
-        $properties = array();
-
-        foreach ($users as $user) {
-            array_push(
-                $data,
-                $this->service->prepareContactsDetails($user, $options, $properties)
-            );
-        }
-        try {
-            $response = $this->service->exportContacts($this->settings, $data);
-            return json_encode($response);
-        } catch (SalesManagoException $e) {
-            return $e->getSalesManagoMessage();
-        }
-    }
-
     public function contactExtEvent($type, $product, $user, $eventId = null)
     {
         try {
@@ -95,23 +74,4 @@ class ConnectSalesManagoController
         }
     }
 
-    public function exportContactExtEvents()
-    {
-        $data = array();
-        $orders= array();
-        $user = array();
-
-        foreach ($orders as $order) {
-            array_push(
-                $data,
-                $this->service->prepareContactEvents(ConnectSalesManagoService::EVENT_TYPE_CART, $order, $user)
-            );
-        }
-        try {
-            $response = $this->service->exportContactExtEvents($this->settings, $data);
-            return json_encode($response);
-        } catch (SalesManagoException $e) {
-            return $e->getSalesManagoMessage();
-        }
-    }
 }
