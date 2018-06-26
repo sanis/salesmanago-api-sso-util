@@ -11,5 +11,6 @@ interface UserCustomPropertiesInterface
           METHOD_SET_INTEGRATION_PROPERTIES = '/api/account/integration/setProperties';
 
     public function getUserCustomProperties(Settings $settings);
+
     public function setUserCustomProperties(Settings $settings, $properties);
 }

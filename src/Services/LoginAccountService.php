@@ -39,7 +39,7 @@ class LoginAccountService extends AbstractClient implements LoginAccountInterfac
         $this->setClient($settings);
 
         $data = array(
-            Settings::TOKEN => $settings->getToken(),
+            Settings::TOKEN   => $settings->getToken(),
             Settings::API_KEY => $settings->getApiKey(),
         );
 
@@ -55,7 +55,7 @@ class LoginAccountService extends AbstractClient implements LoginAccountInterfac
     public function getUserCustomProperties(Settings $settings)
     {
         $data = array(
-            Settings::TOKEN => $settings->getToken(),
+            Settings::TOKEN     => $settings->getToken(),
             Settings::CLIENT_ID => $settings->getClientId()
         );
 
@@ -75,9 +75,9 @@ class LoginAccountService extends AbstractClient implements LoginAccountInterfac
     public function setUserCustomProperties(Settings $settings, $properties)
     {
         $data = array(
-            Settings::TOKEN => $settings->getToken(),
+            Settings::TOKEN     => $settings->getToken(),
             Settings::CLIENT_ID => $settings->getClientId(),
-            "properties" => json_encode($properties)
+            "properties"        => json_encode($properties)
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_SET_INTEGRATION_PROPERTIES, $data);

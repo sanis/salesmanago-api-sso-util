@@ -11,7 +11,7 @@ trait ClientTrait
 {
     private $statusCode;
 
-    protected $modules = array("EMAIL_MARKETING","LIVE_CHAT", "WEB_PUSH", "CF_P_LP");
+    protected $modules = array("EMAIL_MARKETING", "LIVE_CHAT", "WEB_PUSH", "CF_P_LP");
 
     /**
      * @return int $statusCode
@@ -33,10 +33,10 @@ trait ClientTrait
     {
         $data = array(
             Settings::CLIENT_ID => $settings->getClientId(),
-            Settings::API_KEY => $settings->getApiKey(),
-            Settings::SHA => $settings->getSha(),
-            Settings::OWNER => $settings->getOwner(),
-            'requestTime' => time(),
+            Settings::API_KEY   => $settings->getApiKey(),
+            Settings::SHA       => $settings->getSha(),
+            Settings::OWNER     => $settings->getOwner(),
+            'requestTime'       => time(),
         );
         return $data;
     }
@@ -50,7 +50,7 @@ trait ClientTrait
 
             if ($value == 0) {
                 $obj = array_merge($obj, array(
-                    "contactLimit"=> 1000
+                    "contactLimit" => 1000
                 ));
             }
             array_push($modules, $obj);
@@ -110,16 +110,17 @@ trait ClientTrait
     /**
      * @return string
      */
-    public function getContactIp() {
+    public function getContactIp()
+    {
         if (getenv('HTTP_CLIENT_IP'))
             $ip = getenv('HTTP_CLIENT_IP');
-        else if(getenv('HTTP_X_FORWARDED_FOR'))
+        else if (getenv('HTTP_X_FORWARDED_FOR'))
             $ip = getenv('HTTP_X_FORWARDED_FOR');
-        else if(getenv('HTTP_X_FORWARDED'))
+        else if (getenv('HTTP_X_FORWARDED'))
             $ip = getenv('HTTP_X_FORWARDED');
-        else if(getenv('HTTP_FORWARDED_FOR'))
+        else if (getenv('HTTP_FORWARDED_FOR'))
             $ip = getenv('HTTP_FORWARDED_FOR');
-        else if(getenv('HTTP_FORWARDED'))
+        else if (getenv('HTTP_FORWARDED'))
             $ip = getenv('HTTP_FORWARDED');
         else
             $ip = getenv('REMOTE_ADDR');

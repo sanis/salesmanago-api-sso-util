@@ -17,23 +17,23 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
     {
         $data = array(
             'chat' => array(
-                'name' => 'SSO Live Chat' . date(' Y-m-d H:i:s', time()),
+                'name'              => 'SSO Live Chat' . date(' Y-m-d H:i:s', time()),
                 "defaultConsultant" => array(
-                    "name" => $options['consultant'],
+                    "name"   => $options['consultant'],
                     "avatar" => array(
                         "url" => "https://s3-eu-west-1.amazonaws.com/salesmanago/chat/default_avatar.png"
                     )
                 ),
-                'colors' => array(
-                    'main' => $options['color']['main'],
-                    'mainFont' => $options['color']['mainFont'],
-                    'additional' => $options['color']['additional'],
+                'colors'            => array(
+                    'main'           => $options['color']['main'],
+                    'mainFont'       => $options['color']['mainFont'],
+                    'additional'     => $options['color']['additional'],
                     'additionalFont' => $options['color']['additionalFont'],
-                    'background' => '#ffffff',
-                    'info' => '#9c9c9c'
+                    'background'     => '#ffffff',
+                    'info'           => '#9c9c9c'
                 ),
-                'active' => true,
-                'contactOwner' => array(
+                'active'            => true,
+                'contactOwner'      => array(
                     'email' => $options['email']
                 )
             )
@@ -43,130 +43,130 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
 
     protected function __getBasicPopupData($options)
     {
-        $data = array (
-            'popup' => array (
-                'popupType' => 'NEW_VISITORS_CONTACT_FORM',
-                'contactFormContent' => array (
+        $data = array(
+            'popup' => array(
+                'popupType'          => 'NEW_VISITORS_CONTACT_FORM',
+                'contactFormContent' => array(
                     'image' =>
-                        array (
+                        array(
                             'fileName' => 'logo.png',
-                            'url' => 'https://s3-eu-west-1.amazonaws.com/salesmanagoimg/0inieufi69duje4c/anvpxf3d6h1bdz7w/m32izi3c5cfr1fio.png',
+                            'url'      => 'https://s3-eu-west-1.amazonaws.com/salesmanagoimg/0inieufi69duje4c/anvpxf3d6h1bdz7w/m32izi3c5cfr1fio.png',
                             'cssClass' => 'fa-envelope',
                         ),
 
-                    'title' =>
-                        array (
-                            'text' => 'Pierwszy raz u nas?',
+                    'title'           =>
+                        array(
+                            'text'      => 'Pierwszy raz u nas?',
                             'fontColor' => '#ffffff',
                         ),
-                    'content' =>
-                        array (
-                            'text' => 'Zostaw kontakt — odezwiemy się.',
+                    'content'         =>
+                        array(
+                            'text'      => 'Zostaw kontakt — odezwiemy się.',
                             'fontColor' => '#ffffff ',
-                            'align ' => 'left ',
+                            'align '    => 'left ',
                         ),
-                    'inputFields' => array (
-                        array (
-                            'label' =>
-                                array (
-                                    'text' => 'Imię i nazwisko',
+                    'inputFields'     => array(
+                        array(
+                            'label'            =>
+                                array(
+                                    'text'      => 'Imię i nazwisko',
                                     'fontColor' => '#ffffff',
                                 ),
-                            'type' => 'NAME',
+                            'type'             => 'NAME',
                             'customDetailName' => NULL,
-                            'placeholder' =>
-                                array (
-                                    'text' => 'Jan Kowalski',
+                            'placeholder'      =>
+                                array(
+                                    'text'      => 'Jan Kowalski',
                                     'fontColor' => NULL,
                                 ),
-                            'confirmationTag' => NULL,
-                            'declinedTag' => NULL,
-                            'required' => false,
+                            'confirmationTag'  => NULL,
+                            'declinedTag'      => NULL,
+                            'required'         => false,
                         ),
-                        array (
-                            'label' =>
-                                array (
-                                    'text' => 'Adres e-mail',
+                        array(
+                            'label'            =>
+                                array(
+                                    'text'      => 'Adres e-mail',
                                     'fontColor' => '#ffffff',
                                 ),
-                            'type' => 'EMAIL',
+                            'type'             => 'EMAIL',
                             'customDetailName' => NULL,
-                            'placeholder' =>
-                                array (
-                                    'text' => 'email.address@example.com',
+                            'placeholder'      =>
+                                array(
+                                    'text'      => 'email.address@example.com',
                                     'fontColor' => NULL,
                                 ),
-                            'confirmationTag' => NULL,
-                            'declinedTag' => NULL,
-                            'required' => false,
+                            'confirmationTag'  => NULL,
+                            'declinedTag'      => NULL,
+                            'required'         => false,
                         ),
-                        array (
-                            'label' =>
-                                array (
-                                    'text' => 'Firma',
+                        array(
+                            'label'            =>
+                                array(
+                                    'text'      => 'Firma',
                                     'fontColor' => '#ffffff',
                                 ),
-                            'type' => 'COMPANY',
+                            'type'             => 'COMPANY',
                             'customDetailName' => NULL,
-                            'placeholder' =>
-                                array (
-                                    'text' => 'Nazwa Twojej firmy',
+                            'placeholder'      =>
+                                array(
+                                    'text'      => 'Nazwa Twojej firmy',
                                     'fontColor' => NULL,
                                 ),
-                            'confirmationTag' => NULL,
-                            'declinedTag' => NULL,
-                            'required' => false,
+                            'confirmationTag'  => NULL,
+                            'declinedTag'      => NULL,
+                            'required'         => false,
                         ),
-                        array (
-                            'label' =>
-                                array (
-                                    'text' => 'Strona WWW',
+                        array(
+                            'label'            =>
+                                array(
+                                    'text'      => 'Strona WWW',
                                     'fontColor' => '#ffffff',
                                 ),
-                            'type' => 'WEBSITE',
+                            'type'             => 'WEBSITE',
                             'customDetailName' => NULL,
-                            'placeholder' =>
-                                array (
-                                    'text' => 'Adres Twojej strony',
+                            'placeholder'      =>
+                                array(
+                                    'text'      => 'Adres Twojej strony',
                                     'fontColor' => NULL,
                                 ),
-                            'confirmationTag' => NULL,
-                            'declinedTag' => NULL,
-                            'required' => false,
+                            'confirmationTag'  => NULL,
+                            'declinedTag'      => NULL,
+                            'required'         => false,
                         ),
                     ),
                     'backgroundColor' => '#5e1212',
                     'subscribeButton' =>
-                        array (
-                            'text' => 'OK',
-                            'borderRadius' => '5px',
-                            'fontColor' => '#3b2727',
+                        array(
+                            'text'            => 'OK',
+                            'borderRadius'    => '5px',
+                            'fontColor'       => '#3b2727',
                             'backgroundColor' => '#ebebeb',
                         ),
                 ),
-                'settings' => array(
+                'settings'           => array(
                     'confirmationEmailAccount' => array(
                         'email' => $options['email']
                     ),
-                    'popupName' => 'Popup API' . date(' Y-m-d H:i:s', time()),
-                    'subscribedTag' => 'moj-popup-zapis',
-                    'confirmedTag' => 'moj-popup-potwierdzenie',
-                    'hideOnMobileDevices' => false,
+                    'popupName'                => 'Popup API' . date(' Y-m-d H:i:s', time()),
+                    'subscribedTag'            => 'moj-popup-zapis',
+                    'confirmedTag'             => 'moj-popup-potwierdzenie',
+                    'hideOnMobileDevices'      => false,
                     'hideForMonitoredContacts' => false,
-                    'displayWhen' => array (
-                        'mode' => 'AFTER_X_SECONDS',
+                    'displayWhen'              => array(
+                        'mode'              => 'AFTER_X_SECONDS',
                         'siteScrollPercent' => 25,
-                        'pageViews' => 1,
+                        'pageViews'         => 1,
                         'secondsSinceVisit' => 5,
                     ),
-                    'displayWhere' => array (
-                        'mode' => 'ON_ALL_PAGES',
-                        'domain' => '**',
+                    'displayWhere'             => array(
+                        'mode'             => 'ON_ALL_PAGES',
+                        'domain'           => '**',
                         'containedPhrases' => [],
                     ),
                 ),
-                'completedSteps' => 5,
-                'active' => true
+                'completedSteps'     => 5,
+                'active'             => true
             )
         );
 
@@ -177,25 +177,25 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
     {
         $data = array(
             "webPushConsentForm" => array(
-                "name" => $options['title'] . date(' Y-m-d H:i:s', time()),
-                "tags" => [],
-                "consentForm" => array(
-                    "title" => $options['title'],
-                    "body" => $options['body'],
-                    "imgUrl" => $options['logo'],
+                "name"            => $options['title'] . date(' Y-m-d H:i:s', time()),
+                "tags"            => [],
+                "consentForm"     => array(
+                    "title"      => $options['title'],
+                    "body"       => $options['body'],
+                    "imgUrl"     => $options['logo'],
                     "thanksText" => $options['thanksText'],
-                    "thanksUrl" => $options['thanksUrl']
+                    "thanksUrl"  => $options['thanksUrl']
                 ),
-                "buttonSettings" => array(
+                "buttonSettings"  => array(
                     "confirmationBackgroundColor" => $options['color']['main'],
-                    "confirmationText" => $options['confirmationText'],
-                    "confirmationTextColor" => $options['color']['mainFont'],
-                    "rejectionText" => $options['rejectionText']
+                    "confirmationText"            => $options['confirmationText'],
+                    "confirmationTextColor"       => $options['color']['mainFont'],
+                    "rejectionText"               => $options['rejectionText']
                 ),
-                "consentFormId" => null,
+                "consentFormId"   => null,
                 "consentFormSize" => "MEDIUM",
-                "marginTop" => 0,
-                "active" => true
+                "marginTop"       => 0,
+                "active"          => true
             )
         );
         return $data;
@@ -205,32 +205,32 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
     {
         $data = array(
             "webPushNotification" => array(
-                "name" => "Web Push 2017-11-15 16:08:24",
-                "webPushNotification" => array(
-                    "title" => "Witaj!",
-                    "body" => "Mamy coś specjalnie dla Ciebie. Odwiedź naszą stronę.",
-                    "imgUrl" => "https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png",
+                "name"                 => "Web Push 2017-11-15 16:08:24",
+                "webPushNotification"  => array(
+                    "title"     => "Witaj!",
+                    "body"      => "Mamy coś specjalnie dla Ciebie. Odwiedź naszą stronę.",
+                    "imgUrl"    => "https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png",
                     "targetUrl" => "https://www.domain.com/target_url"
                 ),
-                "richWebPush" => array(
-                    "title" => null,
-                    "body" => null,
-                    "iconUrl" => null,
+                "richWebPush"          => array(
+                    "title"     => null,
+                    "body"      => null,
+                    "iconUrl"   => null,
                     "targetUrl" => null,
-                    "imageUrl" => null
+                    "imageUrl"  => null
                 ),
-                "receivers" => ".AllContacts",
-                "sendingDate" => 1510704000000,
+                "receivers"            => ".AllContacts",
+                "sendingDate"          => 1510704000000,
                 "selectedConsentForms" => [123],
-                "ttl" => array(
+                "ttl"                  => array(
                     "timestamp" => "WEEKS",
-                    "value" => 2419200
+                    "value"     => 2419200
                 ),
-                "tags" => [],
-                "excludedTags" => [],
-                "webPushType" => "WEB_PUSH",
-                "active" => true,
-                "showWebPush" => true
+                "tags"                 => [],
+                "excludedTags"         => [],
+                "webPushType"          => "WEB_PUSH",
+                "active"               => true,
+                "showWebPush"          => true
             )
         );
         return $data;

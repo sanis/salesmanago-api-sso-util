@@ -11,5 +11,6 @@ interface CreateAccountInterface
           METHOD_CONTACT_SUPPORT = "/api/contact/upsertVendorToSupport";
 
     public function createAccount(Settings $settings, $user, $modulesId);
+
     public function contactToSupport(Settings $settings);
 }

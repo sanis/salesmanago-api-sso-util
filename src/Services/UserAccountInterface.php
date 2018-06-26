@@ -23,5 +23,6 @@ interface UserAccountInterface
           METHOD_BATCH_ADD_EXT_EVENT = "/api/contact/batchAddContactExtEvent";
 
     public function exportContacts(Settings $settings, $upsertDetails);
+
     public function exportContactExtEvents(Settings $settings, $events);
 }

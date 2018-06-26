@@ -10,7 +10,7 @@ use SALESmanago\Entity\Settings;
 class ConnectSalesManagoController
 {
     const COOKIES_CLIENT = "smclient",
-          COOKIES_EXT_EVENT = "smevent";
+        COOKIES_EXT_EVENT = "smevent";
 
     protected $settings;
     protected $service;
@@ -18,7 +18,7 @@ class ConnectSalesManagoController
 
     public function __construct(Settings $settings)
     {
-        $this->service = new ConnectSalesManagoService($settings);
+        $this->service  = new ConnectSalesManagoService($settings);
         $this->settings = $settings;
     }
 
@@ -27,6 +27,7 @@ class ConnectSalesManagoController
         $period = time() + (3600 * 86400);
         setcookie($name, $value, $period, '/');
     }
+
     public function deleteCookie($name)
     {
         unset($_COOKIE[$name]);
@@ -67,7 +68,7 @@ class ConnectSalesManagoController
     {
         try {
             $eventTypeName = $this->service->checkAccessEventType($type);
-            $responseData = $this->service->contactExtEvent($this->settings, $eventTypeName, $product, $user, $eventId);
+            $responseData  = $this->service->contactExtEvent($this->settings, $eventTypeName, $product, $user, $eventId);
             return $responseData;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();

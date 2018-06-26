@@ -212,7 +212,7 @@ class Settings
 
     public function generateSha()
     {
-        $this->sha = sha1($this->getApiKey().$this->getClientId().$this->getApiSecret());
+        $this->sha = sha1($this->getApiKey() . $this->getClientId() . $this->getApiSecret());
         return $this;
     }
 

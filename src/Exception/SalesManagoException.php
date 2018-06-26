@@ -27,8 +27,8 @@ class SalesManagoException extends \Exception
     {
         $error = array(
             'success' => false,
-            'code' => $this->getCode(),
-            'status' => $this->getStatus(),
+            'code'    => $this->getCode(),
+            'status'  => $this->getStatus(),
             'message' => htmlspecialchars($this->getMessage())
         );
 

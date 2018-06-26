@@ -19,9 +19,9 @@ class CreateAccountController
 
     public function __construct(Settings $settings, CreateInterface $model)
     {
-        $this->service = new CreateAccountService($settings);
+        $this->service  = new CreateAccountService($settings);
         $this->settings = $settings;
-        $this->model = $model;
+        $this->model    = $model;
     }
 
     public function createAccount($user, $modulesId, $modelOptions = array())

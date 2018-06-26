@@ -23,10 +23,10 @@ class CreateAccountService extends AbstractClient implements CreateAccountInterf
     public function createAccount(Settings $settings, $user, $modulesId)
     {
         $data = array_merge($this->__getDefaultApiData($settings), array(
-            'email' => $user['email'],
+            'email'    => $user['email'],
             'password' => $user['password'],
-            'lang' => $user['lang'],
-            'items' => json_encode($this->__getModulesData($modulesId))
+            'lang'     => $user['lang'],
+            'items'    => json_encode($this->__getModulesData($modulesId))
         ));
 
         if (isset($user['tags'])) {

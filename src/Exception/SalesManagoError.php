@@ -69,7 +69,7 @@ class SalesManagoError
             24
         );
 
-        $code = (int) str_replace($errorMessage, $errorCode, trim($message));
+        $code = (int)str_replace($errorMessage, $errorCode, trim($message));
 
         if (!is_int($code)) {
             $code = 9;
@@ -91,7 +91,7 @@ class SalesManagoError
         );
 
         if (in_array($error, $errorCodeCurl)) {
-            $code = (int) str_replace($errorCodeCurl, $errorCode, $error);
+            $code = (int)str_replace($errorCodeCurl, $errorCode, $error);
         } else {
             $code = 9;
         }
@@ -108,7 +108,7 @@ class SalesManagoError
         } elseif ($status >= 500) {
             $code = 9;
         } else {
-            $code = self::resolveErrorCode($message[0]);
+            $code    = self::resolveErrorCode($message[0]);
             $message = trim(implode(' | ', $message));
         }
 

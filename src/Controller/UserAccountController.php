@@ -16,9 +16,9 @@ class UserAccountController
 
     public function __construct(Settings $settings, UserInterface $model)
     {
-        $this->service = new UserAccountService($settings);
+        $this->service  = new UserAccountService($settings);
         $this->settings = $settings;
-        $this->model = $model;
+        $this->model    = $model;
     }
 
     public function refreshToken()
@@ -59,9 +59,10 @@ class UserAccountController
         return $this->setUserCustomProperties($userProperties);
     }
 
-    public function createMonitorVisitorsCode($webPush='')
+    public function createMonitorVisitorsCode($webPush = '')
     {
-        $code = "<script>var _smid ='{$this->settings->getClientId()}';
+        $code
+            = "<script>var _smid ='{$this->settings->getClientId()}';
              (function(w, r, a, sm, s ) {
              w['SalesmanagoObject'] = r; 
              w[r] = w[r] || function () {( w[r].q = w[r].q || [] ).push(arguments)};
@@ -74,7 +75,6 @@ class UserAccountController
 
         return trim(preg_replace('/\s+/', ' ', $code));
     }
-
 
 
     public function getUserCustomProperties()
@@ -100,7 +100,7 @@ class UserAccountController
     public function getUserItems()
     {
         try {
-            $responseData = $this->service->userItems($this->settings);
+            $responseData             = $this->service->userItems($this->settings);
             $responseData['redirect'] = $this->getRedirectApp();
             return $responseData;
         } catch (SalesManagoException $e) {
@@ -120,7 +120,7 @@ class UserAccountController
 
             $products = $this->service->getModules();
 
-            if(in_array($module_name, $products)) {
+            if (in_array($module_name, $products)) {
                 $modulesId = array(
                     0 => array_search($module_name, $products)
                 );
@@ -158,9 +158,9 @@ class UserAccountController
                         array_merge(
                             $properties,
                             array(
-                                'logo' => 'https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png',
+                                'logo'      => 'https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png',
                                 'thanksUrl' => 'https://www.domain.com/target_url',
-                                'email' => $this->settings->getOwner()
+                                'email'     => $this->settings->getOwner()
                             )
                         )
                     );

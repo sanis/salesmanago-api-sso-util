@@ -16,9 +16,14 @@ interface ApiMethodInterface
           METHOD_STATUS_BY_ID = "/api/contact/basicById";
 
     public function contactUpsert(Settings $settings, $user, $options = array(), $properties = array());
+
     public function contactDelete(Settings $settings, $userEmail = '');
+
     public function contactAddNote(Settings $settings, $user);
+
     public function contactExtEvent(Settings $settings, $type, $product, $user, $eventId);
+
     public function getContactByEmail(Settings $settings, $userEmail);
+
     public function getContactById(Settings $settings, $contactId);
 }

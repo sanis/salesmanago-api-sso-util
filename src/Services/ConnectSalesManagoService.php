@@ -41,7 +41,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         ) {
             $user = array_pop($response['contacts']);
             return array(
-                "success" => true,
+                "success"   => true,
                 "contactId" => $user['contactId'],
             );
         } else {
@@ -51,7 +51,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
                     "email" => $userEmail
                 ),
                 array(
-                    "forceOptIn" => false,
+                    "forceOptIn"  => false,
                     "forceOptOut" => true,
                 )
             );
@@ -107,11 +107,11 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             ) {
                 $contactData = array_pop($response['contacts']);
                 if ($contactData['optedOut'] == false) {
-                    $options['forceOptIn'] = true;
+                    $options['forceOptIn']  = true;
                     $options['forceOptOut'] = false;
                 }
             } else {
-                $options['forceOptIn'] = false;
+                $options['forceOptIn']  = false;
                 $options['forceOptOut'] = true;
             }
         }
@@ -119,7 +119,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         $data = array_merge($data, array('contact' => $this->__getContactData($user)));
 
         $tag = array(
-            'tags' => array(),
+            'tags'       => array(),
             'removeTags' => array(),
         );
 
@@ -251,7 +251,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     protected function __getContactEventData($product, $type, $eventId)
     {
         $contactEvent = array(
-            'date' => 1000 * time(),
+            'date'                => 1000 * time(),
             'contactExtEventType' => $type,
         );
 

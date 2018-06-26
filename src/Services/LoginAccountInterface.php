@@ -11,5 +11,6 @@ interface LoginAccountInterface
           METHOD_ACCOUNT_INTEGRATION = "/api/account/integration";
 
     public function accountAuthorize($user);
+
     public function accountIntegrationSettings(Settings $settings);
 }

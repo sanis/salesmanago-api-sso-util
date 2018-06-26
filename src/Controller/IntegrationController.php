@@ -18,32 +18,65 @@ class IntegrationController
 
     public function logout($userProperties = array())
     {
-        $this->model->delete($userProperties);
-    }
+        $status = $this->model->delete($userProperties);
 
-    public function getUserConfig($userProperties = array())
-    {
-        $this->model->getUserConfig($userProperties);
+        $buildResponse = $this->buildResponse();
+        $response = $buildResponse
+            ->addStatus($status)
+            ->build();
+
+        return $response;
     }
 
     public function getAccountUserData($userProperties = array())
     {
-        return $this->model->getAccountUserData($userProperties);
+        $data = $this->model->getAccountUserData($userProperties);
+
+        $buildResponse = $this->buildResponse();
+        $response = $buildResponse
+            ->addStatus(true)
+            ->addArray($data)
+            ->build();
+
+        return $response;
     }
 
     public function setAccountUserData($userProperties = array())
     {
-        return $this->model->setAccountUserData($userProperties);
+        $status = $this->model->setAccountUserData($userProperties);
+
+        $buildResponse = $this->buildResponse();
+        $response = $buildResponse
+            ->addStatus($status)
+            ->build();
+
+        return $response;
     }
 
     public function getPlatformUserData($userProperties = array())
     {
-        return $this->model->getPlatformUserData($userProperties);
+        $data = $this->model->getPlatformUserData($userProperties);
+
+        $buildResponse = $this->buildResponse();
+        $response = $buildResponse
+            ->addStatus(true)
+            ->addArray($data)
+            ->build();
+
+        return $response;
+
     }
 
     public function setPlatformUserData($userProperties = array())
     {
-        return $this->model->setPlatformUserData($userProperties);
+        $status = $this->model->setPlatformUserData($userProperties);
+
+        $buildResponse = $this->buildResponse();
+        $response = $buildResponse
+            ->addStatus($status)
+            ->build();
+
+        return $response;
     }
 
 }

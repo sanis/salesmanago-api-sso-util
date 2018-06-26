@@ -28,11 +28,11 @@ abstract class AbstractClient
     {
         $this->client = new GuzzleClient([
             'base_uri' => $settings->getRequestEndpoint(),
-            'verify' => false,
+            'verify'   => false,
             'timeout'  => 45.0,
             'defaults' => [
                 'headers' => [
-                    'Accept' => 'application/json, application/json',
+                    'Accept'       => 'application/json, application/json',
                     'Content-Type' => 'application/json;charset=UTF-8'
                 ],
             ]
@@ -56,7 +56,7 @@ abstract class AbstractClient
             return json_decode($rawResponse, true);
         } catch (ConnectException $e) {
             $error = $e->getHandlerContext();
-            throw SalesManagoError::handleError($e->getMessage(),0, true, $error['errno']);
+            throw SalesManagoError::handleError($e->getMessage(), 0, true, $error['errno']);
         } catch (ClientException $e) {
             $error = $e->getResponse();
             throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());

@@ -20,9 +20,9 @@ class LoginAccountController
 
     public function __construct(Settings $settings, LoginInterface $model)
     {
-        $this->service = new LoginAccountService($settings);
+        $this->service  = new LoginAccountService($settings);
         $this->settings = $settings;
-        $this->model = $model;
+        $this->model    = $model;
     }
 
     public function loginUser($user, $modelOptions = array())
@@ -104,7 +104,7 @@ class LoginAccountController
         );
 
         $id = $this->model->checkUser($userSettings);
-        if ($id){
+        if ($id) {
             $this->model->update($id, $userSettings);
         } else {
             $this->model->insert($userSettings);
