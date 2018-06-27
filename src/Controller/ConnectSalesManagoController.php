@@ -25,12 +25,18 @@ class ConnectSalesManagoController
     public function createCookie($name, $value)
     {
         $period = time() + (3600 * 86400);
+        $_SESSION[$name] = $value;
         setcookie($name, $value, $period, '/');
     }
 
     public function deleteCookie($name)
     {
         unset($_COOKIE[$name]);
+
+        if (isset($_SESSION[$name])) {
+            unset($_SESSION[$name]);
+        };
+
         setcookie($name, null, -1, '/');
     }
 

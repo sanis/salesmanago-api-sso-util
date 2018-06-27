@@ -370,4 +370,13 @@ class Settings
             self::TOKEN     => $this->getToken()
         ];
     }
+
+    /**
+     * @param  array $params
+     * @return int
+     */
+    public function count($params)
+    {
+        return !is_null($params) && is_array($params) ? count($params) : 0;
+    }
 }

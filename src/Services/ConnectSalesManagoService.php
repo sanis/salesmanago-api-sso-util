@@ -123,11 +123,11 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             'removeTags' => array(),
         );
 
-        if (count($settings->getTags()) > 0) {
+        if ($settings->count($settings->getTags()) > 0) {
             $tag['tags'] = $settings->getTags();
         }
 
-        if (count($settings->getRemoveTags()) > 0) {
+        if ($settings->count($settings->getRemoveTags()) > 0) {
             $tag['removeTags'] = $settings->getRemoveTags();
         }
 

@@ -47,15 +47,15 @@ class CreateAccountService extends AbstractClient implements CreateAccountInterf
     {
         $data = $this->__getDefaultApiData($settings);
 
-        if (count($settings->getTags()) > 0) {
+        if ($settings->count($settings->getTags()) > 0) {
             $tag['tags'] = $settings->getTags();
         }
 
-        if (count($settings->getRemoveTags()) > 0) {
+        if ($settings->count($settings->getRemoveTags()) > 0) {
             $tag['removeTags'] = $settings->getRemoveTags();
         }
 
-        if (count($settings->getProperties()) > 0) {
+        if ($settings->count($settings->getProperties()) > 0) {
             $tag['properties'] = $settings->getProperties();
         }
 
