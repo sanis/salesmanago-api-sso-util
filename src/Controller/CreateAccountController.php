@@ -41,6 +41,8 @@ class CreateAccountController
             UserProvider::createSettingsContainer(UserProvider::USER_NAME, $userData);
             $settings = UserProvider::getSettingsContainer(UserProvider::USER_NAME);
 
+            $modelOptions['lang'] = $user['lang'];
+
             $this->model->insert(
                 UserProvider::mergeConfig(
                     $settings,
