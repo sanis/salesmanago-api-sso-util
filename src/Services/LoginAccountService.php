@@ -63,7 +63,7 @@ class LoginAccountService extends AbstractClient implements LoginAccountInterfac
         if (isset($response["properties"])) {
             $response["properties"] = json_decode($response["properties"], true);
         }
-        return $this->validateResponse($response);
+        return $response;
     }
 
     /**
