@@ -50,6 +50,16 @@ class ConnectSalesManagoController
         }
     }
 
+    public function contactSubscriber($user, $options)
+    {
+        try {
+            $responseData = $this->service->contactSubscriber($this->settings, $user, $options);
+            return $responseData;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
+
     public function contactDelete($userEmail)
     {
         try {

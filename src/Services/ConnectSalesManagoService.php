@@ -20,7 +20,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
     /**
      * @throws SalesManagoException
-     * @var Settings $settings
+     * @param Settings $settings
      * @param string $userEmail
      * @return array
      */
@@ -60,7 +60,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
     /**
      * @throws SalesManagoException
-     * @var Settings $settings
+     * @param Settings $settings
      * @param string $contactId
      * @return array
      */
@@ -86,7 +86,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
     /**
      * @throws SalesManagoException
-     * @var Settings $settings
+     * @param Settings $settings
      * @param array $user
      * @param array $options
      * @param array $properties
@@ -165,7 +165,34 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
     /**
      * @throws SalesManagoException
-     * @var Settings $settings
+     * @param Settings $settings
+     * @param array $user
+     * @param array $options
+     * @return array
+     */
+    public function contactSubscriber(Settings $settings, $user, $options)
+    {
+        if(isset($options['tags'])) {
+            $options['tags'] = $this->__prepareTags($options['tags']);
+        }
+
+        if(isset($options['removeTags'])) {
+            $options['removeTags'] = $this->__prepareTags($options['removeTags']);
+        }
+
+        $data = array_merge(
+            $this->__getDefaultApiData($settings),
+            array('contact' => $this->__getContactData($user)),
+            $options
+        );
+
+        $response = $this->request(self::METHOD_POST, self::METHOD_UPSERT, $this->filterData($data));
+        return $this->validateCustomResponse($response, array(array_key_exists('contactId', $response)));
+    }
+
+    /**
+     * @throws SalesManagoException
+     * @param Settings $settings
      * @param string $userEmail
      * @return array
      */
@@ -181,7 +208,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
     /**
      * @throws SalesManagoException
-     * @var Settings $settings
+     * @param Settings $settings
      * @param array $user
      * @return array
      */
@@ -204,7 +231,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
     /**
      * @throws SalesManagoException
-     * @var Settings $settings
+     * @param Settings $settings
      * @param string $type
      * @param array $product
      * @param array $user
