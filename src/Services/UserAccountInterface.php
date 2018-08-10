@@ -20,9 +20,13 @@ interface UserAccountInterface
           REFRESH_TOKEN = "/api/authorization/refreshToken",
 
           METHOD_BATCH_UPSERT = "/api/contact/batchupsert",
-          METHOD_BATCH_ADD_EXT_EVENT = "/api/contact/batchAddContactExtEvent";
+          METHOD_BATCH_ADD_EXT_EVENT = "/api/contact/batchAddContactExtEvent",
+
+          METHOD_ACCOUNT_TYPE = "/api/account/accountTypeWithContacts";
 
     public function exportContacts(Settings $settings, $upsertDetails);
 
     public function exportContactExtEvents(Settings $settings, $events);
+
+    public function getAccountTypeWithContacts($userData);
 }

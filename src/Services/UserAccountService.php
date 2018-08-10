@@ -406,4 +406,15 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         $response = $this->request(self::METHOD_POST, self::METHOD_BATCH_ADD_EXT_EVENT, $data);
         return $this->validateResponse($response);
     }
+
+    /**
+     * @param array $userData
+     * @return array
+     * @throws SalesManagoException
+     */
+    public function getAccountTypeWithContacts($userData)
+    {
+        $response = $this->request(self::METHOD_POST, self::METHOD_ACCOUNT_TYPE, $userData);
+        return $this->validateResponse($response);
+    }
 }

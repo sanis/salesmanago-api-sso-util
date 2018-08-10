@@ -11,4 +11,5 @@ interface UserInterface
 
     public function setCustomProperties($userProperties);
 
+    public function getDataForAccountType($userProperties);
 }

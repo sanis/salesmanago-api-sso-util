@@ -214,4 +214,15 @@ class UserAccountController
             return $e->getSalesManagoMessage();
         }
     }
+
+    public function getAccountTypeWithContacts($userProperties = array())
+    {
+        $data = $this->model->getDataForAccountType($userProperties);
+        try {
+            $response = $this->service->getAccountTypeWithContacts($data);
+            return $response;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
 }
