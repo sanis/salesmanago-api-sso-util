@@ -12,6 +12,7 @@ interface UserAccountInterface
           METHOD_CREATE_WEB_PUSH_CONSENT = "/api/wm/createWebPushConsentForm",
           METHOD_CREATE_WEB_PUSH_NOTIFICATION = "/api/wm/createWebPushNotification",
           METHOD_CREATE_WEB_PUSH_CONSENT_AND_NOTIFICATION = "/api/wm/createWebPushConsentFormAndNotification",
+          METHOD_ITEM_ACTION = "/api/wm/itemAction",
 
           METHOD_ADD_SUBSCRIBE_PRODUCTS = "/api/appstore/subscribeProducts",
           METHOD_ACCOUNT_ITEMS = "/api/account/items",
@@ -29,4 +30,6 @@ interface UserAccountInterface
     public function exportContactExtEvents(Settings $settings, $events);
 
     public function getAccountTypeWithContacts($userData);
+
+    public function itemAction(Settings $settings, $userData);
 }

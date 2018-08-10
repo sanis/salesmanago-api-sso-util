@@ -225,4 +225,14 @@ class UserAccountController
             return $e->getSalesManagoMessage();
         }
     }
+
+    public function itemAction($itemData)
+    {
+        try {
+            $response = $this->service->itemAction($this->settings, $itemData);
+            return $response;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
 }

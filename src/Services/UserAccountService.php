@@ -417,4 +417,18 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         $response = $this->request(self::METHOD_POST, self::METHOD_ACCOUNT_TYPE, $userData);
         return $this->validateResponse($response);
     }
+
+    /**
+     * @param Settings $settings
+     * @param array $itemData
+     * @return array
+     * @throws SalesManagoException
+     */
+    public function itemAction(Settings $settings, $itemData)
+    {
+        $data = array_merge($this->__getDefaultApiData($settings), $itemData);
+
+        $response = $this->request(self::METHOD_POST, self::METHOD_ITEM_ACTION, $data);
+        return $this->validateResponse($response);
+    }
 }
