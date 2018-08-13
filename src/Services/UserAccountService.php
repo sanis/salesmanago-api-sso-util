@@ -391,4 +391,21 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         $response = $this->request(self::METHOD_POST, self::METHOD_ITEM_ACTION, $data);
         return $this->validateResponse($response);
     }
+
+    /**
+     * @param array $userData
+     * @return array
+     * @throws SalesManagoException
+     */
+    public function consentFormCode($userData)
+    {
+        $response = $this->request(
+            self::METHOD_POST,
+            self::METHOD_CONSENT_FORM_CODE,
+            array(
+                'token'       => $userData['token'],
+                'wizardIntId' => $userData['id']
+            ));
+        return $this->validateResponse($response);
+    }
 }

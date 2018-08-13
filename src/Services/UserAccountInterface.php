@@ -10,6 +10,7 @@ interface UserAccountInterface
     const METHOD_CREATE_LIVE_CHAT = "/api/wm/createLiveChat",
           METHOD_CREATE_BASIC_POPUP = "/api/wm/createBasicPopup",
           METHOD_CREATE_WEB_PUSH_CONSENT_FORM = "/api/wm/createWebPushConsentForm",
+          METHOD_CONSENT_FORM_CODE = "/api/wm/consentFormCode",
           METHOD_ITEM_ACTION = "/api/wm/itemAction",
 
           METHOD_ADD_SUBSCRIBE_PRODUCTS = "/api/appstore/subscribeProducts",
@@ -30,4 +31,6 @@ interface UserAccountInterface
     public function getAccountTypeWithContacts($userData);
 
     public function itemAction(Settings $settings, $userData);
+
+    public function consentFormCode($userData);
 }

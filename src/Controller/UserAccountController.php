@@ -235,4 +235,14 @@ class UserAccountController
             return $e->getSalesManagoMessage();
         }
     }
+
+    public function getConsentFormCode($userData)
+    {
+        try {
+            $response = $this->service->consentFormCode($userData);
+            return $response;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
 }
