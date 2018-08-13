@@ -13,11 +13,11 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         $this->setClient($settings);
     }
 
-    protected function __getLiveChatData($options)
+    protected function __getLiveChatData($name, $options)
     {
         $data = array(
             'chat' => array(
-                'name'              => 'SSO Live Chat' . date(' Y-m-d H:i:s', time()),
+                'name'              => $name,
                 "defaultConsultant" => array(
                     "name"   => $options['consultant'],
                     "avatar" => array(
@@ -41,7 +41,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         return $data;
     }
 
-    protected function __getBasicPopupData($options)
+    protected function __getBasicPopupData($name, $options)
     {
         $data = array(
             'popup' => array(
@@ -148,7 +148,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                     'confirmationEmailAccount' => array(
                         'email' => $options['email']
                     ),
-                    'popupName'                => 'Popup API' . date(' Y-m-d H:i:s', time()),
+                    'popupName'                => $name,
                     'subscribedTag'            => 'moj-popup-zapis',
                     'confirmedTag'             => 'moj-popup-potwierdzenie',
                     'hideOnMobileDevices'      => false,
@@ -173,11 +173,11 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         return $data;
     }
 
-    protected function __getWebPushConsentData($options)
+    protected function __getWebPushConsentData($name, $options)
     {
         $data = array(
             "webPushConsentForm" => array(
-                "name"            => $options['title'] . date(' Y-m-d H:i:s', time()),
+                "name"            => $name,
                 "tags"            => [],
                 "consentForm"     => array(
                     "title"      => $options['title'],
@@ -196,41 +196,6 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                 "consentFormSize" => "MEDIUM",
                 "marginTop"       => 0,
                 "active"          => true
-            )
-        );
-        return $data;
-    }
-
-    protected function __getWebPushNotificationData($options)
-    {
-        $data = array(
-            "webPushNotification" => array(
-                "name"                 => "Web Push 2017-11-15 16:08:24",
-                "webPushNotification"  => array(
-                    "title"     => "Witaj!",
-                    "body"      => "Mamy coś specjalnie dla Ciebie. Odwiedź naszą stronę.",
-                    "imgUrl"    => "https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png",
-                    "targetUrl" => "https://www.domain.com/target_url"
-                ),
-                "richWebPush"          => array(
-                    "title"     => null,
-                    "body"      => null,
-                    "iconUrl"   => null,
-                    "targetUrl" => null,
-                    "imageUrl"  => null
-                ),
-                "receivers"            => ".AllContacts",
-                "sendingDate"          => 1510704000000,
-                "selectedConsentForms" => [123],
-                "ttl"                  => array(
-                    "timestamp" => "WEEKS",
-                    "value"     => 2419200
-                ),
-                "tags"                 => [],
-                "excludedTags"         => [],
-                "webPushType"          => "WEB_PUSH",
-                "active"               => true,
-                "showWebPush"          => true
             )
         );
         return $data;
@@ -292,22 +257,16 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
     {
         switch ($method) {
             case self::METHOD_CREATE_LIVE_CHAT:
-                $productProperties = $this->__getLiveChatData($options);
+                $name = 'SSO Live Chat' . date(' Y-m-d H:i:s', time());
+                $productProperties = $this->__getLiveChatData($name, $options);
                 break;
             case self::METHOD_CREATE_BASIC_POPUP:
-                $productProperties = $this->__getBasicPopupData($options);
+                $name = 'SSO Popup' . date(' Y-m-d H:i:s', time());
+                $productProperties = $this->__getBasicPopupData($name, $options);
                 break;
-            case self::METHOD_CREATE_WEB_PUSH_CONSENT:
-                $productProperties = $this->__getWebPushConsentData($options);
-                break;
-            case self::METHOD_CREATE_WEB_PUSH_NOTIFICATION:
-                $productProperties = $this->__getWebPushNotificationData($options);
-                break;
-            case self::METHOD_CREATE_WEB_PUSH_CONSENT_AND_NOTIFICATION:
-                $productProperties = array_merge(
-                    $this->__getWebPushConsentData($options),
-                    $this->__getWebPushNotificationData($options)
-                );
+            case self::METHOD_CREATE_WEB_PUSH_CONSENT_FORM:
+                $name = 'SSO ' . $options['title'] . date(' Y-m-d H:i:s', time());
+                $productProperties = $this->__getWebPushConsentData($name, $options);
                 break;
             default:
                 throw new SalesManagoException('Unsupported data source type', 13);
@@ -319,6 +278,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         );
 
         $response = $this->request(self::METHOD_POST, $method, $data);
+        $response['name'] = $name;
         return $this->validateResponse($response);
     }
 

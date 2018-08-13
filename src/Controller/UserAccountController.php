@@ -154,7 +154,7 @@ class UserAccountController
                 case "WEB_PUSH":
                     $response = $this->service->createProduct(
                         $this->settings,
-                        UserAccountService::METHOD_CREATE_WEB_PUSH_CONSENT,
+                        UserAccountService::METHOD_CREATE_WEB_PUSH_CONSENT_FORM,
                         array_merge(
                             $properties,
                             array(
