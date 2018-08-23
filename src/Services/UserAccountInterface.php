@@ -22,7 +22,8 @@ interface UserAccountInterface
           METHOD_BATCH_UPSERT = "/api/contact/batchupsert",
           METHOD_BATCH_ADD_EXT_EVENT = "/api/contact/batchAddContactExtEvent",
 
-          METHOD_ACCOUNT_TYPE = "/api/account/accountTypeWithContacts";
+          METHOD_ACCOUNT_TYPE = "/api/account/accountTypeWithContacts",
+          METHOD_UPLOAD_IMAGE = "/api/wm/uploadImage.json";
 
     public function exportContacts(Settings $settings, $upsertDetails);
 
@@ -33,4 +34,6 @@ interface UserAccountInterface
     public function itemAction(Settings $settings, $userData);
 
     public function consentFormCode($userData);
+
+    public function uploadImage(Settings $settings, $image);
 }

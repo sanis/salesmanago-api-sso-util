@@ -408,4 +408,51 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
             ));
         return $this->validateResponse($response);
     }
+
+    /**
+     * @param Settings $settings
+     * @param $image
+     * @return array
+     * @throws SalesManagoException
+     */
+    public function uploadImage(Settings $settings, $image)
+    {
+        $this->setClient(
+            $settings,
+            array(
+                'Content-Type' => 'multipart/form-data'
+            )
+        );
+
+        $response = $this->requestCustomizable(
+            self::METHOD_POST,
+            self::METHOD_UPLOAD_IMAGE,
+            array(
+                'multipart' => array(
+                    array(
+                        'name'     => 'attachment',
+                        'contents' => fopen($image['tmp_name'], 'r'),
+                        'filename' => $image['name']
+                    ),
+                    array(
+                        'name'     => Settings::CLIENT_ID,
+                        'contents' => $settings->getClientId(),
+                    ),
+                    array(
+                        'name'     => Settings::API_KEY,
+                        'contents' => $settings->getApiKey(),
+                    ),
+                    array(
+                        'name'     => Settings::SHA,
+                        'contents' => $settings->getSha(),
+                    ),
+                    array(
+                        'name'     => Settings::EMAIL,
+                        'contents' => $settings->getOwner(),
+                    )
+                ),
+            )
+        );
+        return $this->validateResponse($response);
+    }
 }

@@ -245,4 +245,14 @@ class UserAccountController
             return $e->getSalesManagoMessage();
         }
     }
+
+    public function uploadImage($image)
+    {
+        try {
+            $response = $this->service->uploadImage($this->settings, $image);
+            return $response;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
 }
