@@ -50,7 +50,10 @@ class CreateAccountController
                 )
             );
 
-            $settings->setTags(($user['lang'] == "PL") ? "SALESMANAGO-R-B2C-SSO_PL" : "SALESMANAGO-R-B2C-SSO_ZG");
+            $settings->setTags(
+                ($user['lang'] == "PL") ? "SALESMANAGO-R-B2C-SSO_PL" : "SALESMANAGO-R-B2C-SSO_ZG",
+                'SSO_' . strtoupper($user['platform'])
+                );
             $this->service->contactToSupport($settings);
 
             $buildResponse = $this->buildResponse();
