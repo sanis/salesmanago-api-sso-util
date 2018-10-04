@@ -84,6 +84,37 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             (isset($options['forceOptOut']) && $options['forceOptOut'] == true);
     }
 
+    public function synchroFromSales($data, $user, $options)
+    {
+        $synchroFromSales = false;
+
+        if (isset($options['synchronizeRule'])
+            && $options['synchronizeRule']
+            && !$options['forceOptIn']
+        ) {
+            $userData = array_merge($data, array('email' => array($user['email'])));
+            $response = $this->request(self::METHOD_POST, self::METHOD_STATUS, $userData);
+
+            if (is_array($response)
+                && array_key_exists('success', $response)
+                && count($response['contacts']) === 1
+                && !(strtotime($options['createdOn']) <= time() - 900)
+            ) {
+                $contactData = array_pop($response['contacts']);
+                if ($contactData['optedOut'] == false) {
+                    $options['forceOptIn'] = true;
+                    $options['forceOptOut'] = false;
+                    $synchroFromSales = true;
+                }
+            }
+        }
+        unset($options['createdOn'], $options['synchronizeRule']);
+        return [
+            "synchroFromSales" => $synchroFromSales,
+            "options"          => $options
+        ];
+    }
+
     /**
      * @throws SalesManagoException
      * @param Settings $settings
@@ -96,8 +127,10 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     {
         $data = $this->__getDefaultApiData($settings);
 
-        if ($this->checkForceOptions($options)) {
+        $upsertSettings = $this->synchroFromSales($data, $user, $options);
+        $options = $upsertSettings['options'];
 
+        if ($this->checkForceOptions($options)) {
             $userData = array_merge($data, array('email' => array($user['email'])));
             $response = $this->request(self::METHOD_POST, self::METHOD_STATUS, $userData);
 
@@ -160,6 +193,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         }
 
         $response = $this->request(self::METHOD_POST, self::METHOD_UPSERT, $this->filterData($data));
+        $response = array_merge($response, array('synchroFromSales' => $upsertSettings['synchroFromSales']));
         return $this->validateCustomResponse($response, array(array_key_exists('contactId', $response)));
     }
 
