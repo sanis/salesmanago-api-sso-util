@@ -90,7 +90,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
      * @param string $email
      * @param array $options
      */
-    public function synchroFromSales($data, $email, &$options)
+    public function synchronizeFromSales($data, $email, &$options)
     {
         $options['synchroFromSales'] = false;
 
@@ -128,7 +128,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     {
         $data = $this->__getDefaultApiData($settings);
 
-        $this->synchroFromSales($data, $user['email'], $options);
+        $this->synchronizeFromSales($data, $user['email'], $options);
 
         $data = array_merge($data, array('contact' => $this->__getContactData($user)));
 
@@ -174,7 +174,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         }
 
         $response = $this->request(self::METHOD_POST, self::METHOD_UPSERT, $this->filterData($data));
-        $response['synchroFromSales'] = $options['synchroFromSales'];
+        $response['synchronizeFromSales'] = $options['synchronizeFromSales'];
         return $this->validateCustomResponse($response, array(array_key_exists('contactId', $response)));
     }
 
