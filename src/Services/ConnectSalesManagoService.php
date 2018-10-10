@@ -9,7 +9,7 @@ use SALESmanago\Exception\SalesManagoException;
 class ConnectSalesManagoService extends AbstractClient implements ApiMethodInterface
 {
     const EVENT_TYPE_CART = "CART",
-          EVENT_TYPE_PURCHASE = "PURCHASE";
+        EVENT_TYPE_PURCHASE = "PURCHASE";
 
     use EventTypeTrait;
 
@@ -41,7 +41,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         ) {
             $user = array_pop($response['contacts']);
             return array(
-                "success"   => true,
+                "success" => true,
                 "contactId" => $user['contactId'],
             );
         } else {
@@ -51,7 +51,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
                     "email" => $userEmail
                 ),
                 array(
-                    "forceOptIn"  => false,
+                    "forceOptIn" => false,
                     "forceOptOut" => true,
                 )
             );
@@ -86,6 +86,38 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
     /**
      * @throws SalesManagoException
+     * @param array $data
+     * @param string $email
+     * @param array $options
+     */
+    public function synchronizeFromSales($data, $email, &$options)
+    {
+        $options['synchroFromSales'] = false;
+
+        if (isset($options['synchronizeRule'])
+            && $options['synchronizeRule']
+            && !$options['forceOptIn']
+        ) {
+            $userData = array_merge($data, array('email' => array($email)));
+            $response = $this->request(self::METHOD_POST, self::METHOD_STATUS, $userData);
+
+            if (is_array($response)
+                && array_key_exists('success', $response)
+                && count($response['contacts']) === 1
+                && !(strtotime($options['createdOn']) <= time() - 900)
+            ) {
+                $contactData = array_pop($response['contacts']);
+                if ($contactData['optedOut'] == false) {
+                    $options['forceOptIn'] = true;
+                    $options['forceOptOut'] = false;
+                    $options['synchroFromSales'] = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * @throws SalesManagoException
      * @param Settings $settings
      * @param array $user
      * @param array $options
@@ -96,30 +128,12 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     {
         $data = $this->__getDefaultApiData($settings);
 
-        if ($this->checkForceOptions($options)) {
-
-            $userData = array_merge($data, array('email' => array($user['email'])));
-            $response = $this->request(self::METHOD_POST, self::METHOD_STATUS, $userData);
-
-            if (is_array($response)
-                && array_key_exists('success', $response)
-                && count($response['contacts']) === 1
-            ) {
-                $contactData = array_pop($response['contacts']);
-                if ($contactData['optedOut'] == false) {
-                    $options['forceOptIn']  = true;
-                    $options['forceOptOut'] = false;
-                }
-            } else {
-                $options['forceOptIn']  = false;
-                $options['forceOptOut'] = true;
-            }
-        }
+        $this->synchronizeFromSales($data, $user['email'], $options);
 
         $data = array_merge($data, array('contact' => $this->__getContactData($user)));
 
         $tag = array(
-            'tags'       => array(),
+            'tags' => array(),
             'removeTags' => array(),
         );
 
@@ -160,6 +174,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         }
 
         $response = $this->request(self::METHOD_POST, self::METHOD_UPSERT, $this->filterData($data));
+        $response['synchronizeFromSales'] = $options['synchronizeFromSales'];
         return $this->validateCustomResponse($response, array(array_key_exists('contactId', $response)));
     }
 
@@ -172,11 +187,11 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
      */
     public function contactSubscriber(Settings $settings, $user, $options)
     {
-        if(isset($options['tags'])) {
+        if (isset($options['tags'])) {
             $options['tags'] = $this->__prepareTags($options['tags']);
         }
 
-        if(isset($options['removeTags'])) {
+        if (isset($options['removeTags'])) {
             $options['removeTags'] = $this->__prepareTags($options['removeTags']);
         }
 
@@ -278,7 +293,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     protected function __getContactEventData($product, $type, $eventId)
     {
         $contactEvent = array(
-            'date'                => 1000 * time(),
+            'date' => 1000 * time(),
             'contactExtEventType' => $type,
         );
 
