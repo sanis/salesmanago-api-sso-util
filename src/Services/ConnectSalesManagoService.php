@@ -92,7 +92,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
      */
     public function synchronizeFromSales($data, $email, &$options)
     {
-        $options['synchroFromSales'] = false;
+        $options['synchronizeFromSales'] = false;
 
         if (isset($options['synchronizeRule'])
             && $options['synchronizeRule']
@@ -110,7 +110,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
                 if ($contactData['optedOut'] == false) {
                     $options['forceOptIn'] = true;
                     $options['forceOptOut'] = false;
-                    $options['synchroFromSales'] = true;
+                    $options['synchronizeFromSales'] = true;
                 }
             }
         }
@@ -174,7 +174,9 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         }
 
         $response = $this->request(self::METHOD_POST, self::METHOD_UPSERT, $this->filterData($data));
-        $response['synchronizeFromSales'] = $options['synchronizeFromSales'];
+        $response['synchronizeFromSales'] = isset($options['synchronizeFromSales'])
+            ? $options['synchronizeFromSales']
+            : false;
         return $this->validateCustomResponse($response, array(array_key_exists('contactId', $response)));
     }
 
