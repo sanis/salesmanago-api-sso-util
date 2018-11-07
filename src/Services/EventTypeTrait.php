@@ -7,7 +7,21 @@ use SALESmanago\Exception\SalesManagoException;
 
 trait EventTypeTrait
 {
-    protected $eventType = array("CART", "PURCHASE", "VISIT", "PHONE_CALL", "OTHER", "RESERVATION", "CANCELLED", "ACTIVATION", "MEETING", "OFFER", "DOWNLOAD", "LOGIN", "TRANSACTION");
+    protected $eventType = array(
+        "CART",
+        "PURCHASE",
+        "VISIT",
+        "PHONE_CALL",
+        "OTHER",
+        "RESERVATION",
+        "CANCELLED",
+        "ACTIVATION",
+        "MEETING",
+        "OFFER",
+        "DOWNLOAD",
+        "LOGIN",
+        "TRANSACTION"
+    );
 
     public function checkAccessEventType($name)
     {

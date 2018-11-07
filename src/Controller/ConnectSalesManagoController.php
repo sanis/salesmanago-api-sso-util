@@ -15,7 +15,6 @@ class ConnectSalesManagoController
     protected $settings;
     protected $service;
 
-
     public function __construct(Settings $settings)
     {
         $this->service  = new ConnectSalesManagoService($settings);
@@ -90,5 +89,4 @@ class ConnectSalesManagoController
             return $e->getSalesManagoMessage();
         }
     }
-
 }

@@ -141,5 +141,4 @@ class UserProvider
     {
         return array_merge(self::getConfig($settings), $extra);
     }
-
 }

@@ -16,9 +16,9 @@ class UserAccountController
 
     public function __construct(Settings $settings, UserInterface $model)
     {
-        $this->service  = new UserAccountService($settings);
+        $this->service = new UserAccountService($settings);
         $this->settings = $settings;
-        $this->model    = $model;
+        $this->model = $model;
     }
 
     public function refreshToken()
@@ -76,7 +76,6 @@ class UserAccountController
         return trim(preg_replace('/\s+/', ' ', $code));
     }
 
-
     public function getUserCustomProperties()
     {
         try {
@@ -100,7 +99,7 @@ class UserAccountController
     public function getUserItems()
     {
         try {
-            $responseData             = $this->service->userItems($this->settings);
+            $responseData = $this->service->userItems($this->settings);
             $responseData['redirect'] = $this->getRedirectApp();
             return $responseData;
         } catch (SalesManagoException $e) {
@@ -250,6 +249,16 @@ class UserAccountController
     {
         try {
             $response = $this->service->uploadImage($this->settings, $image);
+            return $response;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
+
+    public function listUsersByClient()
+    {
+        try {
+            $response = $this->service->listUsersByClient($this->settings);
             return $response;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();

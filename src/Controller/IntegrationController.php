@@ -64,7 +64,6 @@ class IntegrationController
             ->build();
 
         return $response;
-
     }
 
     public function setPlatformUserData($userProperties = array())
@@ -78,5 +77,4 @@ class IntegrationController
 
         return $response;
     }
-
 }
