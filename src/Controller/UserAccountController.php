@@ -16,9 +16,9 @@ class UserAccountController
 
     public function __construct(Settings $settings, UserInterface $model)
     {
-        $this->service = new UserAccountService($settings);
+        $this->service  = new UserAccountService($settings);
         $this->settings = $settings;
-        $this->model = $model;
+        $this->model    = $model;
     }
 
     public function refreshToken()
@@ -116,9 +116,7 @@ class UserAccountController
     public function addSubscribeProducts($module_name)
     {
         try {
-
             $products = $this->service->getModules();
-
             if (in_array($module_name, $products)) {
                 $modulesId = array(
                     0 => array_search($module_name, $products)
