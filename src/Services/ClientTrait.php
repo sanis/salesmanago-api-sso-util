@@ -59,7 +59,6 @@ trait ClientTrait
         return $modules;
     }
 
-
     final public function filterData($data)
     {
         $data = array_map(function ($var) {
@@ -70,7 +69,6 @@ trait ClientTrait
         });
         return $data;
     }
-
 
     /**
      * @throws SalesManagoException

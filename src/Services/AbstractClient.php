@@ -31,8 +31,7 @@ abstract class AbstractClient
             'Accept'       => 'application/json',
             'Content-Type' => 'application/json;charset=UTF-8'
         )
-    )
-    {
+    ) {
         $this->client = new GuzzleClient([
             'base_uri' => $settings->getRequestEndpoint(),
             'verify'   => false,
@@ -100,5 +99,4 @@ abstract class AbstractClient
             throw SalesManagoError::handleError($e->getMessage(), $e->getCode());
         }
     }
-
 }

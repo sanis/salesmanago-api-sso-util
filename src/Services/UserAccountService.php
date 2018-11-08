@@ -455,4 +455,16 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         );
         return $this->validateResponse($response);
     }
+
+    /**
+     * @param Settings $settings
+     * @return array
+     * @throws SalesManagoException
+     */
+    public function listUsersByClient(Settings $settings)
+    {
+        $data = $this->__getDefaultApiData($settings);
+        $response = $this->request(self::METHOD_POST, self::METHOD_LIST_USERS, $data);
+        return $this->validateResponse($response);
+    }
 }

@@ -37,7 +37,6 @@ class CreateAccountService extends AbstractClient implements CreateAccountInterf
         return $this->validateResponse($response);
     }
 
-
     /**
      * @throws SalesManagoException
      * @var Settings $settings

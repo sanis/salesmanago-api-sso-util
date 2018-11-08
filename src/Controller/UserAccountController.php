@@ -76,7 +76,6 @@ class UserAccountController
         return trim(preg_replace('/\s+/', ' ', $code));
     }
 
-
     public function getUserCustomProperties()
     {
         try {
@@ -100,7 +99,7 @@ class UserAccountController
     public function getUserItems()
     {
         try {
-            $responseData             = $this->service->userItems($this->settings);
+            $responseData = $this->service->userItems($this->settings);
             $responseData['redirect'] = $this->getRedirectApp();
             return $responseData;
         } catch (SalesManagoException $e) {
@@ -117,9 +116,7 @@ class UserAccountController
     public function addSubscribeProducts($module_name)
     {
         try {
-
             $products = $this->service->getModules();
-
             if (in_array($module_name, $products)) {
                 $modulesId = array(
                     0 => array_search($module_name, $products)
@@ -250,6 +247,16 @@ class UserAccountController
     {
         try {
             $response = $this->service->uploadImage($this->settings, $image);
+            return $response;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
+
+    public function listUsersByClient()
+    {
+        try {
+            $response = $this->service->listUsersByClient($this->settings);
             return $response;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
