@@ -21,9 +21,12 @@ class ConnectSalesManagoController
         $this->settings = $settings;
     }
 
-    public function createCookie($name, $value)
+    public function createCookie($name, $value, $period = null)
     {
-        $period = time() + (3600 * 86400);
+        $period = ($period == null)
+            ? time() + (3600 * 86400)
+            : $period;
+
         $_SESSION[$name] = $value;
         setcookie($name, $value, $period, '/');
     }
