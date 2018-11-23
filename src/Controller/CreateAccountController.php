@@ -51,9 +51,13 @@ class CreateAccountController
             );
 
             $settings->setTags(
-                ($user['lang'] == "PL") ? "SALESMANAGO-R-B2C-SSO_PL" : "SALESMANAGO-R-B2C-SSO_ZG",
-                'SSO_' . strtoupper($user['platform'])
+                implode(',', array(
+                    'SM-REGISTER',
+                    'SSO_' . str_replace("-","", strtoupper($user['platform'])),
+                    ($user['lang'] == "PL") ? "SALESMANAGO-R-B2C-PRO_PL,SALESMANAGO-R_PL" : "SALESMANAGO-R-B2C-PRO_EN,SALESMANAGO-R_ENG"
+                    ))
                 );
+            $settings->setConsentDetails($user['consentDetails']);
             $this->service->contactToSupport($settings);
 
             $buildResponse = $this->buildResponse();

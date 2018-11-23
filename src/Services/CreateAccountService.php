@@ -44,18 +44,18 @@ class CreateAccountService extends AbstractClient implements CreateAccountInterf
      */
     public function contactToSupport(Settings $settings)
     {
-        $data = $this->__getDefaultApiData($settings);
+        $data = array_merge($this->__getDefaultApiData($settings), array('consentDetails' => $settings->getConsentDetails()));
 
         if ($settings->count($settings->getTags()) > 0) {
-            $tag['tags'] = $settings->getTags();
+            $data['tags'] = $settings->getTags();
         }
 
         if ($settings->count($settings->getRemoveTags()) > 0) {
-            $tag['removeTags'] = $settings->getRemoveTags();
+            $data['removeTags'] = $settings->getRemoveTags();
         }
 
         if ($settings->count($settings->getProperties()) > 0) {
-            $tag['properties'] = $settings->getProperties();
+            $data['properties'] = $settings->getProperties();
         }
 
         $response = $this->request(self::METHOD_POST, self::METHOD_CONTACT_SUPPORT, $data);
