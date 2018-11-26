@@ -12,5 +12,5 @@ interface CreateAccountInterface
 
     public function createAccount(Settings $settings, $user, $modulesId);
 
-    public function contactToSupport(Settings $settings);
+    public function contactToSupport(Settings $settings, $userDetails);
 }

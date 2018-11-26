@@ -24,6 +24,20 @@ class CreateAccountController
         $this->model    = $model;
     }
 
+    /**
+     * @param $consentArray
+     * @return array
+     */
+    protected function createConsentSchema($consentArray)
+    {
+        $ip = $this->settings->getUserIP();
+        foreach ($consentArray as $key => &$value) {
+            $value['ip'] = $ip;
+        }
+
+        return $consentArray;
+    }
+
     public function createAccount($user, $modulesId, $modelOptions = array())
     {
         try {
@@ -54,11 +68,22 @@ class CreateAccountController
                 implode(',', array(
                     'SM-REGISTER',
                     'SSO_' . str_replace("-","", strtoupper($user['platform'])),
-                    ($user['lang'] == "PL") ? "SALESMANAGO-R-B2C-PRO_PL,SALESMANAGO-R_PL" : "SALESMANAGO-R-B2C-PRO_EN,SALESMANAGO-R_ENG"
+                    ($user['lang'] == "PL") ? "SALESMANAGO-R-B2C-PRO_PL,SALESMANAGO-R_PL" : "SALESMANAGO-R-B2C-PRO_EN,SALESMANAGO-R_ENG",
                     ))
                 );
-            $settings->setConsentDetails($user['consentDetails']);
-            $this->service->contactToSupport($settings);
+
+            $settings->setProperties(array(
+                'website' => $user['website'],
+            ));
+
+            $this->service->contactToSupport(
+                $settings,
+                array(
+                   'name' => $user['name'],
+                   'phone' => $user['phone'],
+                   'consentDetails' => $this->createConsentSchema($user['consentDetails']),
+                )
+            );
 
             $buildResponse = $this->buildResponse();
             $buildResponse

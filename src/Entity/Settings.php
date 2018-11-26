@@ -385,7 +385,7 @@ class Settings
         return !is_null($params) && is_array($params) ? count($params) : 0;
     }
 
-    protected function getUserIP() {
+    public function getUserIP() {
         $ip = '';
         if (isset($_SERVER['HTTP_CLIENT_IP']))
             $ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -410,26 +410,5 @@ class Settings
         }
 
         return $ip;
-    }
-
-    /**
-     * @param array $consentArray
-     */
-    public function setConsentDetails($consentArray)
-    {
-        $ip = $this->getUserIP();
-        foreach ($consentArray as $key => &$value) {
-            $value['ip'] = $ip;
-        }
-
-        $this->consentDetails = $consentArray;
-    }
-
-    /**
-     * @return array $consentArray
-     */
-    public function getConsentDetails()
-    {
-        return $this->consentDetails;
     }
 }

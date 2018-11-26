@@ -38,13 +38,14 @@ class CreateAccountService extends AbstractClient implements CreateAccountInterf
     }
 
     /**
-     * @throws SalesManagoException
-     * @var Settings $settings
+     * @param Settings $settings
+     * @param array $userDetails
      * @return array
+     * @throws SalesManagoException
      */
-    public function contactToSupport(Settings $settings)
+    public function contactToSupport(Settings $settings, $userDetails)
     {
-        $data = array_merge($this->__getDefaultApiData($settings), array('consentDetails' => $settings->getConsentDetails()));
+        $data = array_merge($this->__getDefaultApiData($settings), $userDetails);
 
         if ($settings->count($settings->getTags()) > 0) {
             $data['tags'] = $settings->getTags();
