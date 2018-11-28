@@ -33,6 +33,13 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                     'info'           => '#9c9c9c'
                 ),
                 'active'            => true,
+                'location'          => array(
+                    'domain'     => array($options['domain']),
+                    'filterType' => 'NONE',
+                    'url'        => [''],
+                    'exurl'      => [''],
+                    'mobile'     => true,
+                ),
                 'contactOwner'      => array(
                     'email' => $options['email']
                 )
