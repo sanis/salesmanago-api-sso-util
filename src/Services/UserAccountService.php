@@ -52,12 +52,12 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
     {
         $data = array(
             'popup' => array(
-                'popupType'                => 'NEW_VISITORS_CONTACT_FORM',
-                'contactFormContent'       => array(
+                'popupType'               => 'NEW_VISITORS_CONTACT_FORM',
+                'contactFormContent'      => array(
                     'image' =>
                         array(
                             'fileName' => 'logo.png',
-                            'url'      => 'https://s3-eu-west-1.amazonaws.com/salesmanagoimg/0inieufi69duje4c/anvpxf3d6h1bdz7w/m32izi3c5cfr1fio.png',
+                            'url'      => $options['logo'],
                             'cssClass' => 'fa-envelope',
                         ),
 
@@ -158,46 +158,45 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                             'backgroundColor' => $options['color']['additionalFont'],
                         ),
                 ),
-                "thankYouPageContent"      => array(
-                    "image"           => array(
-                        "fileName"  => "obraz-domyślny.png",
-                        "url"       => "https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png",
-                        "cssClass " => "fa-envelope"
+                'thankYouPageContent'     => array(
+                    'image'           => array(
+                        'fileName' => 'logo.png',
+                        'url'      => $options['logo'],
+                        'cssClass' => 'fa-envelope',
                     ),
-                    "message"         => array(
-                        "text"      => $options['thankYouPage'],
-                        "fontColor" => "#333333",
-                        "align"     => "left"
+                    'message'         => array(
+                        'text'      => $options['thankYouPage'],
+                        'fontColor' => '#333333',
+                        'align'     => 'left'
                     ),
-                    "backgroundColor" => "#EBEBEB"
+                    'backgroundColor' => ''#EBEBEB'
                 ),
-                "confirmationPageContent " => array(
-                    "image"           => array(
-                        "fileName" => "obraz-domyślny.png",
-                        "url"      => "https => //s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png",
-                        "cssClass" => "fa-envelope"
+                'confirmationPageContent' => array(
+                    'image'           => array(
+                        'fileName' => 'default.png',
+                        'url'      => 'https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png',
+                        'cssClass' => 'fa-envelope'
                     ),
-                    "subject"         => $options['confirmation']['subject'],
-                    "message"         => array(
-                        "text"      => $options['confirmation']['text'],
-                        "fontColor" => "#333333",
-                        "align"     => "left"
+                    'subject'         => $options['confirmation']['subject'],
+                    'message'         => array(
+                        'text'      => $options['confirmation']['text'],
+                        'fontColor' => '#333333',
+                        'align'     => 'left'
                     ),
-                    "confirmButton"   => array(
-                        "text"            => $options['button']['confirm'],
-                        "borderRadius"    => "5px",
-                        "fontColor"       => $options['color']['mainFont'],
-                        "backgroundColor" => $options['color']['main']
+                    'confirmButton'   => array(
+                        'text'            => $options['button']['confirm'],
+                        'borderRadius'    => '5px',
+                        'backgroundColor' => $options['color']['main'],
+                        'fontColor'       => $options['color']['mainFont']
                     ),
-                    "confirmAction"   => "REDIRECT",
-                    "thankYouMessage" => array(
-                        "text"      => $options['confirmation']['message'],
-                        "fontColor" => null,
-                        "align"     => "left"
+                    'confirmAction'   => 'DEFAULT',
+                    'thankYouMessage' => array(
+                        'text'  => $options['confirmation']['message'],
+                        'align' => 'left'
                     ),
-                    "thankYouUrl"     => 'https://' . $options['domain']
+                    'thankYouUrl'     => ''
                 ),
-                'settings'                 => array(
+                'settings'                => array(
                     'confirmationEmailAccount' => array(
                         'email' => $options['email']
                     ),
@@ -218,8 +217,8 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                         'containedPhrases' => [],
                     ),
                 ),
-                'completedSteps'           => 5,
-                'active'                   => true
+                'completedSteps'          => 5,
+                'active'                  => true
             )
         );
 
