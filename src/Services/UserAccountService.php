@@ -52,8 +52,8 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
     {
         $data = array(
             'popup' => array(
-                'popupType'          => 'NEW_VISITORS_CONTACT_FORM',
-                'contactFormContent' => array(
+                'popupType'                => 'NEW_VISITORS_CONTACT_FORM',
+                'contactFormContent'       => array(
                     'image' =>
                         array(
                             'fileName' => 'logo.png',
@@ -63,27 +63,27 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
 
                     'title'           =>
                         array(
-                            'text'      => 'Pierwszy raz u nas?',
-                            'fontColor' => '#ffffff',
+                            'text'      => $options['title'],
+                            'fontColor' => "#333333",
                         ),
                     'content'         =>
                         array(
-                            'text'      => 'Zostaw kontakt — odezwiemy się.',
-                            'fontColor' => '#ffffff ',
+                            'text'      => $options['content'],
+                            'fontColor' => "#333333",
                             'align '    => 'left ',
                         ),
                     'inputFields'     => array(
                         array(
                             'label'            =>
                                 array(
-                                    'text'      => 'Imię i nazwisko',
-                                    'fontColor' => '#ffffff',
+                                    'text'      => $options['label']['name'],
+                                    'fontColor' => "#333333",
                                 ),
                             'type'             => 'NAME',
                             'customDetailName' => NULL,
                             'placeholder'      =>
                                 array(
-                                    'text'      => 'Jan Kowalski',
+                                    'text'      => $options['placeholder']['name'],
                                     'fontColor' => NULL,
                                 ),
                             'confirmationTag'  => NULL,
@@ -93,14 +93,14 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                         array(
                             'label'            =>
                                 array(
-                                    'text'      => 'Adres e-mail',
-                                    'fontColor' => '#ffffff',
+                                    'text'      => $options['label']['email'],
+                                    'fontColor' => "#333333",
                                 ),
                             'type'             => 'EMAIL',
                             'customDetailName' => NULL,
                             'placeholder'      =>
                                 array(
-                                    'text'      => 'email.address@example.com',
+                                    'text'      => $options['placeholder']['email'],
                                     'fontColor' => NULL,
                                 ),
                             'confirmationTag'  => NULL,
@@ -110,14 +110,14 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                         array(
                             'label'            =>
                                 array(
-                                    'text'      => 'Firma',
-                                    'fontColor' => '#ffffff',
+                                    'text'      => $options['label']['company'],
+                                    'fontColor' => "#333333",
                                 ),
                             'type'             => 'COMPANY',
                             'customDetailName' => NULL,
                             'placeholder'      =>
                                 array(
-                                    'text'      => 'Nazwa Twojej firmy',
+                                    'text'      => $options['placeholder']['company'],
                                     'fontColor' => NULL,
                                 ),
                             'confirmationTag'  => NULL,
@@ -127,14 +127,14 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                         array(
                             'label'            =>
                                 array(
-                                    'text'      => 'Strona WWW',
-                                    'fontColor' => '#ffffff',
+                                    'text'      => $options['label']['website'],
+                                    'fontColor' => "#333333",
                                 ),
                             'type'             => 'WEBSITE',
                             'customDetailName' => NULL,
                             'placeholder'      =>
                                 array(
-                                    'text'      => 'Adres Twojej strony',
+                                    'text'      => $options['placeholder']['website'],
                                     'fontColor' => NULL,
                                 ),
                             'confirmationTag'  => NULL,
@@ -142,22 +142,68 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                             'required'         => false,
                         ),
                     ),
-                    'backgroundColor' => '#5e1212',
+                    'backgroundColor' => '#EBEBEB',
                     'subscribeButton' =>
                         array(
-                            'text'            => 'OK',
+                            'text'            => $options['button']['subscribe'],
                             'borderRadius'    => '5px',
-                            'fontColor'       => '#3b2727',
-                            'backgroundColor' => '#ebebeb',
+                            'fontColor'       => $options['color']['mainFont'],
+                            'backgroundColor' => $options['color']['main'],
+                        ),
+                    'closeButton'     =>
+                        array(
+                            'text'            => $options['button']['close'],
+                            'borderRadius'    => '5px',
+                            'fontColor'       => $options['color']['additional'],
+                            'backgroundColor' => $options['color']['additionalFont'],
                         ),
                 ),
-                'settings'           => array(
+                "thankYouPageContent"      => array(
+                    "image"           => array(
+                        "fileName"  => "obraz-domyślny.png",
+                        "url"       => "https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png",
+                        "cssClass " => "fa-envelope"
+                    ),
+                    "message"         => array(
+                        "text"      => $options['thankYouPage'],
+                        "fontColor" => "#333333",
+                        "align"     => "left"
+                    ),
+                    "backgroundColor" => "#EBEBEB"
+                ),
+                "confirmationPageContent " => array(
+                    "image"           => array(
+                        "fileName" => "obraz-domyślny.png",
+                        "url"      => "https => //s3-eu-west-1.amazonaws.com/salesmanagoimg/ye4vodnswfo6zp75/36m0iryqk4wlt6wu/vi3qhhiwqc485flt.png",
+                        "cssClass" => "fa-envelope"
+                    ),
+                    "subject"         => $options['confirmation']['subject'],
+                    "message"         => array(
+                        "text"      => $options['confirmation']['text'],
+                        "fontColor" => "#333333",
+                        "align"     => "left"
+                    ),
+                    "confirmButton"   => array(
+                        "text"            => $options['button']['confirm'],
+                        "borderRadius"    => "5px",
+                        "fontColor"       => $options['color']['mainFont'],
+                        "backgroundColor" => $options['color']['main']
+                    ),
+                    "confirmAction"   => "REDIRECT",
+                    "thankYouMessage" => array(
+                        "text"      => $options['confirmation']['message'],
+                        "fontColor" => null,
+                        "align"     => "left"
+                    ),
+                    "thankYouUrl"     => 'https://' . $options['domain']
+                ),
+                'settings'                 => array(
                     'confirmationEmailAccount' => array(
                         'email' => $options['email']
                     ),
                     'popupName'                => $name,
-                    'subscribedTag'            => 'moj-popup-zapis',
-                    'confirmedTag'             => 'moj-popup-potwierdzenie',
+                    'subscribedTag'            => $options['subscribedTag'],
+                    'confirmedTag'             => $options['confirmedTag'],
                     'hideOnMobileDevices'      => false,
                     'hideForMonitoredContacts' => false,
                     'displayWhen'              => array(
@@ -172,8 +218,8 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                         'containedPhrases' => [],
                     ),
                 ),
-                'completedSteps'     => 5,
-                'active'             => true
+                'completedSteps'           => 5,
+                'active'                   => true
             )
         );
 
