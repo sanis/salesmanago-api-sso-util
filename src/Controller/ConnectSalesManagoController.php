@@ -52,6 +52,16 @@ class ConnectSalesManagoController
         }
     }
 
+    public function getContactBasic($userEmail)
+    {
+        try {
+            $responseData = $this->service->getContactBasicByEmail($this->settings, $userEmail);
+            return $responseData;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
+
     public function contactSubscriber($user, $options)
     {
         try {

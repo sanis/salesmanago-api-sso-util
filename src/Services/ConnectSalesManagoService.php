@@ -61,6 +61,39 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     /**
      * @throws SalesManagoException
      * @param Settings $settings
+     * @param string $userEmail
+     * @return array
+     */
+    public function getContactBasicByEmail(Settings $settings, $userEmail)
+    {
+        $data = array_merge(
+            $this->__getDefaultApiData($settings),
+            array(
+                'email' => array($userEmail)
+            )
+        );
+
+        $response = $this->request(self::METHOD_POST, self::METHOD_STATUS, $data);
+
+        if (is_array($response)
+            && array_key_exists('success', $response)
+            && count($response['contacts']) === 1
+        ) {
+            $user = array_pop($response['contacts']);
+            return array(
+                "success" => true,
+                "contact" => $user,
+            );
+        } else {
+            return array(
+                "success" => false
+            );
+        }
+    }
+
+    /**
+     * @throws SalesManagoException
+     * @param Settings $settings
      * @param string $contactId
      * @return array
      */
