@@ -21,16 +21,6 @@ class ConnectSalesManagoController
         $this->settings = $settings;
     }
 
-    public function createCookie($name, $value, $period = null)
-    {
-        $period = ($period == null)
-            ? time() + (3600 * 86400)
-            : $period;
-
-        $_SESSION[$name] = $value;
-        setcookie($name, $value, $period, '/');
-    }
-
     public function deleteCookie($name)
     {
         unset($_COOKIE[$name]);
@@ -46,6 +36,16 @@ class ConnectSalesManagoController
     {
         try {
             $responseData = $this->service->contactUpsert($this->settings, $user, $options, $properties);
+            return $responseData;
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
+    }
+
+    public function getContactBasic($userEmail)
+    {
+        try {
+            $responseData = $this->service->getContactBasicByEmail($this->settings, $userEmail);
             return $responseData;
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
