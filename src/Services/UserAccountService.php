@@ -281,11 +281,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
      */
     public function refreshToken(Settings $settings)
     {
-        $data = array(
-            Settings::TOKEN => $settings->getToken()
-        );
-
-        $response = $this->request(self::METHOD_POST, self::REFRESH_TOKEN, $data);
+        $response = $this->request(self::METHOD_POST, self::REFRESH_TOKEN, $this->__getDefaultApiData($settings));
         return $this->validateResponse($response);
     }
 

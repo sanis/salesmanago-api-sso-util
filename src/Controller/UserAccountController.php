@@ -21,36 +21,27 @@ class UserAccountController
         $this->model    = $model;
     }
 
+    /**
+     * @return array
+     * @throws SalesManagoException
+     */
     public function refreshToken()
     {
-        try {
-            $responseData = $this->service->refreshToken($this->settings);
-            return $responseData;
-        } catch (SalesManagoException $e) {
-            return $e->getSalesManagoMessage();
-        }
+        return $this->service->refreshToken($this->settings);
     }
 
     public function getToken($userProperties = array())
     {
-        $data = $this->model->getUserToken($userProperties);
-
-        if (is_array($data)
-            && array_key_exists('success', $data)
-            && $data['success'] == true
-            && $data['refresh'] == true
-        ) {
+        try {
             $responseData = $this->refreshToken();
 
-            if (is_array($responseData)
-                && array_key_exists('success', $responseData)
-                && $responseData['success'] == true
-            ) {
-                $this->model->refreshUserToken($userProperties);
-            }
-        }
+            $userProperties['token'] = $responseData['token'];
+            $this->model->refreshUserToken($userProperties);
 
-        return $data;
+            return $this->model->getUserToken($userProperties);
+        } catch (SalesManagoException $e) {
+            return $e->getSalesManagoMessage();
+        }
     }
 
     public function userIntegration($userProperties)
