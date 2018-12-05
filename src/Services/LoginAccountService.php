@@ -2,12 +2,15 @@
 
 namespace SALESmanago\Services;
 
-use SALESmanago\Exception\SalesManagoException;
 use SALESmanago\Entity\Settings;
+use SALESmanago\Exception\SalesManagoException;
+use SALESmanago\Exception\AccountActiveException;
 
 
 class LoginAccountService extends AbstractClient implements LoginAccountInterface, UserCustomPropertiesInterface
 {
+    const METHOD_LIST_USERS = "/api/user/listByClient";
+
     public function __construct(Settings $settings)
     {
         $this->setClient($settings);
@@ -82,5 +85,21 @@ class LoginAccountService extends AbstractClient implements LoginAccountInterfac
 
         $response = $this->request(self::METHOD_POST, self::METHOD_SET_INTEGRATION_PROPERTIES, $data);
         return $this->validateResponse($response);
+    }
+
+    /**
+     * @param Settings $settings
+     * @return array
+     * @throws AccountActiveException
+     */
+    public function checkIfAccountIsActive(Settings $settings)
+    {
+        try {
+            $response = $this->request(self::METHOD_POST, self::METHOD_LIST_USERS, $this->__getDefaultApiData($settings));
+            return $this->validateResponse($response);
+        } catch (SalesManagoException $e) {
+            $redirect = $settings->getRequestEndpoint() . '/api/authorization/authorize?t=' . $settings->getToken();
+            throw new AccountActiveException('Inactive account', 40, $redirect);
+        }
     }
 }

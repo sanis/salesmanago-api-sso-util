@@ -511,8 +511,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
      */
     public function listUsersByClient(Settings $settings)
     {
-        $data = $this->__getDefaultApiData($settings);
-        $response = $this->request(self::METHOD_POST, self::METHOD_LIST_USERS, $data);
+        $response = $this->request(self::METHOD_POST, self::METHOD_LIST_USERS, $this->__getDefaultApiData($settings));
         return $this->validateResponse($response);
     }
 }

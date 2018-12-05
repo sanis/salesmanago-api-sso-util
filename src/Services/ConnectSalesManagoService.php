@@ -9,7 +9,7 @@ use SALESmanago\Exception\SalesManagoException;
 class ConnectSalesManagoService extends AbstractClient implements ApiMethodInterface
 {
     const EVENT_TYPE_CART = "CART",
-        EVENT_TYPE_PURCHASE = "PURCHASE";
+          EVENT_TYPE_PURCHASE = "PURCHASE";
 
     use EventTypeTrait;
 

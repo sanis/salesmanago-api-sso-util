@@ -4,8 +4,8 @@ namespace SALESmanago\Controller;
 
 use SALESmanago\Entity\Settings;
 use SALESmanago\Services\LoginAccountService;
-use SALESmanago\Exception\SalesManagoError;
 use SALESmanago\Exception\SalesManagoException;
+use SALESmanago\Exception\AccountActiveException;
 use SALESmanago\Model\LoginInterface;
 use SALESmanago\Provider\UserProvider;
 
@@ -30,59 +30,53 @@ class LoginAccountController
         try {
             $responseData = $this->service->accountAuthorize($user);
 
-            if ($responseData['success'] == true) {
+            UserProvider::settingsUserExtend(
+                $this->settings
+                    ->setOwner($user['username'])
+                    ->setDefaultApiKey()
+                    ->setToken($responseData[Settings::TOKEN])
+                    ->setEndpoint($responseData['endpoint'])
+            );
 
-                UserProvider::settingsUserExtend(
-                    $this->settings
-                        ->setOwner($user['username'])
-                        ->setDefaultApiKey()
-                        ->setToken($responseData[Settings::TOKEN])
-                        ->setEndpoint($responseData['endpoint'])
+            $settingsIntegrationData = $this->service->accountIntegrationSettings($this->settings);
+
+            UserProvider::settingsUserExtend(
+                $this->settings
+                    ->setClientId($settingsIntegrationData['shortId'])
+                    ->setSha($settingsIntegrationData['sha1'])
+            );
+
+            $this->service->checkIfAccountIsActive($this->settings);
+
+            $this->updateUserSettings($modelOptions);
+
+            $integration = $this->service->getUserCustomProperties($this->settings);
+
+            $buildResponse = $this->buildResponse();
+
+            $buildResponse
+                ->addStatus(true)
+                ->addField(Settings::TOKEN, $responseData[Settings::TOKEN])
+                ->addField('properties', array('success' => false));
+
+            if ($integration['success'] == true) {
+                $this->updateUserCustomProperties($modelOptions, $integration['properties']);
+
+                $buildResponse->addField(
+                    'properties',
+                    array(
+                        'success' => true,
+                        'lang'    => $integration['properties']['lang'],
+                        'color'   => $integration['properties']['color']
+                    )
                 );
-
-                $settingsIntegrationData = $this->service->accountIntegrationSettings($this->settings);
-
-                if ($responseData['success'] == true) {
-
-                    UserProvider::settingsUserExtend(
-                        $this->settings
-                            ->setClientId($settingsIntegrationData['shortId'])
-                            ->setSha($settingsIntegrationData['sha1'])
-                    );
-
-                    $this->updateUserSettings($modelOptions);
-                } else {
-                    throw SalesManagoError::handleError($settingsIntegrationData['message'], $settingsIntegrationData['status']);
-                }
-
-                $integration = $this->service->getUserCustomProperties($this->settings);
-
-                $buildResponse = $this->buildResponse();
-
-                $buildResponse
-                    ->addStatus(true)
-                    ->addField(Settings::TOKEN, $responseData[Settings::TOKEN])
-                    ->addField('properties', array('success' => false));
-
-                if ($integration['success'] == true) {
-                    $this->updateUserCustomProperties($modelOptions, $integration['properties']);
-
-                    $buildResponse->addField(
-                        'properties',
-                        array(
-                            'success' => true,
-                            'lang'    => $integration['properties']['lang'],
-                            'color'   => $integration['properties']['color']
-                        )
-                    );
-                }
-
-                return $buildResponse->build();
-            } else {
-                throw SalesManagoError::handleError($responseData['message'], $responseData['status']);
             }
+
+            return $buildResponse->build();
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
+        } catch (AccountActiveException $e) {
+            return $e->getExceptionMessage();
         }
     }
 
