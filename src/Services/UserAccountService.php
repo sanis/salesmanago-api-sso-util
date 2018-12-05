@@ -18,11 +18,54 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         $data = array(
             'chat' => array(
                 'name'              => $name,
-                "defaultConsultant" => array(
-                    "name"   => $options['consultant'],
-                    "avatar" => array(
-                        "url" => "https://s3-eu-west-1.amazonaws.com/salesmanago/chat/default_avatar.png"
+                'defaultConsultant' => array(
+                    'name'   => $options['consultant'],
+                    'avatar' => array(
+                        'url' => 'https://s3-eu-west-1.amazonaws.com/salesmanago/chat/default_avatar.png'
                     )
+                ),
+                'inactive'          => array(
+                    'colors' => array(
+                        'main'           => $options['color']['main'],
+                        'mainFont'       => $options['color']['mainFont'],
+                        'additional'     => $options['color']['additional'],
+                        'additionalFont' => $options['color']['additionalFont'],
+                        'background'     => '#ffffff',
+                        'info'           => '#9c9c9c'
+                    ),
+                    'fields' => array(
+                        array(
+                            'label'            => array(
+                                'text'      => 'Imię i nazwisko',
+                                'fontColor' => '#333333'
+                            ),
+                            'type'             => 'NAME',
+                            'customDetailName' => null,
+                            'placeholder'      => array(
+                                'text'      => 'Jan Kowalski',
+                                'fontColor' => null
+                            ),
+                            'confirmationTag'  => null,
+                            'declinedTag'      => null,
+                            'required'         => false
+                        ),
+                        array(
+                            'label'            => array(
+                                'text'      => 'Adres e-mail',
+                                'fontColor' => '#333333'
+                            ),
+                            'type'             => 'EMAIL',
+                            'customDetailName' => null,
+                            'placeholder'      => array(
+                                'text'      => 'email.address@example.com',
+                                'fontColor' => null
+                            ),
+                            'confirmationTag'  => null,
+                            'declinedTag'      => null,
+                            'required'         => false
+                        )
+                    ),
+                    'sendTo' => array($options['email'])
                 ),
                 'colors'            => array(
                     'main'           => $options['color']['main'],
@@ -34,7 +77,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                 ),
                 'active'            => true,
                 'location'          => array(
-                    'domain'     => array($options['domain']),
+                    'domain'     => [''],
                     'filterType' => 'NONE',
                     'url'        => [''],
                     'exurl'      => [''],
@@ -54,22 +97,21 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
             'popup' => array(
                 'popupType'               => 'NEW_VISITORS_CONTACT_FORM',
                 'contactFormContent'      => array(
-                    'image' =>
+                    'image'           =>
                         array(
                             'fileName' => 'logo.png',
                             'url'      => $options['logo'],
                             'cssClass' => 'fa-envelope',
                         ),
-
                     'title'           =>
                         array(
                             'text'      => $options['title'],
-                            'fontColor' => "#333333",
+                            'fontColor' => '#333333',
                         ),
                     'content'         =>
                         array(
                             'text'      => $options['content'],
-                            'fontColor' => "#333333",
+                            'fontColor' => '#333333',
                             'align '    => 'left ',
                         ),
                     'inputFields'     => array(
@@ -77,7 +119,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                             'label'            =>
                                 array(
                                     'text'      => $options['label']['name'],
-                                    'fontColor' => "#333333",
+                                    'fontColor' => '#333333',
                                 ),
                             'type'             => 'NAME',
                             'customDetailName' => NULL,
@@ -94,7 +136,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                             'label'            =>
                                 array(
                                     'text'      => $options['label']['email'],
-                                    'fontColor' => "#333333",
+                                    'fontColor' => '#333333',
                                 ),
                             'type'             => 'EMAIL',
                             'customDetailName' => NULL,
@@ -111,7 +153,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                             'label'            =>
                                 array(
                                     'text'      => $options['label']['company'],
-                                    'fontColor' => "#333333",
+                                    'fontColor' => '#333333',
                                 ),
                             'type'             => 'COMPANY',
                             'customDetailName' => NULL,
@@ -128,7 +170,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
                             'label'            =>
                                 array(
                                     'text'      => $options['label']['website'],
-                                    'fontColor' => "#333333",
+                                    'fontColor' => '#333333',
                                 ),
                             'type'             => 'WEBSITE',
                             'customDetailName' => NULL,
@@ -228,26 +270,26 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
     protected function __getWebPushConsentData($name, $options)
     {
         $data = array(
-            "webPushConsentForm" => array(
-                "name"            => $name,
-                "tags"            => [],
-                "consentForm"     => array(
-                    "title"      => $options['title'],
-                    "body"       => $options['body'],
-                    "imgUrl"     => $options['logo'],
-                    "thanksText" => $options['thanksText'],
-                    "thanksUrl"  => $options['thanksUrl']
+            'webPushConsentForm' => array(
+                'name'            => $name,
+                'tags'            => [],
+                'consentForm'     => array(
+                    'title'      => $options['title'],
+                    'body'       => $options['body'],
+                    'imgUrl'     => $options['logo'],
+                    'thanksText' => $options['thanksText'],
+                    'thanksUrl'  => $options['thanksUrl']
                 ),
-                "buttonSettings"  => array(
-                    "confirmationBackgroundColor" => $options['color']['main'],
-                    "confirmationText"            => $options['confirmationText'],
-                    "confirmationTextColor"       => $options['color']['mainFont'],
-                    "rejectionText"               => $options['rejectionText']
+                'buttonSettings'  => array(
+                    'confirmationBackgroundColor' => $options['color']['main'],
+                    'confirmationText'            => $options['confirmationText'],
+                    'confirmationTextColor'       => $options['color']['mainFont'],
+                    'rejectionText'               => $options['rejectionText']
                 ),
-                "consentFormId"   => null,
-                "consentFormSize" => "MEDIUM",
-                "marginTop"       => 0,
-                "active"          => true
+                'consentFormId'   => null,
+                'consentFormSize' => 'MEDIUM',
+                'marginTop'       => 0,
+                'active'          => true
             )
         );
         return $data;
@@ -359,8 +401,8 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_GET_INTEGRATION_PROPERTIES, $data);
-        if (isset($response["properties"])) {
-            $response["properties"] = json_decode($response["properties"], true);
+        if (isset($response['properties'])) {
+            $response['properties'] = json_decode($response['properties'], true);
         }
         return $this->validateResponse($response);
     }
@@ -376,7 +418,7 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
         $data = array(
             Settings::TOKEN     => $settings->getToken(),
             Settings::CLIENT_ID => $settings->getClientId(),
-            "properties"        => json_encode($properties)
+            'properties'        => json_encode($properties)
         );
 
         $response = $this->request(self::METHOD_POST, self::METHOD_SET_INTEGRATION_PROPERTIES, $data);
