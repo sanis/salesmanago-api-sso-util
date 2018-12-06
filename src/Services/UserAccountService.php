@@ -4,6 +4,7 @@ namespace SALESmanago\Services;
 
 use SALESmanago\Entity\Settings;
 use SALESmanago\Exception\SalesManagoException;
+use SALESmanago\Exception\AccountActiveException;
 
 
 class UserAccountService extends AbstractClient implements UserAccountInterface, UserCustomPropertiesInterface
@@ -317,14 +318,18 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
     }
 
     /**
-     * @throws SalesManagoException
-     * @var Settings $settings
+     * @param Settings $settings
      * @return array
+     * @throws AccountActiveException
      */
     public function refreshToken(Settings $settings)
     {
-        $response = $this->request(self::METHOD_POST, self::REFRESH_TOKEN, $this->__getDefaultApiData($settings));
-        return $this->validateResponse($response);
+        try {
+            $response = $this->request(self::METHOD_POST, self::REFRESH_TOKEN, $this->__getDefaultApiData($settings));
+            return $this->validateResponse($response);
+        } catch (SalesManagoException $e) {
+            throw new AccountActiveException('Inactive account', 40);
+        }
     }
 
     /**

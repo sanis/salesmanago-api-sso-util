@@ -5,6 +5,7 @@ namespace SALESmanago\Controller;
 use SALESmanago\Entity\Settings;
 use SALESmanago\Services\UserAccountService;
 use SALESmanago\Exception\SalesManagoException;
+use SALESmanago\Exception\AccountActiveException;
 use SALESmanago\Model\UserInterface;
 
 
@@ -23,7 +24,7 @@ class UserAccountController
 
     /**
      * @return array
-     * @throws SalesManagoException
+     * @throws AccountActiveException
      */
     public function refreshToken()
     {
@@ -39,8 +40,8 @@ class UserAccountController
             $this->model->refreshUserToken($userProperties);
 
             return $this->model->getUserToken($userProperties);
-        } catch (SalesManagoException $e) {
-            return $e->getSalesManagoMessage();
+        } catch (AccountActiveException $e) {
+            return $e->getExceptionMessage();
         }
     }
 
