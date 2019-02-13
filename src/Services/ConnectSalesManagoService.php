@@ -206,6 +206,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             }
         }
 
+        unset($data['createdOn'], $data['synchronizeRule']);
         $response = $this->request(self::METHOD_POST, self::METHOD_UPSERT, $this->filterData($data));
         $response['synchronizeFromSales'] = isset($options['synchronizeFromSales'])
             ? $options['synchronizeFromSales']
