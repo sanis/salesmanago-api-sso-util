@@ -13,6 +13,8 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
     use EventTypeTrait;
 
+    private $contactBasic;
+
     public function __construct(Settings $settings)
     {
         $this->setClient($settings);
@@ -59,10 +61,9 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
-     * @throws SalesManagoException
      * @param Settings $settings
      * @param string $userEmail
-     * @return array
+     * @return array $contactBasic
      */
     public function getContactBasicByEmail(Settings $settings, $userEmail)
     {
@@ -80,14 +81,16 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             && count($response['contacts']) === 1
         ) {
             $user = array_pop($response['contacts']);
-            return array(
+            $this->contactBasic = array(
                 "success" => true,
                 "contact" => $user,
             );
+            return $this->contactBasic;
         } else {
-            return array(
+            $this->contactBasic = array(
                 "success" => false
             );
+            return $this->contactBasic;
         }
     }
 
@@ -123,7 +126,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
      * @param string $email
      * @param array $options
      */
-    public function synchronizeFromSales($data, $email, &$options)
+    public function synchronizeFromSales($settings, $email, &$options)
     {
         $options['synchronizeFromSales'] = false;
 
@@ -131,19 +134,71 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             && $options['synchronizeRule']
             && !$options['forceOptIn']
         ) {
-            $userData = array_merge($data, array('email' => array($email)));
-            $response = $this->request(self::METHOD_POST, self::METHOD_STATUS, $userData);
+            if (!isset($this->contactBasic)) {
+                $this->getContactBasicByEmail($settings, $email);
+            }
 
-            if (is_array($response)
-                && array_key_exists('success', $response)
-                && count($response['contacts']) === 1
-                && !(strtotime($options['createdOn']) <= time() - 900)
+            if (is_array($this->contactBasic)
+                && array_key_exists('success', $this->contactBasic)
+                && isset($this->contactBasic['contact'])
+                && !(strtotime($this->contactBasic['contact']['createdOn']) <= time() - 900)
             ) {
-                $contactData = array_pop($response['contacts']);
-                if ($contactData['optedOut'] == false) {
+                if ($this->contactBasic['contact']['optedOut'] == false) {
                     $options['forceOptIn'] = true;
                     $options['forceOptOut'] = false;
                     $options['synchronizeFromSales'] = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * use before method synchronizeFromSales
+     * @param object $settings Settings
+     * @param string $email
+     * @param array $options
+     */
+    public function checkApiDoubleOptIn($settings, $email, &$options)
+    {
+        if (isset($options['synchronizeFromSales'])
+            && $options['synchronizeFromSales']
+        ) {
+            if (!isset($options['apiDoubleOptIn'])) {
+                return true;
+            }
+
+            if (!$options['apiDoubleOptIn']) {
+                return true;
+            }
+
+            if (!isset($this->contactBasic)) {
+                $this->getContactBasicByEmail($settings, $email);
+            }
+
+            if ($this->contactBasic['success']) {
+                $contact = $this->contactBasic['contact'];
+            } else {
+                return true;
+            }
+
+            if ($contact['optedOut'] == false
+                && $options['forceOptIn'] == true
+                && $options['forceOptOut'] == false
+            ) {
+                if (isset($options['apiDoubleOptIn'])) {
+                    unset($options['apiDoubleOptIn']);
+                }
+
+                if (isset($options['apiDoubleOptInEmailTemplateId'])) {
+                    unset($options['apiDoubleOptInEmailTemplateId']);
+                }
+
+                if (isset($options['apiDoubleOptInEmailAccountId'])) {
+                    unset($options['apiDoubleOptInEmailAccountId']);
+                }
+
+                if (isset($options['apiDoubleOptInEmailSubject'])) {
+                    unset($options['apiDoubleOptInEmailSubject']);
                 }
             }
         }
@@ -161,6 +216,9 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     {
         $data = $this->__getDefaultApiData($settings);
 
+
+        $this->getContactBasicByEmail($settings, $user['email']);
+        $this->checkApiDoubleOptIn($settings, $user['email'], $options);
         $this->synchronizeFromSales($data, $user['email'], $options);
 
         $data = array_merge($data, array('contact' => $this->__getContactData($user)));
