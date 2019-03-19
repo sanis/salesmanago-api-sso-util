@@ -61,7 +61,6 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
-     * @throws SalesManagoException
      * @param Settings $settings
      * @param string $userEmail
      * @return array $contactBasic
@@ -201,6 +200,21 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
                 if (isset($options['apiDoubleOptInEmailSubject'])) {
                     unset($options['apiDoubleOptInEmailSubject']);
                 }
+            }
+        }
+
+        if (
+            isset($options['apiDoubleOptIn'])
+            && $options['apiDoubleOptIn']
+        ) {
+            $options['forceOptIn'] = false;
+            $options['forceOptOut'] = true;
+
+            if (isset($options['forcePhoneOptIn'])
+                && $options['forcePhoneOptIn']
+            ) {
+                $options['forcePhoneOptIn'] = false;
+                $options['forcePhoneOptOut'] = true;
             }
         }
     }
