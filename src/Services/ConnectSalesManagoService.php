@@ -163,11 +163,11 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         if (isset($options['synchronizeFromSales'])
             && $options['synchronizeFromSales']
         ) {
-            if (!isset($options['apiDoubleOptIn'])) {
+            if (!isset($options['useApiDoubleOptIn'])) {
                 return true;
             }
 
-            if (!$options['apiDoubleOptIn']) {
+            if (!$options['useApiDoubleOptIn']) {
                 return true;
             }
 
@@ -185,8 +185,8 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
                 && $options['forceOptIn'] == true
                 && $options['forceOptOut'] == false
             ) {
-                if (isset($options['apiDoubleOptIn'])) {
-                    unset($options['apiDoubleOptIn']);
+                if (isset($options['useApiDoubleOptIn'])) {
+                    unset($options['useApiDoubleOptIn']);
                 }
 
                 if (isset($options['apiDoubleOptInEmailTemplateId'])) {
@@ -204,8 +204,8 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         }
 
         if (
-            isset($options['apiDoubleOptIn'])
-            && $options['apiDoubleOptIn']
+            isset($options['useApiDoubleOptIn'])
+            && $options['useApiDoubleOptIn']
         ) {
             $options['forceOptIn'] = false;
             $options['forceOptOut'] = true;
