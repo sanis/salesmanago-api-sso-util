@@ -234,7 +234,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
         $this->getContactBasicByEmail($settings, $user['email']);
         $this->checkApiDoubleOptIn($settings, $user['email'], $options);
-        $this->synchronizeFromSales($data, $user['email'], $options);
+        $this->synchronizeFromSales($settings, $user['email'], $options);
 
         $data = array_merge($data, array('contact' => $this->__getContactData($user)));
 
