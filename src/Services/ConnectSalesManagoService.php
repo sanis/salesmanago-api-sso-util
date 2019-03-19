@@ -61,6 +61,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
+     * @throws SalesManagoException
      * @param Settings $settings
      * @param string $userEmail
      * @return array $contactBasic
@@ -121,12 +122,11 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
-     * @throws SalesManagoException
-     * @param array $data
      * @param string $email
      * @param array $options
+     * @param Settings $settings
      */
-    public function synchronizeFromSales($settings, $email, &$options)
+    public function synchronizeFromSales(Settings $settings, $email, &$options)
     {
         $options['synchronizeFromSales'] = false;
 
@@ -154,11 +154,12 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
     /**
      * use before method synchronizeFromSales
-     * @param object $settings Settings
+     * @param Settings $settings
      * @param string $email
      * @param array $options
+     * @return boolean
      */
-    public function checkApiDoubleOptIn($settings, $email, &$options)
+    public function checkApiDoubleOptIn(Settings $settings, $email, &$options)
     {
         if (isset($options['synchronizeFromSales'])
             && $options['synchronizeFromSales']
