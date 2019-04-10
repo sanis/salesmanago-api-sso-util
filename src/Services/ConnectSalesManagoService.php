@@ -140,7 +140,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             if (is_array($this->contactBasic)
                 && array_key_exists('success', $this->contactBasic)
                 && isset($this->contactBasic['contact'])
-                && !(strtotime($this->contactBasic['contact']['createdOn']) <= time() - 900)
+                && !(strtotime($options['createdOn']) <= time() - 900)
             ) {
                 if ($this->contactBasic['contact']['optedOut'] == false) {
                     $options['forceOptIn'] = true;
