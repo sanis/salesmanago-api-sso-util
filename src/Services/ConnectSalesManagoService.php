@@ -380,6 +380,13 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             $method = self::METHOD_ADD_EXT_EVENT;
         }
 
+        /*if create contact - set status to opt out*/
+        if ($type == self::EVENT_TYPE_PURCHASE
+            && !empty($user['email'])
+        ) {
+            $data['forceOptOut'] = true;
+        }
+
         $response = $this->request(self::METHOD_POST, $method, $this->filterData($data));
         return $this->validateCustomResponse($response, array(array_key_exists('eventId', $response)));
     }
