@@ -140,7 +140,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             if (is_array($this->contactBasic)
                 && array_key_exists('success', $this->contactBasic)
                 && isset($this->contactBasic['contact'])
-                && !(strtotime($this->contactBasic['contact']['createdOn']) <= time() - 900)
+                && !(strtotime($options['createdOn']) <= time() - 900)
             ) {
                 if ($this->contactBasic['contact']['optedOut'] == false) {
                     $options['forceOptIn'] = true;
@@ -207,8 +207,8 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             isset($options['useApiDoubleOptIn'])
             && $options['useApiDoubleOptIn']
         ) {
-            $options['forceOptIn'] = false;
-            $options['forceOptOut'] = true;
+            $options['forceOptIn'] = (isset($contact) && isset($contact['optedOut'])) ? !$contact['optedOut'] : false;
+            $options['forceOptOut'] = (isset($contact) && isset($contact['optedOut'])) ? $contact['optedOut'] : true;
 
             if (isset($options['forcePhoneOptIn'])
                 && $options['forcePhoneOptIn']
@@ -279,7 +279,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             }
         }
 
-        unset($data['createdOn'], $data['synchronizeRule']);
+	    unset($data['createdOn'], $data['synchronizeRule'], $data['synchronizeFromSales']);
         $response = $this->request(self::METHOD_POST, self::METHOD_UPSERT, $this->filterData($data));
         $response['synchronizeFromSales'] = isset($options['synchronizeFromSales'])
             ? $options['synchronizeFromSales']
