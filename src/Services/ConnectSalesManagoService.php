@@ -380,6 +380,10 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             $method = self::METHOD_ADD_EXT_EVENT;
         }
 
+        if ($type == self::EVENT_TYPE_PURCHASE && (isset($data['email']) && !empty($data['email']))) {
+            $data = array_merge($data, array('doNotCreateContact' => false, 'forceOptOut' => true));
+        }
+
         $response = $this->request(self::METHOD_POST, $method, $this->filterData($data));
         return $this->validateCustomResponse($response, array(array_key_exists('eventId', $response)));
     }
