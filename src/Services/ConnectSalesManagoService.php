@@ -14,6 +14,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     use EventTypeTrait;
 
     private $contactBasic;
+    private $extEventCreateContact = true;
 
     public function __construct(Settings $settings)
     {
@@ -354,6 +355,17 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
+     * Sets flag for contactExtEvent to create contact with extEvent or not
+     * @param $boolean;
+     * @return object $this;
+    */
+    public function setExtEventCreateContact($boolean)
+    {
+        $this->extEventCreateContact = $boolean;
+        return $this;
+    }
+
+    /**
      * @throws SalesManagoException
      * @param Settings $settings
      * @param string $type
@@ -380,8 +392,15 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             $method = self::METHOD_ADD_EXT_EVENT;
         }
 
-        if ($type == self::EVENT_TYPE_PURCHASE && (isset($data['email']) && !empty($data['email']))) {
-            $data = array_merge($data, array('doNotCreateContact' => false, 'forceOptOut' => true));
+        if ($this->extEventCreateContact
+            && $type == self::EVENT_TYPE_PURCHASE
+            && (isset($data['email']) && !empty($data['email']))
+        ) {
+            $extEventCreate = array(
+                'doNotCreateContact' => false,
+                'forceOptOut' => true
+            );
+            $data = array_merge($data, $extEventCreate);
         }
 
         $response = $this->request(self::METHOD_POST, $method, $this->filterData($data));
