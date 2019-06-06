@@ -397,8 +397,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             && (isset($data['email']) && !empty($data['email']))
         ) {
             $extEventCreate = array(
-                'doNotCreateContact' => false,
-                'forceOptOut' => true
+                'createContact' => true
             );
             $data = array_merge($data, $extEventCreate);
         }
