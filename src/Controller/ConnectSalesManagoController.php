@@ -6,7 +6,6 @@ use SALESmanago\Exception\SalesManagoException;
 use SALESmanago\Services\ConnectSalesManagoService;
 use SALESmanago\Entity\Settings;
 
-
 class ConnectSalesManagoController
 {
     const COOKIES_CLIENT = "smclient",
@@ -101,5 +100,9 @@ class ConnectSalesManagoController
         } catch (SalesManagoException $e) {
             return $e->getSalesManagoMessage();
         }
+    }
+
+    public function setExtEventCreateContact($boolean) {
+        $this->service->setExtEventCreateContact($boolean);
     }
 }
