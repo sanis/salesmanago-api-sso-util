@@ -20,7 +20,9 @@ trait EventTypeTrait
         "OFFER",
         "DOWNLOAD",
         "LOGIN",
-        "TRANSACTION"
+        "TRANSACTION",
+        "CANCELLATION",
+        "RETURN"
     );
 
     public function checkAccessEventType($name)
