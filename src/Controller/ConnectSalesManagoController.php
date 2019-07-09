@@ -101,8 +101,4 @@ class ConnectSalesManagoController
             return $e->getSalesManagoMessage();
         }
     }
-
-    public function setExtEventCreateContact($boolean) {
-        $this->service->setExtEventCreateContact($boolean);
-    }
 }
