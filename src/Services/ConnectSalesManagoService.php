@@ -9,12 +9,11 @@ use SALESmanago\Exception\SalesManagoException;
 class ConnectSalesManagoService extends AbstractClient implements ApiMethodInterface
 {
     const EVENT_TYPE_CART = "CART",
-          EVENT_TYPE_PURCHASE = "PURCHASE";
+        EVENT_TYPE_PURCHASE = "PURCHASE";
 
     use EventTypeTrait;
 
     private $contactBasic;
-    private $extEventCreateContact = true;
 
     public function __construct(Settings $settings)
     {
@@ -22,17 +21,17 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
-     * @throws SalesManagoException
      * @param Settings $settings
      * @param string $userEmail
      * @return array
+     * @throws SalesManagoException
      */
     public function getContactByEmail(Settings $settings, $userEmail)
     {
         $data = array_merge(
             $this->__getDefaultApiData($settings),
             array(
-                'email' => array($userEmail)
+                'email' => array($userEmail),
             )
         );
 
@@ -51,7 +50,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             return $this->contactUpsert(
                 $settings,
                 array(
-                    "email" => $userEmail
+                    "email" => $userEmail,
                 ),
                 array(
                     "forceOptIn" => false,
@@ -71,7 +70,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         $data = array_merge(
             $this->__getDefaultApiData($settings),
             array(
-                'email' => array($userEmail)
+                'email' => array($userEmail),
             )
         );
 
@@ -89,17 +88,17 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             return $this->contactBasic;
         } else {
             $this->contactBasic = array(
-                "success" => false
+                "success" => false,
             );
             return $this->contactBasic;
         }
     }
 
     /**
-     * @throws SalesManagoException
      * @param Settings $settings
      * @param string $contactId
      * @return array
+     * @throws SalesManagoException
      */
     public function getContactById(Settings $settings, $contactId)
     {
@@ -146,6 +145,8 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
                 if ($this->contactBasic['contact']['optedOut'] == false) {
                     $options['forceOptIn'] = true;
                     $options['forceOptOut'] = false;
+                    $options['forcePhoneOptIn'] = true;
+                    $options['forcePhoneOptOut'] = false;
                     $options['synchronizeFromSales'] = true;
                 }
             }
@@ -221,12 +222,12 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
-     * @throws SalesManagoException
      * @param Settings $settings
      * @param array $user
      * @param array $options
      * @param array $properties
      * @return array
+     * @throws SalesManagoException
      */
     public function contactUpsert(Settings $settings, $user, $options = array(), $properties = array())
     {
@@ -280,7 +281,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
             }
         }
 
-	    unset($data['createdOn'], $data['synchronizeRule'], $data['synchronizeFromSales']);
+        unset($data['createdOn'], $data['synchronizeRule'], $data['synchronizeFromSales']);
         $response = $this->request(self::METHOD_POST, self::METHOD_UPSERT, $this->filterData($data));
         $response['synchronizeFromSales'] = isset($options['synchronizeFromSales'])
             ? $options['synchronizeFromSales']
@@ -289,11 +290,11 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
-     * @throws SalesManagoException
      * @param Settings $settings
      * @param array $user
      * @param array $options
      * @return array
+     * @throws SalesManagoException
      */
     public function contactSubscriber(Settings $settings, $user, $options)
     {
@@ -316,10 +317,10 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
-     * @throws SalesManagoException
      * @param Settings $settings
      * @param string $userEmail
      * @return array
+     * @throws SalesManagoException
      */
     public function contactDelete(Settings $settings, $userEmail = '')
     {
@@ -332,10 +333,10 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
-     * @throws SalesManagoException
      * @param Settings $settings
      * @param array $user
      * @return array
+     * @throws SalesManagoException
      */
     public function contactAddNote(Settings $settings, $user)
     {
@@ -355,24 +356,13 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
     }
 
     /**
-     * Sets flag for contactExtEvent to create contact with extEvent or not
-     * @param $boolean;
-     * @return object $this;
-    */
-    public function setExtEventCreateContact($boolean)
-    {
-        $this->extEventCreateContact = $boolean;
-        return $this;
-    }
-
-    /**
-     * @throws SalesManagoException
      * @param Settings $settings
      * @param string $type
      * @param array $product
      * @param array $user
      * @param string $eventId
      * @return array
+     * @throws SalesManagoException
      */
     public function contactExtEvent(Settings $settings, $type, $product, $user, $eventId)
     {
@@ -389,17 +379,7 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
         if (!empty($eventId)) {
             $method = self::METHOD_UPDATE_EXT_EVENT;
         } else {
-            $method = self::METHOD_ADD_EXT_EVENT;
-        }
-
-        if ($this->extEventCreateContact
-            && $type == self::EVENT_TYPE_PURCHASE
-            && (isset($data['email']) && !empty($data['email']))
-        ) {
-            $extEventCreate = array(
-                'createContact' => true
-            );
-            $data = array_merge($data, $extEventCreate);
+            $method = self::METHOD_ADD_EXT_EVENT_V2;
         }
 
         $response = $this->request(self::METHOD_POST, $method, $this->filterData($data));

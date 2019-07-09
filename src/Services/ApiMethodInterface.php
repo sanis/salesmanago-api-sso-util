@@ -12,6 +12,7 @@ interface ApiMethodInterface
           METHOD_ADD_NOTE = "/api/contact/addNote",
           METHOD_ADD_EXT_EVENT = "/api/contact/addContactExtEvent",
           METHOD_UPDATE_EXT_EVENT = "/api/contact/updateContactExtEvent",
+          METHOD_ADD_EXT_EVENT_V2 = "/api/v2/contact/addContactExtEvent",
           METHOD_STATUS = "/api/contact/basic",
           METHOD_STATUS_BY_ID = "/api/contact/basicById";
 
