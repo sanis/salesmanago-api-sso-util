@@ -378,6 +378,8 @@ class ConnectSalesManagoService extends AbstractClient implements ApiMethodInter
 
         if (!empty($eventId)) {
             $method = self::METHOD_UPDATE_EXT_EVENT;
+        } elseif($type == "CART") {
+            $method = self::METHOD_ADD_EXT_EVENT;
         } else {
             $method = self::METHOD_ADD_EXT_EVENT_V2;
         }
