@@ -14,4 +14,9 @@ trait ControllerTrait
     {
         return new Response();
     }
+
+    protected function changeEndpointForEs($endpoint)
+    {
+        return str_replace('.pl', '.es', $endpoint);
+    }
 }
