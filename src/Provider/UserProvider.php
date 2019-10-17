@@ -42,7 +42,7 @@ class UserProvider
         $container::register(self::USER_NAME, function () {
             $settings = new Settings();
             $settings
-                ->setEndpoint("app2.salesmanago.pl");
+                ->setEndpoint("app2.salesmanago.es");
             return $settings;
         });
 
