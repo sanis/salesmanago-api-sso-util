@@ -22,7 +22,7 @@ class UserProvider
     {
         $settingsAccount = new Settings();
         $settingsAccount
-            ->setEndpoint("app2.salesmanago.es")
+            ->setEndpoint("app2.salesmanago.pl")
             ->setClientId("8da75fbd-46bd-4a38-8893-d0219d23e75c")
             ->setApiSecret("52548bb9-ba43-11e7-a157-0cc47a1254ce")
             ->setDefaultApiKey()

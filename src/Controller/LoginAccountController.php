@@ -35,7 +35,7 @@ class LoginAccountController
                     ->setOwner($user['username'])
                     ->setDefaultApiKey()
                     ->setToken($responseData[Settings::TOKEN])
-                    ->setEndpoint($this->changeEndpointForEs($responseData['endpoint']))
+                    ->setEndpoint($responseData['endpoint'])
             );
 
             $settingsIntegrationData = $this->service->accountIntegrationSettings($this->settings);

@@ -2,11 +2,12 @@
 
 namespace SALESmanago\Services;
 
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\ServerException;
+use Lib\GuzzleHttp\Client as GuzzleClient;
+use Lib\GuzzleHttp\Exception\ConnectException;
+use Lib\GuzzleHttp\Exception\ClientException;
+use Lib\GuzzleHttp\Exception\GuzzleException;
+use Lib\GuzzleHttp\Exception\ServerException;
+
 use SALESmanago\Entity\Settings;
 use SALESmanago\Exception\SalesManagoError;
 use SALESmanago\Exception\SalesManagoException;
