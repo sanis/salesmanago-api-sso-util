@@ -1,10 +1,10 @@
 <?php
-namespace GuzzleHttp;
+namespace Lib\GuzzleHttp;
 
-use GuzzleHttp\Handler\CurlHandler;
-use GuzzleHttp\Handler\CurlMultiHandler;
-use GuzzleHttp\Handler\Proxy;
-use GuzzleHttp\Handler\StreamHandler;
+use Lib\GuzzleHttp\Handler\CurlHandler;
+use Lib\GuzzleHttp\Handler\CurlMultiHandler;
+use Lib\GuzzleHttp\Handler\Proxy;
+use Lib\GuzzleHttp\Handler\StreamHandler;
 
 /**
  * Expands a URI template

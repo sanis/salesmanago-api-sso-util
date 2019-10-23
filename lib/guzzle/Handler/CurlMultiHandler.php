@@ -1,5 +1,5 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Lib\GuzzleHttp\Handler;
 
 use GuzzleHttp\Promise as P;
 use GuzzleHttp\Promise\Promise;

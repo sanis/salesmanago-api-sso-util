@@ -1,5 +1,5 @@
 <?php
-namespace GuzzleHttp;
+namespace Lib\GuzzleHttp;
 
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Promise\RejectedPromise;

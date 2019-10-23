@@ -1,12 +1,12 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Lib\GuzzleHttp\Handler;
 
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\ConnectException;
+use Lib\GuzzleHttp\Exception\RequestException;
+use Lib\GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\LazyOpenStream;
-use GuzzleHttp\TransferStats;
+use Lib\GuzzleHttp\TransferStats;
 use Psr\Http\Message\RequestInterface;
 
 /**

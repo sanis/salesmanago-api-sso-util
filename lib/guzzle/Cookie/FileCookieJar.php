@@ -1,5 +1,5 @@
 <?php
-namespace GuzzleHttp\Cookie;
+namespace Lib\GuzzleHttp\Cookie;
 
 /**
  * Persists non-session cookies using a JSON formatted file

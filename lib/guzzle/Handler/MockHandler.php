@@ -1,11 +1,11 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Lib\GuzzleHttp\Handler;
 
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\HandlerStack;
+use Lib\GuzzleHttp\Exception\RequestException;
+use Lib\GuzzleHttp\HandlerStack;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Promise\RejectedPromise;
-use GuzzleHttp\TransferStats;
+use Lib\GuzzleHttp\TransferStats;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 

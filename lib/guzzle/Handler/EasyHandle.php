@@ -1,5 +1,5 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Lib\GuzzleHttp\Handler;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
@@ -50,8 +50,8 @@ final class EasyHandle
 
         // HTTP-version SP status-code SP reason-phrase
         $startLine = explode(' ', array_shift($this->headers), 3);
-        $headers = \GuzzleHttp\headers_from_lines($this->headers);
-        $normalizedKeys = \GuzzleHttp\normalize_header_keys($headers);
+        $headers = \Lib\GuzzleHttp\headers_from_lines($this->headers);
+        $normalizedKeys = \Lib\GuzzleHttp\normalize_header_keys($headers);
 
         if (!empty($this->options['decode_content'])
             && isset($normalizedKeys['content-encoding'])

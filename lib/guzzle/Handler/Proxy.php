@@ -1,7 +1,7 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Lib\GuzzleHttp\Handler;
 
-use GuzzleHttp\RequestOptions;
+use Lib\GuzzleHttp\RequestOptions;
 use Psr\Http\Message\RequestInterface;
 
 /**
