@@ -9,12 +9,17 @@
     ],
     "require": {
         "php": ">=5.5",
-        "guzzlehttp/guzzle": "^6.3",
-        "ext-json": "*"
+        "ext-json": "*",
+        "guzzlehttp/promises": "^1.0",
+        "guzzlehttp/psr7": "^1.4"
     },
     "autoload": {
         "psr-4": {
-            "SALESmanago\\": ["src/"]
-        }
+            "SALESmanago\\": ["src/"],
+            "Lib\\GuzzleHttp\\": ["lib/guzzle"]
+        },
+        "files": [
+            "lib/guzzle/functions_include.php"
+        ]
     }
 }
