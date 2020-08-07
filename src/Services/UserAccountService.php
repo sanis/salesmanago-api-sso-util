@@ -442,6 +442,8 @@ class UserAccountService extends AbstractClient implements UserAccountInterface,
             'upsertDetails' => $upsertDetails,
         ));
 
+        $data = array_merge($data, ['useApiDoubleOptIn' => false]);
+
         $response = $this->request(self::METHOD_POST, self::METHOD_BATCH_UPSERT, $data);
         return $this->validateResponse($response);
     }
