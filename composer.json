@@ -16,11 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SALESmanago\\": ["src/"],
-            "Lib\\GuzzleHttp\\": ["lib/guzzle"]
-        },
-        "files": [
-            "lib/guzzle/functions_include.php"
-        ]
+            "SALESmanago\\": ["src/"]
+        }
     }
 }
