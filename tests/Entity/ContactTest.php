@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Helper;
+namespace Entity;
 
 use PHPUnit\Framework\TestCase;
 
 use SALESmanago\Exception\Exception;
-use SALESmanago\Helper\Contact\Contact as Contact;
+use SALESmanago\Entity\Contact\Contact as Contact;
 use Faker;
 
 final class ContactTest extends TestCase
@@ -95,7 +95,6 @@ final class ContactTest extends TestCase
 
         $name = [' ', $faker->lastName];
         yield [$name, trim(implode('', $name))];
-
     }
 
     /**

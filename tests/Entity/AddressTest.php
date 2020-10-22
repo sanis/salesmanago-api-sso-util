@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Helper;
+namespace Entity;
 
 use PHPUnit\Framework\TestCase;
-use SALESmanago\Helper\Contact\Address;
+use SALESmanago\Entity\Contact\Address;
 use Faker;
 
 class AddressTest extends TestCase

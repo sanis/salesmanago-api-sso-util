@@ -2,6 +2,7 @@
 
 namespace SALESmanago\Entity;
 
+use SALESmanago\Entity\Contact\ApiDoubleOptIn;
 
 class Settings
 {
@@ -84,6 +85,11 @@ class Settings
      * @var array
      */
     protected $consentDetails;
+
+    /**
+     * @var ApiDoubleOptIn
+     */
+    protected $ApiDoubleOptIn;
 
     /**
      * @return boolean
@@ -410,5 +416,21 @@ class Settings
         }
 
         return $ip;
+    }
+
+    public function setApiDoubleOptIn($param)
+    {
+        if (is_array($param)) {
+            $this->ApiDoubleOptIn = new ApiDoubleOptIn($param);
+        } else if ($param instanceof ApiDoubleOptIn) {
+            $this->ApiDoubleOptIn = $param;
+        }
+
+        return $this;
+    }
+
+    public function getApiDoubleOptIn()
+    {
+        return isset($this->ApiDoubleOptIn) ? $this->ApiDoubleOptIn : new ApiDoubleOptIn();
     }
 }

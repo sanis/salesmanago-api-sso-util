@@ -1,12 +1,12 @@
 <?php
 
-namespace SALESmanago\Helper\Contact;
+namespace SALESmanago\Entity\Contact;
 
 use SALESmanago\Exception\Exception;
 
 class Address
 {
-    use \SALESmanago\Helper\HelperTrait;
+    use \SALESmanago\Entity\EntityTrait;
 
     const
         ADDRESS   = 'address',
@@ -22,6 +22,13 @@ class Address
     private $country;
     private $province;
 
+    public function __construct($data = [])
+    {
+        if (!empty($data)) {
+            $this->setDataWithSetters($data);
+        }
+    }
+
     /**
      * @param array $data;
      *
@@ -29,17 +36,7 @@ class Address
      * @throws Exception;
      */
     public function set($data) {
-        if (empty($data)) {
-            throw new Exception('Empty passed data');
-        } elseif(!is_array($data)) {
-            throw new Exception('Passed data isn\'t array() type');
-        }
-
-        foreach ($data as $itemName => $itemValue) {
-            $methodName = 'set'.ucfirst($itemName);
-            $this->$methodName($itemValue);
-        }
-
+        $this->setDataWithSetters($data);
         return $this;
     }
 
@@ -128,17 +125,4 @@ class Address
     public function getProvince(){
         return $this->province;
     }
-
-    // @todo move this to another service
-//    public function get()
-//    {
-//        return $this->filterData(array(
-//            self::ADDRESS => array(
-//                self::STREET_AD => $this->setStrFromArr($this->streetAddress),
-//                self::ZIP_CODE  => $this->zipCode,
-//                self::CITY      => $this->city,
-//                self::COUNTRY   => $this->country
-//            )
-//        ));
-//    }
 }
