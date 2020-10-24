@@ -55,6 +55,7 @@ class UserAccountController
     {
         $code
             = "<script>var _smid ='{$this->settings->getClientId()}';
+             var _smbanners = true; var _smcustom = true;
              (function(w, r, a, sm, s ) {
              w['SalesmanagoObject'] = r; 
              w[r] = w[r] || function () {( w[r].q = w[r].q || [] ).push(arguments)};
