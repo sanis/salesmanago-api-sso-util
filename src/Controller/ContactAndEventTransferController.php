@@ -9,7 +9,7 @@ use SALESmanago\Exception\Exception;
 use SALESmanago\Services\ContactAndEventTransferService;
 
 use SALESmanago\Entity\Contact\Contact;
-/*use SALESmanago\Entity\Contact\Event;*/
+use SALESmanago\Entity\Event\Event;
 
 class ContactAndEventTransferController
 {
@@ -22,12 +22,33 @@ class ContactAndEventTransferController
         $this->settings = $settings;
     }
 
-    public function transfer($Contact = null, $Event = null)
+    public function transferBoth(Contact $Contact, Event $Event)
     {
-        if ($Contact == null && $Event == null) {
-           throw new Exception('No data to transfer');
+        try {
+            return $this->service->transferBoth($Contact, $Event);
+        } catch (Exception $exception) {
+
         }
 
-        $this->service->transfer($Contact, $Event);
+    }
+
+    public function transferEvent(Event $Event)
+    {
+        try {
+            return $this->service->transferEvent($Event);
+        } catch (Exception $e) {
+
+        }
+
+    }
+
+    public function transferContact(Contact $Contact)
+    {
+        try {
+            return $this->service->transferContact($Contact);
+        } catch (Exception $e) {
+
+        }
+
     }
 }

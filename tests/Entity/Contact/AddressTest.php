@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Entity;
+namespace Tests\Contact\Entity;
 
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Entity\Contact\Address;

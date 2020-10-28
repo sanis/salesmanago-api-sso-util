@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Entity;
+namespace Tests\Contact\Entity;
 
 use PHPUnit\Framework\TestCase;
 
@@ -68,7 +68,7 @@ final class ContactTest extends TestCase
             'phone'      => $faker->phoneNumber,
             'company'    => $faker->company,
             'externalId' => $faker->uuid,
-            'state'      => $faker->randomKey(['CUSTOMER', 'PROSPECT', 'PARTNER', 'OTHER', 'UNKNOWN'])
+            'state'      => $faker->randomElement(['CUSTOMER', 'PROSPECT', 'PARTNER', 'OTHER', 'UNKNOWN'])
         ];
 
         foreach ($contact as $key => $val) {

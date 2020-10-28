@@ -2,34 +2,40 @@
 
 namespace SALESmanago\Entity\Contact;
 
+use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
+use SALESmanago\Helper\EntityDataHelper;
 
-class Options
+class Options extends AbstractEntity
 {
-    use \SALESmanago\Entity\EntityTrait;
-
     const
-        TAGS        = 'tags',
-        R_TAGS      = 'removeTags',
-        F_OPT_IN    = 'forceOptIn',
-        F_OPT_OUT   = 'forceOptOut',
-        F_P_OPT_IN  = 'forcePhoneOptIn',
-        F_P_OPT_OUT = 'forcePhoneOptOut',
-        N_EMAIL     = 'newEmail',
-        CREATED_ON  = 'createdOn',
-        LANG        = 'lang';
+        ASYNC        = 'async',
+        TAGS         = 'tags',
+        R_TAGS       = 'removeTags',
+        TAGS_SCORING = 'tagScoring',
+        F_OPT_IN     = 'forceOptIn',
+        F_OPT_OUT    = 'forceOptOut',
+        F_P_OPT_IN   = 'forcePhoneOptIn',
+        F_P_OPT_OUT  = 'forcePhoneOptOut',
+        N_EMAIL      = 'newEmail',
+        CREATED_ON   = 'createdOn',
+        LANG         = 'lang';
 
-    private $birthday;
-    private $forceOptIn;
-    private $forceOptOut;
-    private $forcePhoneOptIn;
-    private $forcePhoneOptOut;
-    private $properties;
-    private $tags;
-    private $removeTags;
-    private $newEmail;
-    private $createdOn;
-    private $lang;
+
+    private $async            = false;
+    private $forceOptIn       = false;
+    private $forceOptOut      = false;
+    private $forcePhoneOptIn  = false;
+    private $forcePhoneOptOut = false;
+    private $properties       = [];
+    private $tagScoring       = false;
+    private $tags             = [];
+    private $removeTags       = [];
+    private $newEmail         = null;
+    private $createdOn        = null;
+    private $lang             = null;
+
+    private $isSubscribes     = false;
 
     public function __construct($data = [])
     {
@@ -49,19 +55,52 @@ class Options
     }
 
     /**
+     * @param bool $bool
+     * @return $this
+     */
+    public function setAsync($bool)
+    {
+        $this->async = filter_var($bool, FILTER_VALIDATE_BOOLEAN);
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getAsync()
+    {
+        return $this->async;
+    }
+
+    public function setTagScoring($param)
+    {
+        $this->tagScoring = $param;
+        return $this;
+    }
+
+    public function getTagScoring()
+    {
+        return $this->tagScoring;
+    }
+
+    /**
      * @param string || array - $param
      * @return $this
      */
     public function setTags($param)
     {
-        $this->tags = is_array($param)
-            ? $this->setStrFromArr($param, ',')
-            : $param;
+        if (is_array($param)) {
+            array_walk($param, function($item) {strtoupper(str_replace(' ', '_', $item));});
+            $this->tags = $param;
+        } else {
+            $this->tags = [strtoupper(str_replace(' ', '_', $param))];
+        }
+
         return $this;
     }
 
     /**
-     * @return string $this->tags
+     * @return array $this->tags
      */
     public function getTags()
     {
@@ -74,18 +113,45 @@ class Options
      */
     public function setRemoveTags($param)
     {
-        $this->removeTags = is_array($param)
-            ? $this->setStrFromArr($param, ',')
-            : $param;
+        if (is_array($param)) {
+            array_walk($param, function($item) {strtoupper(str_replace(' ', '_', $item));});
+            $this->removeTags = EntityDataHelper::filterDataArray($param);
+        } else {
+            $this->removeTags = [strtoupper(str_replace(' ', '_', $param))];
+        }
+
         return $this;
     }
 
     /**
-     * @return string $this->removeTags
+     * @return array $this->removeTags
      */
     public function getRemoveTags()
     {
         return $this->removeTags;
+    }
+
+    /**
+     * Sets boolean $this->isSubscribing state of contact subscribing at that moment
+     *
+     * @param boolean $param
+     * @return $this
+     * */
+    public function setIsSubscribes($param)
+    {
+        $this->isSubscribes = boolval($param);
+        return $this;
+    }
+
+    /**
+     * Sets subscriber actual subscribing flag,
+     * $this->isSubscribes - if contact subscribing at that moment;
+     *
+     * @return bool $this->isSubscribes
+     */
+    public function getIsSubscribes()
+    {
+        return $this->isSubscribes;
     }
 
     /**

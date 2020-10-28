@@ -2,12 +2,12 @@
 
 namespace SALESmanago\Entity\Contact;
 
+use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
+use SALESmanago\Helper\EntityDataHelper;
 
-class Address
+class Address extends AbstractEntity
 {
-    use \SALESmanago\Entity\EntityTrait;
-
     const
         ADDRESS   = 'address',
         STREET_AD = 'streetAddress',
@@ -47,7 +47,7 @@ class Address
     public function setStreetAddress($param)
     {
         $this->streetAddress = is_array($param)
-            ? $this->setStrFromArr($param)
+            ? EntityDataHelper::setStrFromArr($param)
             : $param;
         return $this;
     }

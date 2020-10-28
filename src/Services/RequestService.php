@@ -4,9 +4,16 @@
 namespace SALESmanago\Services;
 
 
-use SALESmanago\Entity\Settings;
-use SALESmanago\Exception\SalesManagoError;
-use SALESmanago\Exception\SalesManagoException;
+use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Exception\Exception;
+
+use \GuzzleHttp\Client as GuzzleClient;
+use \GuzzleHttp\Exception\ConnectException;
+use \GuzzleHttp\Exception\ClientException;
+use \GuzzleHttp\Exception\GuzzleException;
+use \GuzzleHttp\Exception\ServerException;
+use SALESmanago\Helper\DataHelper;
+use SALESmanago\Helper\EntityDataHelper;
 
 class RequestService
 {
@@ -14,6 +21,11 @@ class RequestService
 
     /** @var GuzzleClient $client */
     private $client;
+
+    /**
+     * @var integer
+     */
+    private $statusCode;
 
     public function __construct(Settings $Settings)
     {
@@ -42,7 +54,7 @@ class RequestService
     }
 
     /**
-     * @throws SalesManagoException
+     * @throws Exception
      * @param string $method
      * @param string $uri
      * @param array $data
@@ -57,21 +69,18 @@ class RequestService
 
             return json_decode($rawResponse, true);
         } catch (ConnectException $e) {
-            $error = $e->getHandlerContext();
-            throw SalesManagoError::handleError($e->getMessage(), 0, true, $error['errno']);
+            throw new Exception($e->getMessage());
         } catch (ClientException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
+            throw new Exception($e->getMessage());
         } catch (ServerException $e) {
-            $error = $e->getResponse();
-            throw SalesManagoError::handleError($e->getMessage(), $error->getStatusCode());
+            throw new Exception($e->getMessage());
         } catch (GuzzleException $e) {
-            throw SalesManagoError::handleError($e->getMessage(), $e->getCode());
+            throw new Exception($e->getMessage());
         }
     }
 
     /**
-     * @throws SalesManagoException
+     * @throws Exception
      * @param array $response
      * @param array $statement
      * @return array
@@ -84,7 +93,18 @@ class RequestService
         if (!in_array(false, $condition)) {
             return $response;
         } else {
-            throw SalesManagoError::handleError($response['message'], $this->getStatusCode());
+            $message = is_array($response['message'])
+                ? EntityDataHelper::setStrFromArr($response['message'], ', ')
+                : $response['message'];
+            throw new Exception($message);
         }
+    }
+
+    /**
+     * @param int $statusCode
+     */
+    private function setStatusCode($statusCode)
+    {
+        $this->statusCode = $statusCode;
     }
 }

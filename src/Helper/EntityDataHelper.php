@@ -1,41 +1,18 @@
 <?php
 
-namespace SALESmanago\Entity;
 
-use SALESmanago\Exception\Exception;
+namespace SALESmanago\Helper;
 
-trait EntityTrait
+
+class EntityDataHelper extends DataHelper
 {
-    /**
-     * @param array $data
-     * @throws Exception
-     */
-    protected function setDataWithSetters($data)
-    {
-        if (empty($data)) {
-            throw new Exception('Empty passed data');
-        } elseif(!is_array($data)) {
-            throw new Exception('Passed data isn\'t array() type');
-        }
-
-        foreach ($data as $itemName => $itemValue) {
-            $methodName = 'set'.ucfirst($itemName);
-
-            if (!method_exists($this, $methodName)) {
-                throw new Exception("Set method :: {$methodName} - doesn't exist");
-            }
-
-            $this->$methodName($itemValue);
-        }
-    }
-
-    protected function setStrFromArr($param, $glue = ' ')
+    public static function setStrFromArr($param, $glue = ' ')
     {
         if (!is_array($param)) {
             return $param;
         }
 
-        $param = $this->filterArr($param);
+        $param = self::filterArr($param);
         if (!empty($param)) {
             return trim(implode($glue, $param));
         }
@@ -43,7 +20,7 @@ trait EntityTrait
         return '';
     }
 
-    protected function filterArr($array)
+    public static function filterArr($array)
     {
         return array_filter(
             $array,
@@ -57,7 +34,7 @@ trait EntityTrait
      * @param string $string
      * @return bool
      */
-    protected function isTimestamp($string)
+    public static function isTimestamp($string)
     {
         if (!$string) {
             return false;
@@ -75,7 +52,7 @@ trait EntityTrait
      * @param mixed $param - int || string
      * @return bool
      */
-    protected function isUnixTime($param)
+    public static function isUnixTime($param)
     {
         $answer = ((intval($param)) == $param)
             && (intval($param) <= PHP_INT_MAX)

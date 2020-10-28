@@ -4,12 +4,10 @@
 namespace SALESmanago\Entity\Contact;
 
 
-use SALESmanago\Entity\EntityTrait;
+use SALESmanago\Entity\AbstractEntity;
 
-class ApiDoubleOptIn
+class ApiDoubleOptIn extends AbstractEntity
 {
-    use EntityTrait;
-
     const
         U_API_D_OPT_IN        = 'useApiDoubleOptIn',
         D_OPT_IN_TEMPLATE_ID  = 'apiDoubleOptInEmailTemplateId',

@@ -3,7 +3,7 @@
 
 namespace SALESmanago\Model;
 
-use SALESmanago\Entity\Settings;
+use SALESmanago\Entity\Configuration as Settings;
 
 class SettingsModel
 {
@@ -26,7 +26,6 @@ class SettingsModel
             Settings::CLIENT_ID => $this->Settings->getClientId(),
             Settings::API_KEY   => $this->Settings->getApiKey(),
             Settings::SHA       => $this->Settings->getSha(),
-            Settings::OWNER     => $this->Settings->getOwner(),
             self::REQUEST_TIME  => time()
         ];
     }

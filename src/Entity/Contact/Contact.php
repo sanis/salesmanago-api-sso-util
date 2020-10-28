@@ -2,17 +2,15 @@
 
 namespace SALESmanago\Entity\Contact;
 
+use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
-use SALESmanago\Entity\Contact\Address;
-use SALESmanago\Entity\Contact\Options;
+
 use SALESmanago\Entity\Contact\ApiDoubleOptIn;
+use SALESmanago\Helper\EntityDataHelper;
 
-class Contact
+class Contact extends AbstractEntity
 {
-    use \SALESmanago\Entity\EntityTrait;
-
     const
-        ASYNC    = 'async',
         CONTACT  = 'contact',
         EMAIL    = 'email',
         C_ID     = 'contactId',
@@ -24,8 +22,6 @@ class Contact
         BIRTHDAY = 'birthday',
         ADDRESS  = 'address',
         EXT_ID   = 'externalId';
-
-    public $async       = true;
 
     private $email      = null;
     private $contactId  = null;
@@ -40,8 +36,6 @@ class Contact
     private $Address = null;
     private $Options = null;
 
-    private $isSubscribes = false;
-
     /**
      * @param array $contactData;
      *
@@ -51,24 +45,6 @@ class Contact
     public function set($contactData) {
         $this->setDataWithSetters($contactData);
         return $this;
-    }
-
-    /**
-     * @param bool $bool
-     * @return $this
-     */
-    public function setAsync($bool)
-    {
-        $this->async = filter_var($bool, FILTER_VALIDATE_BOOLEAN);
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getAsync()
-    {
-        return $this->async;
     }
 
     /**
@@ -120,7 +96,7 @@ class Contact
     public function setName($param)
     {
         $this->name = is_array($param)
-            ? $this->setStrFromArr($param)
+            ? EntityDataHelper::setStrFromArr($param)
             : $param;
         return $this;
     }
@@ -224,6 +200,39 @@ class Contact
     }
 
     /**
+     * @param mixed $param
+     * @return $this
+     * @throws Exception
+     */
+    public function setBirthday($param)
+    {   if (is_bool($param) || empty($param)) {
+        throw new Exception('Passed argument isn\'t timestamp');
+    } elseif ($param instanceof \DateTime) {
+        $this->birthday = $param->format('Ymd');
+    } elseif (EntityDataHelper::isTimestamp($param)) {
+        try {
+            $birthday = new \DateTime($param);
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+        $this->birthday = $birthday->format('Ymd');
+    } elseif (EntityDataHelper::isUnixTime($param)) {
+        $this->birthday = gmdate("Ymd", intval($param));
+    } else {
+        throw new Exception('Passed argument isn\'t timestamp');
+    }
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
+
+    /**
      * @param \SALESmanago\Entity\Contact\Address $ContactAddress
      * @return $this
      */
@@ -262,61 +271,5 @@ class Contact
     	return isset($this->Options)
 		    ? $this->Options
 		    : $this->Options = new Options($options);
-    }
-
-    /**
-     * @param mixed $param
-     * @return $this
-     * @throws Exception
-     */
-    public function setBirthday($param)
-    {   if (is_bool($param) || empty($param)) {
-        throw new Exception('Passed argument isn\'t timestamp');
-    } elseif ($param instanceof \DateTime) {
-        $this->birthday = $param->format('Ymd');
-    } elseif ($this->isTimestamp($param)) {
-        try {
-            $birthday = new \DateTime($param);
-        } catch (\Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-        $this->birthday = $birthday->format('Ymd');
-    } elseif ($this->isUnixTime($param)) {
-        $this->birthday = gmdate("Ymd", intval($param));
-    } else {
-        throw new Exception('Passed argument isn\'t timestamp');
-    }
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBirthday()
-    {
-        return $this->birthday;
-    }
-
-    /**
-     * Sets boolean $this->isSubscribing state of contact subscribing at that moment
-     *
-     * @param boolean $param
-     * @return $this
-     * */
-    public function setSubscribesToNewsletter($param)
-    {
-        $this->isSubscribes = boolval($param);
-        return $this;
-    }
-
-    /**
-     * Sets subscriber actual subscribing flag,
-     * $this->isSubscribes - if contact subscribing at that moment;
-     *
-     * @return bool $this->isSubscribes
-     */
-    public function getSubscribesToNewsletter()
-    {
-        return $this->isSubscribes;
     }
 }

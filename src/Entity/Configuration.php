@@ -1,9 +1,12 @@
 <?php
 
+
 namespace SALESmanago\Entity;
 
 
-class Settings
+use SALESmanago\Entity\Contact\ApiDoubleOptIn;
+
+class Configuration
 {
     const ACTIVE     = 'active';
     const ENDPOINT   = 'endpoint';
@@ -14,6 +17,13 @@ class Settings
     const EMAIL      = 'email';
     const SHA        = 'sha';
     const TOKEN      = 'token';
+
+    public function __construct($data = [])
+    {
+        if (!empty($data)) {
+            $this->set($data);
+        }
+    }
 
     /**
      * @var boolean
@@ -84,6 +94,19 @@ class Settings
      * @var array
      */
     protected $consentDetails;
+
+    /**
+     * @var ApiDoubleOptIn
+     */
+    protected $ApiDoubleOptIn;
+
+    /**
+     * Sets data from array
+     * @param $data
+     */
+    public function set($data){
+
+    }
 
     /**
      * @return boolean
@@ -410,5 +433,28 @@ class Settings
         }
 
         return $ip;
+    }
+
+    /**
+     * @param boolean $param
+     * @return $this
+     */
+    public function setApiDoubleOptIn($param)
+    {
+        if (is_array($param)) {
+            $this->ApiDoubleOptIn = new ApiDoubleOptIn($param);
+        } else if ($param instanceof ApiDoubleOptIn) {
+            $this->ApiDoubleOptIn = $param;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return ApiDoubleOptIn
+     */
+    public function getApiDoubleOptIn()
+    {
+        return isset($this->ApiDoubleOptIn) ? $this->ApiDoubleOptIn : new ApiDoubleOptIn();
     }
 }

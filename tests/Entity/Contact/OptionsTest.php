@@ -1,11 +1,12 @@
 <?php
 
-namespace Entity;
+namespace Tests\Contact\Entity;
 
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Entity\Contact\Options;
 use Faker;
+use SALESmanago\Helper\EntityDataHelper;
 
 final class OptionsTest extends TestCase
 {
@@ -38,39 +39,12 @@ final class OptionsTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestSetBirthdaySuccess
-     *
-     * @param $expectedInput
-     * @param $expectedOutput
-     */
-    public function testSetBirthdaySuccess($expectedInput, $expectedOutput)
-    {
-        $Options = new Options();
-        $Options->setBirthday($expectedInput);
-
-        $this->assertEquals($Options->getBirthday(), $expectedOutput);
-    }
-
-    /**
-     * @dataProvider provideTestSetBirthdayFail
-     *
-     * @param $expectedInput
-     * @param $expectedOutput
-     */
-    public function testSetBirthdayFail($expectedInput)
-    {
-        $Options = new Options();
-
-        $this->expectException(Exception::class);
-        $Options->setBirthday($expectedInput);
-    }
-
-    /**
      * @dataProvider provideTestSetItemsAsArraySuccess
      *
      * @param array $setItems
      * @param string $getMethod
      * @param string $expectedOutput
+     * @throws Exception
      */
     public function testSetItemsAsArraySuccess($getMethod, $setItems, $expectedOutput)
     {
@@ -86,15 +60,21 @@ final class OptionsTest extends TestCase
     public function provideTestSetTagsSuccess()
     {
         $tagArr = ['TEST_TAG1', 'TAG2'];
-        yield [$tagArr, implode(',', $tagArr)];
+        $expectedArray = $tagArr;
+        array_walk($expectedArray, function($item) {strtoupper(str_replace(' ', '_', $item));});
+        yield [$tagArr, EntityDataHelper::filterDataArray($expectedArray)];
 
-        yield ['TEST_TAG4', 'TEST_TAG4'];
+        yield ['TEST_TAG4', ['TEST_TAG4']];
 
         $tagArr = ['TEST_TAG5', ' '];
-        yield [$tagArr, trim(implode(',', $tagArr))];
+        $expectedArray = $tagArr;
+        array_walk($expectedArray, function($item) {strtoupper(str_replace(' ', '_', $item));});
+        yield [$tagArr, EntityDataHelper::filterDataArray($expectedArray)];
 
         $tagArr = [' ', 'TEST_TAG5'];
-        yield [$tagArr, trim(implode(',', $tagArr))];
+        $expectedArray = $tagArr;
+        array_walk($expectedArray, function($item) {strtoupper(str_replace(' ', '_', $item));});
+        yield [$tagArr, EntityDataHelper::filterDataArray($expectedArray)];
     }
 
     /**
@@ -161,24 +141,34 @@ final class OptionsTest extends TestCase
         $faker = Faker\Factory::create();
 
         $options = [
-            Options::BIRTHDAY    => $faker->unixTime($max = 'now'),
             Options::TAGS        => $faker->words($nb = 3, $asText = false),
             Options::R_TAGS      => $faker->words($nb = 3, $asText = false),
             Options::F_OPT_IN    => $faker->boolean,
             Options::F_OPT_OUT   => $faker->boolean,
-            Options::F_P_OPT_IN => $faker->boolean,
+            Options::F_P_OPT_IN  => $faker->boolean,
             Options::F_P_OPT_OUT => $faker->boolean,
             Options::N_EMAIL     => $faker->email,
             Options::CREATED_ON  => $faker->unixTime($max = 'now'),
         ];
 
+        if(is_array($options[Options::TAGS])) {
+            array_walk($options[Options::TAGS], function($item) { strtoupper(str_replace(' ', '_', $item));});
+        }
+
+        if(is_array($options[Options::R_TAGS])) {
+            array_walk($options[Options::R_TAGS], function($item) { strtoupper(str_replace(' ', '_', $item));});
+        }
+
         $optionsExpected = [
-            Options::BIRTHDAY    => gmdate("Ymd", $options[Options::BIRTHDAY]),
-            Options::TAGS        => is_array($options[Options::TAGS]) ? trim(implode(',', $options[Options::TAGS])) : trim(str_replace(' ', '_', $options[Options::TAGS])),
-            Options::R_TAGS      => is_array($options[Options::R_TAGS]) ? trim(implode(',', $options[Options::R_TAGS])) : trim(str_replace(' ', '_', $options[Options::R_TAGS])),
+            Options::TAGS        => is_array($options[Options::TAGS])
+                ? EntityDataHelper::filterDataArray($options[Options::TAGS])
+                : [trim(str_replace(' ', '_', $options[Options::TAGS]))],
+            Options::R_TAGS      => is_array($options[Options::R_TAGS])
+                ? EntityDataHelper::filterDataArray($options[Options::R_TAGS])
+                : [trim(str_replace(' ', '_', $options[Options::R_TAGS]))],
             Options::F_OPT_IN    => $options[Options::F_OPT_IN],
             Options::F_OPT_OUT   => $options[Options::F_OPT_OUT],
-            Options::F_P_OPT_IN => $options[Options::F_P_OPT_IN],
+            Options::F_P_OPT_IN  => $options[Options::F_P_OPT_IN],
             Options::F_P_OPT_OUT => $options[Options::F_P_OPT_OUT],
             Options::N_EMAIL     => $options[Options::N_EMAIL],
             Options::CREATED_ON  => $options[Options::CREATED_ON],
@@ -187,7 +177,6 @@ final class OptionsTest extends TestCase
         foreach ($options as $key => $val) {
             array_push($dummyData, ['get'.ucfirst($key), array($key => $val), $optionsExpected[$key]]);
         }
-
         return $dummyData;
     }
 
