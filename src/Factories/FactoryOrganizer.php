@@ -3,6 +3,7 @@
 namespace SALESmanago\Factories;
 
 use SALESmanago\Controller\ConnectSalesManagoController;
+use SALESmanago\Controller\ContactAndEventTransferController;
 use SALESmanago\Controller\CreateAccountController;
 use SALESmanago\Controller\IntegrationController;
 use SALESmanago\Controller\LoginAccountController;
@@ -16,6 +17,7 @@ class FactoryOrganizer
     const INTEGRATION_C         = 'IntegrationC';
     const LOGIN_ACCOUNT_C       = 'LoginAccountC';
     const USER_ACCOUNT_C        = 'UserAccountC';
+    const CONTACT_AND_EVENT_TRANSFER_C = 'ContactAndEventTransferC';
 
     const USER_ACCESS_E         = 'UserAccessE';
 
@@ -43,6 +45,8 @@ class FactoryOrganizer
             case self::USER_ACCESS_E:
                 return new UserAccessException($paramsFirst);
                 break;
+            case self::CONTACT_AND_EVENT_TRANSFER_C:
+                return new ContactAndEventTransferController($paramsFirst);
             default:
                 return false;
             break;
