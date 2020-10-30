@@ -4,7 +4,7 @@
 namespace SALESmanago\Controller;
 
 
-use SALESmanago\Entity\Settings;
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Services\ContactAndEventTransferService;
 
@@ -16,7 +16,7 @@ class ContactAndEventTransferController
     protected $settings;
     protected $service;
 
-    public function __construct(Settings $settings)
+    public function __construct(Configuration $settings)
     {
         $this->service  = new ContactAndEventTransferService($settings);
         $this->settings = $settings;
@@ -24,31 +24,16 @@ class ContactAndEventTransferController
 
     public function transferBoth(Contact $Contact, Event $Event)
     {
-        try {
-            return $this->service->transferBoth($Contact, $Event);
-        } catch (Exception $exception) {
-
-        }
-
+        return $this->service->transferBoth($Contact, $Event);
     }
 
     public function transferEvent(Event $Event)
     {
-        try {
-            return $this->service->transferEvent($Event);
-        } catch (Exception $e) {
-
-        }
-
+        return $this->service->transferEvent($Event);
     }
 
     public function transferContact(Contact $Contact)
     {
-        try {
-            return $this->service->transferContact($Contact);
-        } catch (Exception $e) {
-
-        }
-
+       return $this->service->transferContact($Contact);
     }
 }

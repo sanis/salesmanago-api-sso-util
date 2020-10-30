@@ -21,8 +21,7 @@ class Options extends AbstractEntity
         CREATED_ON   = 'createdOn',
         LANG         = 'lang';
 
-
-    private $async            = false;
+    private $async            = true;
     private $forceOptIn       = false;
     private $forceOptOut      = false;
     private $forcePhoneOptIn  = false;
@@ -36,6 +35,7 @@ class Options extends AbstractEntity
     private $lang             = null;
 
     private $isSubscribes     = false;
+    private $isSubscribtionStatusNoChange = true;
 
     public function __construct($data = [])
     {
@@ -92,6 +92,11 @@ class Options extends AbstractEntity
         if (is_array($param)) {
             array_walk($param, function($item) {strtoupper(str_replace(' ', '_', $item));});
             $this->tags = $param;
+        } elseif(
+            is_string($param)
+            && (strpos($param, 'are') !== false)
+        ) {
+            $this->tags = explode(',', [strtoupper(str_replace(' ', '_', $param))]);
         } else {
             $this->tags = [strtoupper(str_replace(' ', '_', $param))];
         }
@@ -152,6 +157,24 @@ class Options extends AbstractEntity
     public function getIsSubscribes()
     {
         return $this->isSubscribes;
+    }
+
+    /**
+     * Flag wich must be used when contact status must be no changed after pushing him to SM
+     * @param bool $param
+     * @return $this
+     */
+    public function setIsSubscribtionStatusNoChange($param){
+        $this->isSubscribtionStatusNoChange = $param;
+        return $this;
+    }
+
+    /**
+     * @param bool $param
+     * @return mixed
+     */
+    public function getIsSubscribtionStatusNoChange(){
+        return $this->isSubscribtionStatusNoChange;
     }
 
     /**

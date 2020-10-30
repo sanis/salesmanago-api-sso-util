@@ -3,8 +3,6 @@
 
 namespace SALESmanago\Services;
 
-require_once dirname(__FILE__).'/../../vendor/autoload.php';
-
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
 
@@ -13,7 +11,7 @@ use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\EventModel;
 use SALESmanago\Model\SettingsModel;
 
-use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Entity\Configuration;
 
 class ContactAndEventTransferService
 {
@@ -27,7 +25,7 @@ class ContactAndEventTransferService
     private $Settings;
     private $SettingsModel;
 
-    public function __construct(Settings $Settings)
+    public function __construct(Configuration $Settings)
     {
         $this->Settings = $Settings;
         $this->SettingsModel = new SettingsModel($Settings);

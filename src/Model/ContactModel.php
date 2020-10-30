@@ -64,6 +64,14 @@ class ContactModel
             Options::LANG        => $Options->getLang()
         ];
 
+        if ($this->isSubscribtionStatusNoChangeChecker()) {
+            $contactRequestArray[Options::F_OPT_IN]              = false;
+            $contactRequestArray[Options::F_OPT_OUT]             = false;
+            $contactRequestArray[Options::F_P_OPT_IN]            = false;
+            $contactRequestArray[Options::F_P_OPT_OUT]           = false;
+            $contactRequestArray[ApiDoubleOptIn::U_API_D_OPT_IN] = false;
+        }
+
         if ($this->apiDoubleOptInChecker()) {
             $ApiDoubleOptIn = $this->Settings->getApiDoubleOptIn();
 
@@ -78,6 +86,13 @@ class ContactModel
         return DataHelper::filterDataArray($contactRequestArray);
     }
 
+    protected function isSubscribtionStatusNoChangeChecker()
+    {
+        return (!$this->Contact->getOptions()->getIsSubscribes()
+            && $this->Contact->getOptions()->getIsSubscribtionStatusNoChange()
+            && !$this->Contact->getOptions()->getForceOptIn());
+    }
+
     /**
      * Checking for need add apiDoubleOptIn to request;
      *
@@ -87,7 +102,7 @@ class ContactModel
     {
         $isApiDoubleOptInEnabled = $this->Settings->getApiDoubleOptIn()->getEnabled();
 
-        if ($isApiDoubleOptInEnabled && $this->Contact->getSubscribesToNewsletter()) {
+        if ($isApiDoubleOptInEnabled && $this->Contact->getOptions()->getIsSubscribes()) {
            return true;
         }
         return false;

@@ -14,7 +14,7 @@ class Event extends AbstractEntity
         CONTACT_EVENT  = 'contactEvent',
         CONTACT_ID     = 'contactId',
         EVENT_ID       = 'eventId',
-        EMAIL  = 'email',
+        EMAIL          = 'email',
         DATE           = 'date',
         DESCRIPTION    = 'description',
         PRODUCTS       = 'products',
@@ -34,6 +34,11 @@ class Event extends AbstractEntity
      * @var string contact email;
      */
     private $email = null;
+
+    /**
+     * @var string SM event id
+     */
+    private $eventId = null;
 
     /**
      * @var unixtimestamp - 13 numbers
@@ -111,7 +116,7 @@ class Event extends AbstractEntity
     /**
      * @var bool
      */
-    private $forceOptIn = true;
+    private $forceOptIn = false;
 
     /**
      * Event constructor.
@@ -133,6 +138,17 @@ class Event extends AbstractEntity
     public function set($data) {
         $this->setDataWithSetters($data);
         return $this;
+    }
+
+    public function setEventId($param)
+    {
+        $this->eventId = $param;
+        return $this;
+    }
+
+    public function getEventId()
+    {
+        return $this->eventId;
     }
 
     public function setContactId($param)
@@ -192,7 +208,7 @@ class Event extends AbstractEntity
 
     public function setProducts($param)
     {
-        $this->products = (is_array($param)) ? implode(', ', $param) : $param;
+        $this->products = (is_array($param)) ? implode(',', $param) : $param;
         return $this;
     }
 

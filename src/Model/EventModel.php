@@ -24,9 +24,11 @@ class EventModel
         $eventRequestArray = [
             Settings::CLIENT_ID  => $this->Settings->getClientId(),
             Settings::OWNER      => $this->Settings->getOwner(),
-            Options::F_OPT_IN    => false,
-            Event::EMAIL => $this->Event->getEmail(),
+            Options::F_OPT_IN    => $this->Event->getForceOptIn(),
+            Event::EMAIL         => $this->Event->getEmail(),
+            Event::CONTACT_ID    => $this->Event->getContactId(),
             Event::CONTACT_EVENT => [
+                Event::EVENT_ID       => $this->Event->getEventId(),
                 Event::DATE           => $this->Event->getDate(),
                 Event::DESCRIPTION    => $this->Event->getDescription(),
                 Event::PRODUCTS       => $this->Event->getProducts(),

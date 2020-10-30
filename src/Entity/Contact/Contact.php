@@ -21,7 +21,8 @@ class Contact extends AbstractEntity
         STATE    = 'state',
         BIRTHDAY = 'birthday',
         ADDRESS  = 'address',
-        EXT_ID   = 'externalId';
+        EXT_ID   = 'externalId',
+        COOKIE_NAME = 'smclient';
 
     private $email      = null;
     private $contactId  = null;
@@ -205,22 +206,26 @@ class Contact extends AbstractEntity
      * @throws Exception
      */
     public function setBirthday($param)
-    {   if (is_bool($param) || empty($param)) {
-        throw new Exception('Passed argument isn\'t timestamp');
-    } elseif ($param instanceof \DateTime) {
-        $this->birthday = $param->format('Ymd');
-    } elseif (EntityDataHelper::isTimestamp($param)) {
-        try {
-            $birthday = new \DateTime($param);
-        } catch (\Exception $e) {
-            throw new Exception($e->getMessage());
+    {
+        if ($param == null) {
+            return $this;
         }
-        $this->birthday = $birthday->format('Ymd');
-    } elseif (EntityDataHelper::isUnixTime($param)) {
-        $this->birthday = gmdate("Ymd", intval($param));
-    } else {
-        throw new Exception('Passed argument isn\'t timestamp');
-    }
+        if (is_bool($param) || empty($param)) {
+            throw new Exception('Passed argument isn\'t timestamp');
+        } elseif ($param instanceof \DateTime) {
+            $this->birthday = $param->format('Ymd');
+        } elseif (EntityDataHelper::isTimestamp($param)) {
+            try {
+                $birthday = new \DateTime($param);
+            } catch (\Exception $e) {
+                throw new Exception($e->getMessage());
+            }
+            $this->birthday = $birthday->format('Ymd');
+        } elseif (EntityDataHelper::isUnixTime($param)) {
+            $this->birthday = gmdate("Ymd", intval($param));
+        } else {
+            throw new Exception('Passed argument isn\'t timestamp');
+        }
         return $this;
     }
 
