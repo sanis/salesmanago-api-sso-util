@@ -99,7 +99,7 @@ class Configuration extends AbstractEntity
     protected $activeSynchronization = false;
 
     /**
-     * @var bool Shows if nsynchronization needed for particular entity (Contact)
+     * @var bool Shows if synchronization needed for particular entity (Contact)
      */
     protected $requireSynchronization = false;
 
