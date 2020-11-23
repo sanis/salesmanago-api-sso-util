@@ -31,7 +31,6 @@ class ContactService
 
     /**
      * @param Contact $Contact
-     * @param Event $Event
      * @return array
      * @throws Exception
      */
