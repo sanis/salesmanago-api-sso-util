@@ -28,11 +28,11 @@ class SynchronizationService
     }
 
     /**
-     * @return array
+     * @return bool
      */
     public function isNeedSyncContactEmailStatus(Contact $Contact)
     {
-        if (!$this->checkActiveState()) {
+        if (!$this->Settings->getActiveSynchronization()) {
             return false;
         }
 
@@ -44,7 +44,7 @@ class SynchronizationService
     }
 
     /**
-     * Checker for SynncContactEmailStatus
+     * Checker for SyncContactEmailStatus
      * @param Contact|null $ContactBasic
      * @return bool
      */
@@ -62,13 +62,5 @@ class SynchronizationService
         }
 
         return true;
-    }
-
-    /**
-     * Check if service is activated;
-     * @return Configuration
-     */
-    protected function checkActiveState(){
-        return $this->Settings->getActiveSynchronization();
     }
 }

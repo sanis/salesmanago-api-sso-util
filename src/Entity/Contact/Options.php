@@ -2,7 +2,6 @@
 
 namespace SALESmanago\Entity\Contact;
 
-use PhpParser\Node\Expr\FuncCall;
 use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Helper\EntityDataHelper;
