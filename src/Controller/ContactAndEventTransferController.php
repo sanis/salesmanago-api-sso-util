@@ -10,21 +10,33 @@ use SALESmanago\Services\ContactAndEventTransferService;
 
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
+use SALESmanago\Services\SynchronizationService as SyncService;
 
 class ContactAndEventTransferController
 {
     protected $settings;
     protected $service;
 
+    /**
+     * @var SyncService
+     */
+    protected $syncService;
+
     public function __construct(Configuration $settings)
     {
-        $this->service  = new ContactAndEventTransferService($settings);
         $this->settings = $settings;
+        $this->service  = new ContactAndEventTransferService($this->settings);
+        $this->syncService = new SyncService($this->settings);
     }
 
     public function transferBoth(Contact $Contact, Event $Event)
     {
-        return $this->service->transferBoth($Contact, $Event);
+        return array_merge($this->service->transferBoth($Contact, $Event),
+            [
+                'settings' =>
+                    $this->settings->setRequireSyncronization($this->syncService->isNeedSyncContactEmailStatus($Contact))
+            ]
+        );
     }
 
     public function transferEvent(Event $Event)
@@ -34,6 +46,13 @@ class ContactAndEventTransferController
 
     public function transferContact(Contact $Contact)
     {
-       return $this->service->transferContact($Contact);
+       return array_merge(
+           $this->service->transferContact($Contact),
+           [
+               'settings' =>
+                   $this->settings->setRequireSyncronization($this->syncService->isNeedSyncContactEmailStatus($Contact))
+           ]
+       );
     }
+
 }

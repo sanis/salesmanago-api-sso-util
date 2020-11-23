@@ -86,6 +86,60 @@ class ContactModel
         return DataHelper::filterDataArray($contactRequestArray);
     }
 
+    /**
+     * Create contact request part for contact basic method
+     */
+    public function getContactForBasicRequest()
+    {
+        return DataHelper::filterDataArray([
+            Settings::CLIENT_ID => $this->Settings->getClientId(),
+            Options::ASYNC => $this->Contact->getOptions()->getAsync(),
+            Contact::EMAIL => [
+                $this->Contact->getEmail()
+            ],
+            Settings::OWNER => $this->Settings->getOwner(),
+        ]);
+    }
+
+    /**
+     * Create Contact from Basic responce;
+     * @param $response
+     * @retrun Contact
+     */
+    public function getContactFromBasicResponse($responseContact)
+    {
+        $this->Contact
+            ->setName($responseContact['name'])
+            ->setEmail($responseContact['email'])
+            ->setPhone($responseContact['phone'])
+            ->setFax($responseContact['fax'])
+            ->setScore($responseContact['score'])
+            ->setState($responseContact['state'])
+            ->setCompany($responseContact['company'])
+            ->setExternalId($responseContact['externalId'])
+            ->setContactId($responseContact['contactId'])
+            ->setBirthdayYear($responseContact['birthdayYear'])
+            ->setBirthdayMonth($responseContact['birthdayMonth'])
+            ->setBirthdayDay($responseContact['birthdayDay']);
+
+        $this->Contact->getOptions()
+            ->setOptedOut($responseContact['optedOut'])
+            ->setOptedOutPhone($responseContact['optedOutPhone'])
+            ->setDeleted($responseContact['deleted'])
+            ->setInvalid($responseContact['invalid'])
+            ->setModifiedOn($responseContact['modifiedOn'])
+            ->setCreatedOn($responseContact['createdOn'])
+            ->setLastVisit($responseContact['lastVisit']);
+
+        $this->Contact->getAddress()
+            ->setStreetAddress($responseContact['address']['streetAddress'])
+            ->setZipCode($responseContact['address']['zipCode'])
+            ->setCity($responseContact['address']['city'])
+            ->setCountry($responseContact['address']['country']);
+
+        return $this->Contact;
+    }
+
     protected function isSubscribtionStatusNoChangeChecker()
     {
         return (!$this->Contact->getOptions()->getIsSubscribes()

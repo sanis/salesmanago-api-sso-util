@@ -2,6 +2,7 @@
 
 namespace SALESmanago\Entity\Contact;
 
+use PhpParser\Node\Expr\FuncCall;
 use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Helper\EntityDataHelper;
@@ -35,7 +36,15 @@ class Options extends AbstractEntity
     private $lang             = null;
 
     private $isSubscribes     = false;
+    private $isUnSubscribes   = false;
     private $isSubscribtionStatusNoChange = true;
+
+    private $optedOut      = null;
+    private $optedOutPhone = null;
+    private $deleted       = false;
+    private $invalid       = false;
+    private $modifiedOn    = null;
+    private $lastVisit     = null;
 
     public function __construct($data = [])
     {
@@ -150,13 +159,33 @@ class Options extends AbstractEntity
 
     /**
      * Sets subscriber actual subscribing flag,
-     * $this->isSubscribes - if contact subscribing at that moment;
+     * $this->isSubscribes - if contact is subscribing at that moment;
      *
      * @return bool $this->isSubscribes
      */
     public function getIsSubscribes()
     {
         return $this->isSubscribes;
+    }
+
+    /**
+     * Sets subscriber actual unsubscribing flag,
+     * @param bool $param - if contact is unsubscribing at that moment;
+     * @return $this
+     */
+    public function setIsUnSubscribes($param)
+    {
+        $this->isUnSubscribes = $param;
+        return $this;
+    }
+
+    /**
+
+     * @return bool
+     */
+    public function getIsUnSubscribes()
+    {
+        return $this->isUnSubscribes;
     }
 
     /**
@@ -295,5 +324,112 @@ class Options extends AbstractEntity
 
     public function getLang(){
         return $this->lang;
+    }
+
+    /**
+     * @param bool $param
+     * @return $this
+     */
+    public function setOptedOut($param)
+    {
+        $this->optedOut = $param;
+        return $this;
+    }
+
+    /**
+     * @return null|bool
+     */
+    public function getOptedOut()
+    {
+        return $this->optedOut;
+    }
+
+    /**
+     * @param bool $param
+     * @return $this
+     */
+    public function setOptedOutPhone($param)
+    {
+        $this->optedOutPhone = $param;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getOptedOutPhone()
+    {
+        return $this->optedOutPhone;
+    }
+
+    /**
+     * @param bool $param
+     * @return $this
+     */
+    public function setDeleted($param)
+    {
+        $this->deleted = $param;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param bool $param
+     * @return $this
+     */
+    public function setInvalid($param)
+    {
+        $this->invalid = $param;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getInvalid()
+    {
+        return $this->invalid;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setModifiedOn($param)
+    {
+        $this->modifiedOn = $param;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getModifiedOn()
+    {
+        return $this->modifiedOn;
+    }
+
+    /**
+     * @param $param
+     * @return $this
+     */
+    public function setLastVisit($param)
+    {
+        $this->lastVisit = $param;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastVisit()
+    {
+        return $this->lastVisit;
     }
 }

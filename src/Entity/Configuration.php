@@ -6,7 +6,7 @@ namespace SALESmanago\Entity;
 
 use SALESmanago\Entity\Contact\ApiDoubleOptIn;
 
-class Configuration
+class Configuration extends AbstractEntity
 {
     const ACTIVE     = 'active';
     const ENDPOINT   = 'endpoint';
@@ -17,13 +17,6 @@ class Configuration
     const EMAIL      = 'email';
     const SHA        = 'sha';
     const TOKEN      = 'token';
-
-    public function __construct($data = [])
-    {
-        if (!empty($data)) {
-            $this->set($data);
-        }
-    }
 
     /**
      * @var boolean
@@ -101,11 +94,30 @@ class Configuration
     protected $ApiDoubleOptIn;
 
     /**
+     * @var bool active state for Synchronization Service;
+     */
+    protected $activeSynchronization = false;
+
+    /**
+     * @var bool Shows if nsynchronization needed for particular entity (Contact)
+     */
+    protected $requireSynchronization = false;
+
+    public function __construct($data = [])
+    {
+        if (!empty($data)) {
+            $this->set($data);
+        }
+    }
+
+    /**
      * Sets data from array
      * @param $data
      */
-    public function set($data){
-
+    public function set($data)
+    {
+        $this->setDataWithSetters($data);
+        return $this;
     }
 
     /**
@@ -456,5 +468,41 @@ class Configuration
     public function getApiDoubleOptIn()
     {
         return isset($this->ApiDoubleOptIn) ? $this->ApiDoubleOptIn : new ApiDoubleOptIn();
+    }
+
+    /**
+     * @param bool $param
+     * @return $this
+     */
+    public function setActiveSynchronization($param)
+    {
+        $this->activeSynchronization = $param;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function getActiveSynchronization()
+    {
+        return $this->activeSynchronization;
+    }
+
+    /**
+     *
+     * @param bool $param
+     */
+    public function setRequireSyncronization($param)
+    {
+        $this->requireSynchronization = $param;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getRequireSyncronization()
+    {
+        return $this->requireSynchronization;
     }
 }

@@ -32,7 +32,12 @@ class Contact extends AbstractEntity
     private $company    = null;
     private $state      = null;
     private $birthday   = null;
+    private $birthdayDay   = null;
+    private $birthdayMonth = null;
+    private $birthdayYear  = null;
     private $externalId = null;
+
+    private $score = null;
 
     private $Address = null;
     private $Options = null;
@@ -276,5 +281,56 @@ class Contact extends AbstractEntity
     	return isset($this->Options)
 		    ? $this->Options
 		    : $this->Options = new Options($options);
+    }
+
+    /**
+     * @param $param
+     * @return $this
+     */
+    public function setScore($param)
+    {
+        $this->score = $param;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }
+
+    public function setBirthdayYear($param)
+    {
+        $this->birthdayYear = $param;
+        return $this;
+    }
+
+    public function getBirthdayYear()
+    {
+        return $this->birthdayYear;
+    }
+
+    public function setBirthdayMonth($param)
+    {
+        $this->birthdayMonth = $param;
+        return $this;
+    }
+
+    public function getBirthdayMonth($param)
+    {
+        return $this->birthdayMonth;
+    }
+
+    public function setBirthdayDay($param)
+    {
+        $this->birthdayDay = $param;
+        return $this;
+    }
+
+    public function getBirthdayDay($param)
+    {
+        return $this->birthdayDay;
     }
 }
