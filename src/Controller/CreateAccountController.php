@@ -80,6 +80,7 @@ class CreateAccountController
                 $settings,
                 array(
                    'name' => $user['name'],
+                   'lang' => $user['lang'],
                    'phone' => $user['phone'],
                    'consentDetails' => $this->createConsentSchema($user['consentDetails']),
                 )
