@@ -96,7 +96,10 @@ class RequestService
             $message = is_array($response['message'])
                 ? EntityDataHelper::setStrFromArr($response['message'], ', ')
                 : $response['message'];
-            throw new Exception($message);
+
+            $response['message'] = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $message;
+            $response['success'] = false;
+            return $response;
         }
     }
 

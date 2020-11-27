@@ -31,11 +31,12 @@ class ContactAndEventTransferController
 
     public function transferBoth(Contact $Contact, Event $Event)
     {
-        return array_merge($this->service->transferBoth($Contact, $Event),
+        return array_merge(
             [
                 'settings' =>
                     $this->settings->setRequireSyncronization($this->syncService->isNeedSyncContactEmailStatus($Contact))
-            ]
+            ],
+            $this->service->transferBoth($Contact, $Event)
         );
     }
 
@@ -47,11 +48,11 @@ class ContactAndEventTransferController
     public function transferContact(Contact $Contact)
     {
        return array_merge(
-           $this->service->transferContact($Contact),
            [
                'settings' =>
                    $this->settings->setRequireSyncronization($this->syncService->isNeedSyncContactEmailStatus($Contact))
-           ]
+           ],
+           $this->service->transferContact($Contact)
        );
     }
 
