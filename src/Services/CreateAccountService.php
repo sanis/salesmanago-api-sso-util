@@ -25,6 +25,7 @@ class CreateAccountService extends AbstractClient implements CreateAccountInterf
         $data = array_merge($this->__getDefaultApiData($settings), array(
             'email'    => $user['email'],
             'password' => $user['password'],
+            'phone'     => $user['phone'],
             'lang'     => $user['lang'],
             'items'    => json_encode($this->__getModulesData($modulesId))
         ));

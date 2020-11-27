@@ -8,7 +8,8 @@ use SALESmanago\Exception\SalesManagoException;
 
 class ConnectSalesManagoService extends AbstractClient implements ApiMethodInterface
 {
-    const EVENT_TYPE_CART = "CART",
+    const
+        EVENT_TYPE_CART = "CART",
         EVENT_TYPE_PURCHASE = "PURCHASE",
         EVENT_TYPE_CANCELLATION = "CANCELLATION",
         EVENT_TYPE_RETURN = "RETURN";
