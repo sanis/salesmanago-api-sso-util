@@ -43,14 +43,8 @@ class RequestService
             'Content-Type' => 'application/json;charset=UTF-8'
         )
     ) {
-        $this->client = new GuzzleClient([
-            'base_uri' => $settings->getRequestEndpoint(),
-            'verify'   => false,
-            'timeout'  => 45.0,
-            'defaults' => [
-                'headers' => $headers,
-            ]
-        ]);
+        $guzzleAdapter = new GuzzleClientAdapter();
+        $this->client  = $guzzleAdapter->setClient($settings, $headers);
     }
 
     /**
@@ -63,7 +57,11 @@ class RequestService
     final public function request($method, $uri, $data)
     {
         try {
-            $response = $this->client->request($method, $uri, array('json' => $data));
+            if (method_exists(GuzzleClient::class, 'post')) {
+                $response = $this->client->post($uri, array('json' => $data));
+            } else {
+                $response = $this->client->request($method, $uri, array('json' => $data));
+            }
             $this->setStatusCode($response->getStatusCode());
             $rawResponse = $response->getBody()->getContents();
 
