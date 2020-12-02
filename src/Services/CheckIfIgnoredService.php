@@ -22,7 +22,7 @@ class CheckIfIgnoredService
         $this->Settings = $Settings;
     }
 
-    public static function getDeclineResponse()
+    public function getDeclineResponse()
     {
         return array(
             'success'    => false,
