@@ -295,7 +295,7 @@ class Contact extends AbstractEntity
     }
 
     /**
-     * @param array $options
+     * @param array $properties
      * @return \SALESmanago\Entity\Contact\Properties
      */
     public function getProperties($properties = [])

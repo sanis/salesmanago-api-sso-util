@@ -47,7 +47,7 @@ class Properties extends AbstractEntity
     }
 
     /**
-     * @return string $this->streetAddress;
+     * @return string $this->properties;
      */
     public function getProperties(){
         return $this->properties;

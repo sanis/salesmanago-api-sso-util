@@ -38,6 +38,17 @@ class ContactAndEventTransferController
 
     public function transferBoth(Contact $Contact, Event $Event)
     {
+        if($this->ignoreService->isContactIgnored($Contact)) {
+            return array_merge(
+                [
+                    'settings'   => $this->settings,
+                    'success'    => false,
+                    'message'    => array("contact was ignored"),
+                    'contactId'  => null,
+                    'eventId'    => null
+                ]
+            );
+        }
         return array_merge(
             [
                 'settings' =>
@@ -62,7 +73,7 @@ class ContactAndEventTransferController
                     'message'    => array("contact was ignored"),
                     'contactId'  => null,
                     'eventId'    => null
-                ],
+                ]
             );
         }
 
