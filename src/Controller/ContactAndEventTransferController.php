@@ -41,11 +41,11 @@ class ContactAndEventTransferController
         if($this->ignoreService->isContactIgnored($Contact)) {
             return array_merge(
                 [
-                    'settings'   => $this->settings,
-                    'success'    => false,
-                    'message'    => array("contact was ignored"),
-                    'contactId'  => null,
-                    'eventId'    => null
+                    'settings'  => $this->settings,
+                    'success'   => false,
+                    'message'   => array("contact was ignored"),
+                    'contactId' => null,
+                    'eventId'   => null
                 ]
             );
         }
@@ -67,13 +67,8 @@ class ContactAndEventTransferController
     {
         if($this->ignoreService->isContactIgnored($Contact)) {
             return array_merge(
-                [
-                    'settings'   => $this->settings,
-                    'success'    => false,
-                    'message'    => array("contact was ignored"),
-                    'contactId'  => null,
-                    'eventId'    => null
-                ]
+                $this->ignoreService::getDeclineResponse(),
+                ['settings' => $this->settings]
             );
         }
 

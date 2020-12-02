@@ -10,10 +10,10 @@ use SALESmanago\Entity\Contact\Contact;
 class CheckIfIgnoredService
 {
     const
-        IS_IGNORED = 'isIgnored';
+        IS_IGNORED = 'isIgnored',
+        IGNORED_MESSAGE = "Contact was ignored";
 
     private $Settings;
-    private $SettingsModel;
 
     private $Contact;
 
@@ -22,7 +22,18 @@ class CheckIfIgnoredService
         $this->Settings = $Settings;
     }
 
+    public static function getDeclineResponse()
+    {
+        return array(
+            'success'    => false,
+            'message'    => array(CheckIfIgnoredService::IGNORED_MESSAGE),
+            'contactId'  => null,
+            'eventId'    => null
+        );
+    }
+
     /**
+     * @param Contact $Contact
      * @return bool
      */
     public function isContactIgnored(Contact $Contact)

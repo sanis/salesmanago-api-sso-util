@@ -64,7 +64,7 @@ class ContactModel
             Contact::BIRTHDAY    => $this->Contact->getBirthday(),// attention
             Address::PROVINCE    => $Address->getProvince(),// attention
             Options::LANG        => $Options->getLang(),
-            Properties::PROPERTIES => $Properties->getProperties()
+            Properties::PROPERTIES => $Properties->get()
         ];
 
         if ($this->isSubscribtionStatusNoChangeChecker()) {

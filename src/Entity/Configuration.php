@@ -355,12 +355,13 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     * @param string $ignoreDomain
+     * @param array $ignoreDomain
      * @return $this
+     * @throws Exception
      */
     public function setIgnoreDomain($ignoreDomain)
     {
-        if(!isset($ignoreDomain) || empty($ignoreDomain))
+        if(empty($ignoreDomain))
             return $this;
         if (!is_array($ignoreDomain)) {
             throw new Exception('Passed argument isn\'t array');
