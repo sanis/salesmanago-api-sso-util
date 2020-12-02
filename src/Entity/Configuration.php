@@ -5,18 +5,20 @@ namespace SALESmanago\Entity;
 
 
 use SALESmanago\Entity\Contact\ApiDoubleOptIn;
+use SALESmanago\Exception\Exception;
 
 class Configuration extends AbstractEntity
 {
-    const ACTIVE     = 'active';
-    const ENDPOINT   = 'endpoint';
-    const CLIENT_ID  = 'clientId';
-    const API_KEY    = 'apiKey';
-    const API_SECRET = 'apiSecret';
-    const OWNER      = 'owner';
-    const EMAIL      = 'email';
-    const SHA        = 'sha';
-    const TOKEN      = 'token';
+    const ACTIVE        = 'active';
+    const ENDPOINT      = 'endpoint';
+    const CLIENT_ID     = 'clientId';
+    const API_KEY       = 'apiKey';
+    const API_SECRET    = 'apiSecret';
+    const OWNER         = 'owner';
+    const EMAIL         = 'email';
+    const SHA           = 'sha';
+    const TOKEN         = 'token';
+    const IGNORE_DOMAIN = 'ignoreDomain';
 
     /**
      * @var boolean
@@ -67,6 +69,11 @@ class Configuration extends AbstractEntity
      * @var array
      */
     protected $removeTags;
+
+    /**
+     * @var array
+     */
+    protected $ignoreDomain;
 
     /**
      * @var string
@@ -346,6 +353,30 @@ class Configuration extends AbstractEntity
     {
         return $this->removeTags;
     }
+
+    /**
+     * @param string $ignoreDomain
+     * @return $this
+     */
+    public function setIgnoreDomain($ignoreDomain)
+    {
+        if(!isset($ignoreDomain) || empty($ignoreDomain))
+            return $this;
+        if (!is_array($ignoreDomain)) {
+            throw new Exception('Passed argument isn\'t array');
+        }
+        $this->ignoreDomain = $ignoreDomain;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIgnoreDomain()
+    {
+        return $this->ignoreDomain;
+    }
+
 
     /**
      * @param string $domain

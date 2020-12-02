@@ -11,6 +11,7 @@ use SALESmanago\Services\ContactAndEventTransferService;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
 use SALESmanago\Services\SynchronizationService as SyncService;
+use SALESmanago\Services\CheckIfIgnoredService as IgnoreService;
 
 class ContactAndEventTransferController
 {
@@ -22,11 +23,17 @@ class ContactAndEventTransferController
      */
     protected $syncService;
 
+    /**
+     * @var IgnoreService
+     */
+    protected $ignoreService;
+
     public function __construct(Configuration $settings)
     {
-        $this->settings = $settings;
-        $this->service  = new ContactAndEventTransferService($this->settings);
-        $this->syncService = new SyncService($this->settings);
+        $this->settings      = $settings;
+        $this->service       = new ContactAndEventTransferService($this->settings);
+        $this->syncService   = new SyncService($this->settings);
+        $this->ignoreService = new IgnoreService($this->settings);
     }
 
     public function transferBoth(Contact $Contact, Event $Event)
@@ -47,13 +54,25 @@ class ContactAndEventTransferController
 
     public function transferContact(Contact $Contact)
     {
-       return array_merge(
-           [
-               'settings' =>
-                   $this->settings->setRequireSyncronization($this->syncService->isNeedSyncContactEmailStatus($Contact))
-           ],
-           $this->service->transferContact($Contact)
-       );
+        if($this->ignoreService->isContactIgnored($Contact)) {
+            return array_merge(
+                [
+                    'settings'   => $this->settings,
+                    'success'    => false,
+                    'message'    => array("contact was ignored"),
+                    'contactId'  => null,
+                    'eventId'    => null
+                ],
+            );
+        }
+
+        return array_merge(
+            [
+                'settings' =>
+                    $this->settings->setRequireSyncronization($this->syncService->isNeedSyncContactEmailStatus($Contact))
+            ],
+            $this->service->transferContact($Contact)
+        );
     }
 
 }
