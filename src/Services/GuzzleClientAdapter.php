@@ -1,12 +1,14 @@
 <?php
 
-namespace bhr\Salesmanago\Services;
+namespace SALESmanago\Services;
 
-use GuzzleHttp\Client as GuzzleClient;
-use bhr\Salesmanago\Entity\Configuration;
+use \GuzzleHttp\Client as GuzzleClient;
+use SALESmanago\Entity\Configuration;
 
 class GuzzleClientAdapter
 {
+
+    private $client;
 
     /**
      * Checks const of GuzzleClient
@@ -33,31 +35,28 @@ class GuzzleClientAdapter
 
         if (array_key_exists('VERSION', $arrayOfConstant)) {
 
-        if (version_compare(GuzzleClient::VERSION, '6.0.0', '<')) {
-            $client = new GuzzleClient([
-                'base_url' => $settings->getRequestEndpoint(),
-                'defaults' => array(
+            if (version_compare(GuzzleClient::VERSION, '6.0.0', '<')) {
+                $this->client = new GuzzleClient([
+                    'base_url' => $settings->getRequestEndpoint(),
+                    'defaults' => array(
+                        'verify' => false,
+                        'timeout' => 45.0,
+                        'headers' => $headers
+                    )
+                ]);
+
+            } elseif (version_compare(GuzzleClient::VERSION, '6.0.0', '>')) {
+                $this->client = new GuzzleClient([
+                    'base_uri' => $settings->getRequestEndpoint(),
                     'verify' => false,
                     'timeout' => 45.0,
-                    'headers' => $headers
-                )
-            ]);
-            return $client;
-
-        } elseif (version_compare(GuzzleClient::VERSION, '6.0.0', '>')) {
-            $client = new GuzzleClient([
-                'base_uri' => $settings->getRequestEndpoint(),
-                'verify' => false,
-                'timeout' => 45.0,
-                'defaults' => [
-                    'headers' => $headers,
-                ]
-            ]);
-            return $client;
-
+                    'defaults' => [
+                        'headers' => $headers,
+                    ]
+                ]);
             }
         } else {
-            $client = new GuzzleClient([
+            $this->client = new GuzzleClient([
                 'base_uri' => $settings->getRequestEndpoint(),
                 'verify' => false,
                 'timeout' => 45.0,
@@ -65,7 +64,23 @@ class GuzzleClientAdapter
                     'headers' => $headers,
                 ]
             ]);
-            return $client;
         }
+    }
+
+    /**
+     * @param $data
+     * @param $method
+     * @param $uri
+     * @return mixed
+     */
+    public function transfer($method, $uri, $data)
+    {
+        if (method_exists(GuzzleClient::class, 'post')) {
+            $response = $this->client->post($uri, array('json' => $data));
+        } else {
+            $response = $this->client->request($method, $uri, array('json' => $data));
+        }
+
+        return $response;
     }
 }

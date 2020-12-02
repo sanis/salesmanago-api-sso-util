@@ -19,16 +19,15 @@ class RequestService
 {
     const METHOD_POST = 'POST';
 
-    /** @var GuzzleClient $client */
-    private $client;
-
     /**
      * @var integer
      */
     private $statusCode;
+    private $guzzleAdapter;
 
     public function __construct(Settings $Settings)
     {
+        $this->guzzleAdapter = new GuzzleClientAdapter();
         $this->setClient($Settings);
     }
 
@@ -43,8 +42,7 @@ class RequestService
             'Content-Type' => 'application/json;charset=UTF-8'
         )
     ) {
-        $guzzleAdapter = new GuzzleClientAdapter();
-        $this->client  = $guzzleAdapter->setClient($settings, $headers);
+        $this->guzzleAdapter->setClient($settings, $headers);
     }
 
     /**
@@ -57,11 +55,7 @@ class RequestService
     final public function request($method, $uri, $data)
     {
         try {
-            if (method_exists(GuzzleClient::class, 'post')) {
-                $response = $this->client->post($uri, array('json' => $data));
-            } else {
-                $response = $this->client->request($method, $uri, array('json' => $data));
-            }
+            $response = $this->guzzleAdapter->transfer($method, $uri, $data);
             $this->setStatusCode($response->getStatusCode());
             $rawResponse = $response->getBody()->getContents();
 

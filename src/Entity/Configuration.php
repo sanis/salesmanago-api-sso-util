@@ -448,7 +448,7 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     * @param boolean $param
+     * @param array $param
      * @return $this
      */
     public function setApiDoubleOptIn($param)
