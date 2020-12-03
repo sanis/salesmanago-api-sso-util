@@ -28,21 +28,11 @@ class RequestService
     public function __construct(Settings $Settings)
     {
         $this->guzzleAdapter = new GuzzleClientAdapter();
-        $this->guzzleAdapter->setClient($Settings);
-    }
-
-    /**
-     * @param Settings $settings
-     * @param array $headers
-     */
-    final public function setClient(
-        Settings $settings,
+        $this->guzzleAdapter->setClient($Settings,
         $headers = array(
             'Accept'       => 'application/json',
             'Content-Type' => 'application/json;charset=UTF-8'
-        )
-    ) {
-        $this->guzzleAdapter->setClient($settings, $headers);
+            ));
     }
 
     /**

@@ -83,4 +83,9 @@ class GuzzleClientAdapter
 
         return $response;
     }
+
+    public function getClient()
+    {
+        return $this->client;
+    }
 }

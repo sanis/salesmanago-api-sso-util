@@ -12,6 +12,7 @@ use SALESmanago\Entity\Event\Event;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Services\ContactAndEventTransferService;
+use SALESmanago\Services\GuzzleClientAdapter;
 
 use Tests\Model\ContactModelTest;
 use Tests\Model\EventModelTest;
