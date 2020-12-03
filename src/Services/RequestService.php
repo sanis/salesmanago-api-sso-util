@@ -28,7 +28,7 @@ class RequestService
     public function __construct(Settings $Settings)
     {
         $this->guzzleAdapter = new GuzzleClientAdapter();
-        $this->setClient($Settings);
+        $this->guzzleAdapter->setClient($Settings);
     }
 
     /**
