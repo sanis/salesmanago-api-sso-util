@@ -24,23 +24,24 @@ class Contact extends AbstractEntity
         EXT_ID   = 'externalId',
         COOKIE_NAME = 'smclient';
 
-    private $email      = null;
-    private $contactId  = null;
-    private $fax        = null;
-    private $name       = null;
-    private $phone      = null;
-    private $company    = null;
-    private $state      = null;
-    private $birthday   = null;
+    private $email         = null;
+    private $contactId     = null;
+    private $fax           = null;
+    private $name          = null;
+    private $phone         = null;
+    private $company       = null;
+    private $state         = null;
+    private $birthday      = null;
     private $birthdayDay   = null;
     private $birthdayMonth = null;
     private $birthdayYear  = null;
-    private $externalId = null;
+    private $externalId    = null;
 
-    private $score = null;
+    private $score         = null;
 
-    private $Address = null;
-    private $Options = null;
+    private $Address       = null;
+    private $Properties    = null;
+    private $Options       = null;
 
     /**
      * @param array $contactData;
@@ -281,6 +282,27 @@ class Contact extends AbstractEntity
     	return isset($this->Options)
 		    ? $this->Options
 		    : $this->Options = new Options($options);
+    }
+
+    /**
+     * @param \SALESmanago\Entity\Contact\Properties $Properties
+     * @return $this
+     */
+    public function setProperties(Properties $Properties)
+    {
+        $this->Properties = $Properties;
+        return $this;
+    }
+
+    /**
+     * @param array $properties
+     * @return \SALESmanago\Entity\Contact\Properties
+     */
+    public function getProperties($properties = [])
+    {
+        return isset($this->Properties)
+            ? $this->Properties
+            : $this->Properties = new Properties($properties);
     }
 
     /**

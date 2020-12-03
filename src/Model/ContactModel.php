@@ -6,6 +6,7 @@ namespace SALESmanago\Model;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Contact\Address;
 use SALESmanago\Entity\Contact\Options;
+use SALESmanago\Entity\Contact\Properties;
 use SALESmanago\Entity\Contact\ApiDoubleOptIn;
 
 use SALESmanago\Entity\Configuration as Settings;
@@ -31,8 +32,9 @@ class ContactModel
      */
     public function getContactForUnionTransfer()
     {
-        $Address = $this->Contact->getAddress();
-        $Options = $this->Contact->getOptions();
+        $Address    = $this->Contact->getAddress();
+        $Options    = $this->Contact->getOptions();
+        $Properties = $this->Contact->getProperties();
 
         $contactRequestArray = [
             Settings::CLIENT_ID => $this->Settings->getClientId(),
@@ -61,7 +63,8 @@ class ContactModel
             Options::R_TAGS      => $Options->getRemoveTags(),
             Contact::BIRTHDAY    => $this->Contact->getBirthday(),// attention
             Address::PROVINCE    => $Address->getProvince(),// attention
-            Options::LANG        => $Options->getLang()
+            Options::LANG        => $Options->getLang(),
+            Properties::PROPERTIES => $Properties->get()
         ];
 
         if ($this->isSubscribtionStatusNoChangeChecker()) {
