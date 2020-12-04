@@ -513,7 +513,7 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     * @return $this
+     * @return bool
      */
     public function getActiveSynchronization()
     {
@@ -521,10 +521,10 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     *
      * @param bool $param
+     * @return $this;
      */
-    public function setRequireSyncronization($param)
+    public function setRequireSynchronization($param)
     {
         $this->requireSynchronization = $param;
         return $this;
@@ -533,7 +533,7 @@ class Configuration extends AbstractEntity
     /**
      * @return bool
      */
-    public function getRequireSyncronization()
+    public function getRequireSynchronization()
     {
         return $this->requireSynchronization;
     }
