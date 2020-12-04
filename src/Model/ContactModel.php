@@ -72,14 +72,14 @@ class ContactModel
             $contactRequestArray[ApiDoubleOptIn::U_API_D_OPT_IN] = false;
         }
 
-        if ($this->isUnSubscribesChecker()) {
+        if ($this->Contact->getOptions()->getIsUnSubscribes()) {
             $contactRequestArray[Options::F_OPT_IN]    = false;
             $contactRequestArray[Options::F_OPT_OUT]   = true;
             $contactRequestArray[Options::F_P_OPT_IN]  = false;
             $contactRequestArray[Options::F_P_OPT_OUT] = true;
         }
 
-        if ($this->isSubscribesChecker()) {
+        if ($this->Contact->getOptions()->getIsSubscribes()) {
             $contactRequestArray[Options::F_OPT_IN]    = true;
             $contactRequestArray[Options::F_OPT_OUT]   = false;
             $contactRequestArray[Options::F_P_OPT_IN]  = true;
@@ -177,32 +177,6 @@ class ContactModel
         if ($isApiDoubleOptInEnabled && $this->Contact->getOptions()->getIsSubscribes()) {
            return true;
         }
-        return false;
-    }
-
-    /**
-     * Check if contact subscribes at the moment
-     * @return bool
-     */
-    protected function isSubscribesChecker()
-    {
-        if ($this->Contact->getOptions()->getIsSubscribes()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if contact unsubscribes at the moment
-     * @return bool
-     */
-    protected function isUnSubscribesChecker()
-    {
-        if ($this->Contact->getOptions()->getIsUnSubscribes()) {
-            return true;
-        }
-
         return false;
     }
 }
