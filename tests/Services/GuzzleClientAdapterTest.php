@@ -4,7 +4,6 @@ namespace Tests\src\Services;
 
 use SALESmanago\Services\GuzzleClientAdapter;
 use \GuzzleHttp\Client as GuzzleClient;
-use SALESmanago\Entity\Configuration;
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Services\RequestService;
 use SALESmanago\Entity\Configuration as Settings;
@@ -13,25 +12,6 @@ use Tests\Model\ContactModelTest;
 
 class GuzzleClientAdapterTest extends TestCase
 {
-    /**
-     * @dataProvider
-     */
-//    public function testSetClientIsCorrectGuzzleObject()
-//    {
-//        $configuration       = new Configuration();
-//        $guzzleClientAdapter = new GuzzleClientAdapter();
-//        $configuration->setEndpoint('app3.salesmanago.pl');
-//
-//        $headers = array(
-//            'Accept' => 'application/json',
-//            'Content-Type' => 'application/json;charset=UTF-8'
-//        );
-//
-//        $guzzleClientAdapter->setClient($configuration, $headers);
-//
-//        $this->assertIsObject($guzzleClientAdapter->getClient());
-//
-//    }
 
     public function testGetClientReturnsProperObjectOfGuzzle()
     {
@@ -42,7 +22,8 @@ class GuzzleClientAdapterTest extends TestCase
             'Accept' => 'application/json',
             'Content-Type' => 'application/json;charset=UTF-8'
         );
-        $client = $guzzleAdapter->setClient($Settings, $headers);
+        $guzzleAdapter->setClient($Settings, $headers);
+
 
         $this->assertIsObject($guzzleAdapter->getClient());
     }
@@ -72,6 +53,9 @@ class GuzzleClientAdapterTest extends TestCase
 
     }
 
+    /**
+     * Try to create mock object and then test it.
+     */
     public function testTransferMethodsAdaptsToDifferentVersion()
     {
         $dummyData           = ContactModelTest::prepareDummyDataForContactEntity();
