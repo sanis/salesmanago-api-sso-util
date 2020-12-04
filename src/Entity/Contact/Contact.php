@@ -5,7 +5,6 @@ namespace SALESmanago\Entity\Contact;
 use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
 
-use SALESmanago\Entity\Contact\ApiDoubleOptIn;
 use SALESmanago\Helper\EntityDataHelper;
 
 class Contact extends AbstractEntity

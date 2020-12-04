@@ -67,12 +67,26 @@ class ContactModel
             Properties::PROPERTIES => $Properties->get()
         ];
 
-        if ($this->isSubscribtionStatusNoChangeChecker()) {
+        if ($this->isSubscriptionStatusNoChangeChecker()) {
             $contactRequestArray[Options::F_OPT_IN]              = false;
             $contactRequestArray[Options::F_OPT_OUT]             = false;
             $contactRequestArray[Options::F_P_OPT_IN]            = false;
             $contactRequestArray[Options::F_P_OPT_OUT]           = false;
             $contactRequestArray[ApiDoubleOptIn::U_API_D_OPT_IN] = false;
+        }
+
+        if ($this->Contact->getOptions()->getIsUnSubscribes()) {
+            $contactRequestArray[Options::F_OPT_IN]    = false;
+            $contactRequestArray[Options::F_OPT_OUT]   = true;
+            $contactRequestArray[Options::F_P_OPT_IN]  = false;
+            $contactRequestArray[Options::F_P_OPT_OUT] = true;
+        }
+
+        if ($this->Contact->getOptions()->getIsSubscribes()) {
+            $contactRequestArray[Options::F_OPT_IN]    = true;
+            $contactRequestArray[Options::F_OPT_OUT]   = false;
+            $contactRequestArray[Options::F_P_OPT_IN]  = true;
+            $contactRequestArray[Options::F_P_OPT_OUT] = false;
         }
 
         if ($this->apiDoubleOptInChecker()) {
@@ -105,48 +119,52 @@ class ContactModel
     }
 
     /**
-     * Create Contact from Basic responce;
-     * @param $response
-     * @retrun Contact
+     * Create Contact from Basic response;
+     * @param array $response
+     * @return Contact $Contact
      */
-    public function getContactFromBasicResponse($responseContact)
+    public function getContactFromBasicResponse($response)
     {
         $this->Contact
-            ->setName($responseContact['name'])
-            ->setEmail($responseContact['email'])
-            ->setPhone($responseContact['phone'])
-            ->setFax($responseContact['fax'])
-            ->setScore($responseContact['score'])
-            ->setState($responseContact['state'])
-            ->setCompany($responseContact['company'])
-            ->setExternalId($responseContact['externalId'])
-            ->setContactId($responseContact['contactId'])
-            ->setBirthdayYear($responseContact['birthdayYear'])
-            ->setBirthdayMonth($responseContact['birthdayMonth'])
-            ->setBirthdayDay($responseContact['birthdayDay']);
+            ->setName($response['name'])
+            ->setEmail($response['email'])
+            ->setPhone($response['phone'])
+            ->setFax($response['fax'])
+            ->setScore($response['score'])
+            ->setState($response['state'])
+            ->setCompany($response['company'])
+            ->setExternalId($response['externalId'])
+            ->setContactId($response['contactId'])
+            ->setBirthdayYear($response['birthdayYear'])
+            ->setBirthdayMonth($response['birthdayMonth'])
+            ->setBirthdayDay($response['birthdayDay']);
 
         $this->Contact->getOptions()
-            ->setOptedOut($responseContact['optedOut'])
-            ->setOptedOutPhone($responseContact['optedOutPhone'])
-            ->setDeleted($responseContact['deleted'])
-            ->setInvalid($responseContact['invalid'])
-            ->setModifiedOn($responseContact['modifiedOn'])
-            ->setCreatedOn($responseContact['createdOn'])
-            ->setLastVisit($responseContact['lastVisit']);
+            ->setOptedOut($response['optedOut'])
+            ->setOptedOutPhone($response['optedOutPhone'])
+            ->setDeleted($response['deleted'])
+            ->setInvalid($response['invalid'])
+            ->setModifiedOn($response['modifiedOn'])
+            ->setCreatedOn($response['createdOn'])
+            ->setLastVisit($response['lastVisit']);
 
         $this->Contact->getAddress()
-            ->setStreetAddress($responseContact['address']['streetAddress'])
-            ->setZipCode($responseContact['address']['zipCode'])
-            ->setCity($responseContact['address']['city'])
-            ->setCountry($responseContact['address']['country']);
+            ->setStreetAddress($response['address']['streetAddress'])
+            ->setZipCode($response['address']['zipCode'])
+            ->setCity($response['address']['city'])
+            ->setCountry($response['address']['country']);
 
         return $this->Contact;
     }
 
-    protected function isSubscribtionStatusNoChangeChecker()
+    /**
+     * Checks if subscription status no change
+     * @return bool
+     */
+    protected function isSubscriptionStatusNoChangeChecker()
     {
         return (!$this->Contact->getOptions()->getIsSubscribes()
-            && $this->Contact->getOptions()->getIsSubscribtionStatusNoChange()
+            && $this->Contact->getOptions()->getIsSubscriptionStatusNoChange()
             && !$this->Contact->getOptions()->getForceOptIn());
     }
 
