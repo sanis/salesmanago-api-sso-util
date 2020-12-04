@@ -4,7 +4,7 @@
 namespace SALESmanago\Entity;
 
 
-use SALESmanago\Entity\Contact\ApiDoubleOptIn;
+use SALESmanago\Entity\ApiDoubleOptIn as ApiDoubleOptIn;
 use SALESmanago\Exception\Exception;
 
 class Configuration extends AbstractEntity
@@ -88,7 +88,7 @@ class Configuration extends AbstractEntity
     /**
      * @var array
      */
-    protected $properties;
+    protected $properties; //todo: check if necessary
 
     /**
      * @var array
@@ -418,7 +418,7 @@ class Configuration extends AbstractEntity
     /**
      * @return array
      */
-    public function getProperties()
+    public function getProperties() //todo: check if necessary
     {
         return $this->properties;
     }
@@ -426,7 +426,7 @@ class Configuration extends AbstractEntity
     /**
      * @param array $properties
      */
-    public function setProperties($properties)
+    public function setProperties($properties) //todo: check if necessary
     {
         $this->properties = $properties;
     }
@@ -480,10 +480,10 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     * @param boolean $param
+     * @param \SALESmanago\Entity\ApiDoubleOptIn $param
      * @return $this
      */
-    public function setApiDoubleOptIn($param)
+    public function setApiDoubleOptIn(ApiDoubleOptIn $param)
     {
         if (is_array($param)) {
             $this->ApiDoubleOptIn = new ApiDoubleOptIn($param);

@@ -7,7 +7,7 @@ use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Contact\Address;
 use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\Contact\Properties;
-use SALESmanago\Entity\Contact\ApiDoubleOptIn;
+use SALESmanago\Entity\ApiDoubleOptIn;
 
 use SALESmanago\Entity\Configuration as Settings;
 use SALESmanago\Exception\Exception;
@@ -37,7 +37,7 @@ class ContactModel
         $Properties = $this->Contact->getProperties();
 
         $contactRequestArray = [
-            Settings::CLIENT_ID => $this->Settings->getClientId(),
+            Settings::CLIENT_ID => $this->Settings->getClientId(),  //todo: check if necessary
             Options::ASYNC      => $Options->getAsync(),
             Contact::CONTACT    => [
                 Contact::EMAIL   => $this->Contact->getEmail(),
@@ -92,12 +92,13 @@ class ContactModel
         if ($this->apiDoubleOptInChecker()) {
             $ApiDoubleOptIn = $this->Settings->getApiDoubleOptIn();
 
-            $contactRequestArray = array_merge([
+            $contactRequestArray = array_merge(
+                $contactRequestArray, [
                 ApiDoubleOptIn::U_API_D_OPT_IN        => $ApiDoubleOptIn->getEnabled(),
                 ApiDoubleOptIn::D_OPT_IN_EMAIL_ACC_ID => $ApiDoubleOptIn->getAccountId(),
                 ApiDoubleOptIn::D_OPT_IN_TEMPLATE_ID  => $ApiDoubleOptIn->getTemplateId(),
                 ApiDoubleOptIn::D_OPT_IN_EMAIL_SUBJ   => $ApiDoubleOptIn->getSubject()
-            ], $contactRequestArray);
+            ]);
         }
 
         return DataHelper::filterDataArray($contactRequestArray);

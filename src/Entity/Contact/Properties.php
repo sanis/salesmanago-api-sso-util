@@ -75,6 +75,9 @@ class Properties extends AbstractEntity
      */
     public function setItems($param)
     {
+        if(empty($param)) {
+            return $this;
+        }
         if (!is_array($param)) {
             throw new Exception('Passed argument isn\'t array');
         }
