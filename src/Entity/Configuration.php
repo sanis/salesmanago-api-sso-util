@@ -4,7 +4,7 @@
 namespace SALESmanago\Entity;
 
 
-use SALESmanago\Entity\ApiDoubleOptIn as ApiDoubleOptIn;
+use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Exception\Exception;
 
 class Configuration extends AbstractEntity
@@ -480,10 +480,10 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     * @param \SALESmanago\Entity\ApiDoubleOptIn $param
+     * @param mixed $param  //ApiDoubleOptIn object is preferred
      * @return $this
      */
-    public function setApiDoubleOptIn(ApiDoubleOptIn $param)
+    public function setApiDoubleOptIn($param)
     {
         if (is_array($param)) {
             $this->ApiDoubleOptIn = new ApiDoubleOptIn($param);
