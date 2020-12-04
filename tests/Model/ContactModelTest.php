@@ -166,7 +166,7 @@ class ContactModelTest extends TestCase
             Options::F_OPT_OUT    => $optionsFromPlatform['forceOptOut'],
             Options::F_P_OPT_IN   => $optionsFromPlatform['forcePhoneOptIn'],
             Options::F_P_OPT_OUT  => $optionsFromPlatform['forcePhoneOptOut'],
-            Options::CREATED_ON   => $optionsFromPlatform['createOn'],
+            Options::CREATED_ON   => $optionsFromPlatform['createdOn'],
             Contact::BIRTHDAY     => $contactFromPlatform['birthday'],
             Address::PROVINCE     => $addressFromPlatform['province'],
             Options::LANG         => $optionsFromPlatform['lang'],
