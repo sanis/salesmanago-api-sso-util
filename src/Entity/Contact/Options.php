@@ -26,7 +26,6 @@ class Options extends AbstractEntity
     private $forceOptOut      = false;
     private $forcePhoneOptIn  = false;
     private $forcePhoneOptOut = false;
-    private $properties       = [];
     private $tagScoring       = false;
     private $tags             = [];
     private $removeTags       = [];
