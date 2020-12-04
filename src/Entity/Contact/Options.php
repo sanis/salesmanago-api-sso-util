@@ -34,9 +34,28 @@ class Options extends AbstractEntity
     private $createdOn        = null;
     private $lang             = null;
 
+    /**
+     * Flag for contact subscriptions
+     * Set this flag if contact subscribes
+     * @var bool
+     */
     private $isSubscribes     = false;
+
+    /**
+     * Flag for contact unsubscribe
+     * Set this flag if contact unsubscribes
+     * @var bool
+     */
     private $isUnSubscribes   = false;
-    private $isSubscribtionStatusNoChange = true;
+
+    /**
+     * Flag for contact subscription status no change;
+     * This flag is used by default;
+     * This mean that existing contact in SALESmanago must not change his optin status
+     * or set optOut status while contact doesn exist;
+     * @var bool
+     */
+    private $isSubscriptionStatusNoChange = true;
 
     private $optedOut      = null;
     private $optedOutPhone = null;
@@ -192,17 +211,16 @@ class Options extends AbstractEntity
      * @param bool $param
      * @return $this
      */
-    public function setIsSubscribtionStatusNoChange($param){
-        $this->isSubscribtionStatusNoChange = $param;
+    public function setIsSubscriptionStatusNoChange($param){
+        $this->isSubscriptionStatusNoChange = $param;
         return $this;
     }
 
     /**
-     * @param bool $param
      * @return mixed
      */
-    public function getIsSubscribtionStatusNoChange(){
-        return $this->isSubscribtionStatusNoChange;
+    public function getIsSubscriptionStatusNoChange() {
+        return $this->isSubscriptionStatusNoChange;
     }
 
     /**
