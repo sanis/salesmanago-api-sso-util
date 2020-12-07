@@ -88,11 +88,6 @@ class Configuration extends AbstractEntity
     /**
      * @var array
      */
-    protected $properties; //todo: check if necessary
-
-    /**
-     * @var array
-     */
     protected $consentDetails;
 
     /**
@@ -413,22 +408,6 @@ class Configuration extends AbstractEntity
     public function getDomainToken()
     {
         return $this->domainToken;
-    }
-
-    /**
-     * @return array
-     */
-    public function getProperties() //todo: check if necessary
-    {
-        return $this->properties;
-    }
-
-    /**
-     * @param array $properties
-     */
-    public function setProperties($properties) //todo: check if necessary
-    {
-        $this->properties = $properties;
     }
 
     public function getConfig()

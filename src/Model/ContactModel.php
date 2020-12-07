@@ -37,7 +37,7 @@ class ContactModel
         $Properties = $this->Contact->getProperties();
 
         $contactRequestArray = [
-            Settings::CLIENT_ID => $this->Settings->getClientId(),  //todo: check if necessary
+            Settings::CLIENT_ID => $this->Settings->getClientId(),
             Options::ASYNC      => $Options->getAsync(),
             Contact::CONTACT    => [
                 Contact::EMAIL   => $this->Contact->getEmail(),
