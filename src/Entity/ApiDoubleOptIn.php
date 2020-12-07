@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SALESmanago\Entity\Contact;
+namespace SALESmanago\Entity;
 
 
 use SALESmanago\Entity\AbstractEntity;
