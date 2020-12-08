@@ -28,6 +28,10 @@ class ContactAndEventTransferController
      */
     protected $ignoreService;
 
+    /**
+     * ContactAndEventTransferController constructor.
+     * @param Configuration $settings
+     */
     public function __construct(Configuration $settings)
     {
         $this->settings      = $settings;
@@ -36,6 +40,12 @@ class ContactAndEventTransferController
         $this->ignoreService = new IgnoreService($this->settings);
     }
 
+    /**
+     * @param Contact $Contact
+     * @param Event $Event
+     * @return array
+     * @throws Exception
+     */
     public function transferBoth(Contact $Contact, Event $Event)
     {
         if($this->ignoreService->isContactIgnored($Contact)) {
@@ -47,17 +57,29 @@ class ContactAndEventTransferController
         return array_merge(
             [
                 'settings' =>
-                    $this->settings->setRequireSyncronization($this->syncService->isNeedSyncContactEmailStatus($Contact))
+                    $this->settings->setRequireSynchronization(
+                        $this->syncService->isNeedSyncContactEmailStatus(clone $Contact)
+                    )
             ],
             $this->service->transferBoth($Contact, $Event)
         );
     }
 
+    /**
+     * @param Event $Event
+     * @return array
+     * @throws Exception
+     */
     public function transferEvent(Event $Event)
     {
         return $this->service->transferEvent($Event);
     }
 
+    /**
+     * @param Contact $Contact
+     * @return array
+     * @throws Exception
+     */
     public function transferContact(Contact $Contact)
     {
         if($this->ignoreService->isContactIgnored($Contact)) {
@@ -70,7 +92,9 @@ class ContactAndEventTransferController
         return array_merge(
             [
                 'settings' =>
-                    $this->settings->setRequireSyncronization($this->syncService->isNeedSyncContactEmailStatus($Contact))
+                    $this->settings->setRequireSynchronization(
+                        $this->syncService->isNeedSyncContactEmailStatus(clone $Contact)
+                    )
             ],
             $this->service->transferContact($Contact)
         );

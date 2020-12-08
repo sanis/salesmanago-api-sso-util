@@ -6,6 +6,7 @@ namespace SALESmanago\Entity\Event;
 
 use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
+use SALESmanago\Helper\EntityDataHelper;
 
 class Event extends AbstractEntity
 {
@@ -186,7 +187,25 @@ class Event extends AbstractEntity
 
     public function setDate($param)
     {
-        $this->date = $param;
+        if ($param == null) {
+            return $this;
+        }
+        if (is_bool($param) || empty($param)) {
+            throw new Exception('Passed argument isn\'t timestamp');
+        } elseif ($param instanceof \DateTime) {
+            $this->date = $param->format('Ymd');
+        } elseif (EntityDataHelper::isTimestamp($param)) {
+            try {
+                $birthday = new \DateTime($param);
+            } catch (\Exception $e) {
+                throw new Exception($e->getMessage());
+            }
+            $this->date = $birthday->format('Ymd');
+        } elseif (EntityDataHelper::isUnixTime($param)) {
+            $this->date = gmdate("Ymd", intval($param));
+        } else {
+            throw new Exception('Passed argument isn\'t timestamp');
+        }
         return $this;
     }
 
