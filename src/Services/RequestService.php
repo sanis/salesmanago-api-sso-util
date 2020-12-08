@@ -51,6 +51,11 @@ class RequestService
 
             return json_decode($rawResponse, true);
         } catch (ConnectException $e) {
+            print_r($method);
+            print_r($uri);
+            print_r($data);
+            var_dump($e->getMessage());
+            die('die 123');
             throw new Exception($e->getMessage());
         } catch (ClientException $e) {
             throw new Exception($e->getMessage());
