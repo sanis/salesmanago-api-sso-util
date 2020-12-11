@@ -54,17 +54,18 @@ class ContactModel
                     Address::COUNTRY   => $Address->getCountry()
                 ],
             ],
-            Settings::OWNER      => $this->Settings->getOwner(),
-            Options::N_EMAIL     => $Options->getNewEmail(),
-            Options::F_OPT_IN    => $Options->getForceOptIn(),
-            Options::F_OPT_OUT   => $Options->getForceOptOut(),
-            Options::F_P_OPT_IN  => $Options->getForcePhoneOptIn(),
-            Options::F_P_OPT_OUT => $Options->getForcePhoneOptOut(),
-            Options::TAGS        => $Options->getTags(),
-            Options::R_TAGS      => $Options->getRemoveTags(),
-            Contact::BIRTHDAY    => $this->Contact->getBirthday(),// attention
-            Address::PROVINCE    => $Address->getProvince(),// attention
-            Options::LANG        => $Options->getLang(),
+            Settings::OWNER        => $this->Settings->getOwner(),
+            Options::N_EMAIL       => $Options->getNewEmail(),
+            Options::F_OPT_IN      => $Options->getForceOptIn(),
+            Options::F_OPT_OUT     => $Options->getForceOptOut(),
+            Options::F_P_OPT_IN    => $Options->getForcePhoneOptIn(),
+            Options::F_P_OPT_OUT   => $Options->getForcePhoneOptOut(),
+            Options::TAGS_SCORING  => $Options->getTagScoring(),
+            Options::TAGS          => $Options->getTags(),
+            Options::R_TAGS        => $Options->getRemoveTags(),
+            Contact::BIRTHDAY      => $this->Contact->getBirthday(),// attention
+            Address::PROVINCE      => $Address->getProvince(),// attention
+            Options::LANG          => $Options->getLang(),
             Properties::PROPERTIES => $Properties->get()
         ];
 
