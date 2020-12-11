@@ -190,19 +190,20 @@ class Event extends AbstractEntity
         if ($param == null) {
             return $this;
         }
+
         if (is_bool($param) || empty($param)) {
             throw new Exception('Passed argument isn\'t timestamp');
+        } elseif (EntityDataHelper::isUnixTime($param)) {
+            $this->date = $param*1000;
         } elseif ($param instanceof \DateTime) {
-            $this->date = $param->format('Ymd');
+            $this->date = strtotime($param->format('Y-m-d H:i:sP'))*1000;
         } elseif (EntityDataHelper::isTimestamp($param)) {
             try {
-                $birthday = new \DateTime($param);
+                $date = new \DateTime($param);
             } catch (\Exception $e) {
                 throw new Exception($e->getMessage());
             }
-            $this->date = $birthday->format('Ymd');
-        } elseif (EntityDataHelper::isUnixTime($param)) {
-            $this->date = gmdate("Ymd", intval($param));
+            $this->date = strtotime($date->format('Y-m-d H:i:sP'))*1000;
         } else {
             throw new Exception('Passed argument isn\'t timestamp');
         }

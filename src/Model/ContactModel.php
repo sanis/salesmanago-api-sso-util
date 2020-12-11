@@ -45,6 +45,7 @@ class ContactModel
                 Contact::NAME    => $this->Contact->getName(),
                 Contact::PHONE   => $this->Contact->getPhone(),
                 Contact::COMPANY => $this->Contact->getCompany(),
+                Contact::EXT_ID  => $this->Contact->getExternalId(),
                 Contact::STATE   => $this->Contact->getState(),
                 Contact::ADDRESS => [
                     Address::STREET_AD => $Address->getStreetAddress(),
@@ -53,17 +54,18 @@ class ContactModel
                     Address::COUNTRY   => $Address->getCountry()
                 ],
             ],
-            Settings::OWNER      => $this->Settings->getOwner(),
-            Options::N_EMAIL     => $Options->getNewEmail(),
-            Options::F_OPT_IN    => $Options->getForceOptIn(),
-            Options::F_OPT_OUT   => $Options->getForceOptOut(),
-            Options::F_P_OPT_IN  => $Options->getForcePhoneOptIn(),
-            Options::F_P_OPT_OUT => $Options->getForcePhoneOptOut(),
-            Options::TAGS        => $Options->getTags(),
-            Options::R_TAGS      => $Options->getRemoveTags(),
-            Contact::BIRTHDAY    => $this->Contact->getBirthday(),// attention
-            Address::PROVINCE    => $Address->getProvince(),// attention
-            Options::LANG        => $Options->getLang(),
+            Settings::OWNER        => $this->Settings->getOwner(),
+            Options::N_EMAIL       => $Options->getNewEmail(),
+            Options::F_OPT_IN      => $Options->getForceOptIn(),
+            Options::F_OPT_OUT     => $Options->getForceOptOut(),
+            Options::F_P_OPT_IN    => $Options->getForcePhoneOptIn(),
+            Options::F_P_OPT_OUT   => $Options->getForcePhoneOptOut(),
+            Options::TAGS_SCORING  => $Options->getTagScoring(),
+            Options::TAGS          => $Options->getTags(),
+            Options::R_TAGS        => $Options->getRemoveTags(),
+            Contact::BIRTHDAY      => $this->Contact->getBirthday(),// attention
+            Address::PROVINCE      => $Address->getProvince(),// attention
+            Options::LANG          => $Options->getLang(),
             Properties::PROPERTIES => $Properties->get()
         ];
 

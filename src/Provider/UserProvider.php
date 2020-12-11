@@ -32,17 +32,19 @@ class UserProvider
     }
 
     /**
-     * @throws SalesManagoException
+     * @param string $endpoint
      * @return Settings object
-     **/
-    public static function settingsUser()
+     **@throws SalesManagoException
+     */
+    public static function settingsUser($endpoint = null)
     {
+        $endpoint = ($endpoint == null) ? 'app2.salesmanago.pl' : $endpoint;
         $container = Container::init();
 
-        $container::register(self::USER_NAME, function () {
+        $container::register(self::USER_NAME, function () use ($endpoint) {
             $settings = new Settings();
             $settings
-                ->setEndpoint("app2.salesmanago.pl");
+                ->setEndpoint($endpoint);
             return $settings;
         });
 
