@@ -45,6 +45,7 @@ class ContactModel
                 Contact::NAME    => $this->Contact->getName(),
                 Contact::PHONE   => $this->Contact->getPhone(),
                 Contact::COMPANY => $this->Contact->getCompany(),
+                Contact::EXT_ID  => $this->Contact->getExternalId(),
                 Contact::STATE   => $this->Contact->getState(),
                 Contact::ADDRESS => [
                     Address::STREET_AD => $Address->getStreetAddress(),
