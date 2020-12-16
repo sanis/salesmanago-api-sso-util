@@ -110,23 +110,66 @@ class Options extends AbstractEntity
     }
 
     /**
-     * @param string || array - $param
+     * @param string | array $param
      * @return $this
      */
     public function setTags($param)
     {
+        /* if $param is array */
         if (is_array($param)) {
-            array_walk($param, function($item) {strtoupper(str_replace(' ', '_', $item));});
+            array_walk($param, function($item) {strtoupper(str_replace(' ', '_', trim($item)));});
             $this->tags = $param;
-        } elseif(
-            is_string($param)
-            && (strpos($param, 'are') !== false)
-        ) {
-            $this->tags = explode(',', [strtoupper(str_replace(' ', '_', $param))]);
+
+        /* if $param is string with multiple tags */
+        } elseif(is_string($param) && (strpos($param, ',') !== false)) {
+            $tagsArray = explode(',',  $param);
+            array_walk($tagsArray, function ($item) {
+                strtoupper(str_replace(' ', '_', trim($item)));
+            });
+            $this->tags = $tagsArray;
+
+        /* if $param is single tag */
         } else {
-            $this->tags = [strtoupper(str_replace(' ', '_', $param))];
+            $this->tags = [strtoupper(str_replace(' ', '_', trim($param)))];
         }
 
+        return $this;
+    }
+
+
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function appendTag($param)
+    {
+        if(!empty($param) && !is_string($param)) {
+            $this->tags[] = strtoupper(str_replace(' ', '_', trim($param)));
+        }
+        return $this;
+    }
+
+    /**
+     * @param array | String $param
+     * @return $this
+     */
+    public function appendTags($param)
+    {
+        /* if $param is array */
+        if (is_array($param)) {
+            array_walk($param, function ($item) {
+                strtoupper(str_replace(' ', '_', trim($item)));
+            });
+            $this->tags = array_merge($this->tags, $param);
+
+        /* if $param is string with multiple tags */
+        } elseif (is_string($param) && (strpos($param, ',') !== false)) {
+            $tags = explode(',',  $param);
+            array_walk($tags, function ($item) {
+                strtoupper(str_replace(' ', '_', trim($item)));
+            });
+            $this->tags = array_merge($this->tags, $tags);
+        }
         return $this;
     }
 
