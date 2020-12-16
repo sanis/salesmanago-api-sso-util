@@ -130,7 +130,7 @@ class Options extends AbstractEntity
 
         /* if $param is single tag */
         } else {
-            $this->tags[] = strtoupper(str_replace(' ', '_', trim($param)));
+            $this->tags = [strtoupper(str_replace(' ', '_', trim($param)))];
         }
 
         return $this;
