@@ -19,6 +19,7 @@ class Configuration extends AbstractEntity
     const SHA           = 'sha';
     const TOKEN         = 'token';
     const IGNORE_DOMAIN = 'ignoreDomain';
+    const COOKIE_TTL    = 'cookieTtl';
 
     /**
      * @var boolean
@@ -104,6 +105,11 @@ class Configuration extends AbstractEntity
      * @var bool Shows if synchronization needed for particular entity (Contact)
      */
     protected $requireSynchronization = false;
+
+    /**
+     * @var int Time in seconds for Cookie expire Time
+     */
+    protected $cookieTtl = 43200;
 
     public function __construct($data = [])
     {
@@ -516,4 +522,23 @@ class Configuration extends AbstractEntity
     {
         return $this->requireSynchronization;
     }
+
+    /**
+     * @param int $param
+     * @return $this;
+     */
+    public function setCookieTtl($param)
+    {
+        $this->cookieTtl = $param;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCookieTtl()
+    {
+        return $this->cookieTtl;
+    }
+
 }

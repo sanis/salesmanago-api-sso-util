@@ -72,7 +72,12 @@ class ContactAndEventTransferController
      */
     public function transferEvent(Event $Event)
     {
-        return $this->service->transferEvent($Event);
+        return array_merge(
+            [
+                Configuration::COOKIE_TTL => $this->settings->getCookieTtl()
+            ],
+            $this->service->transferEvent($Event)
+        );
     }
 
     /**
