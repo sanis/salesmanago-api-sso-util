@@ -16,10 +16,29 @@ class Address extends AbstractEntity
         COUNTRY   = 'country',
         PROVINCE  = 'province';
 
+    /**
+     * @var string
+     */
     private $streetAddress;
+
+    /**
+     * @var string
+     */
     private $zipCode;
+
+    /**
+     * @var string
+     */
     private $city;
+
+    /**
+     * @var string
+     */
     private $country;
+
+    /**
+     * @var string
+     */
     private $province;
 
     public function __construct($data = [])

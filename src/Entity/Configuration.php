@@ -9,16 +9,17 @@ use SALESmanago\Exception\Exception;
 
 class Configuration extends AbstractEntity
 {
-    const ACTIVE        = 'active';
-    const ENDPOINT      = 'endpoint';
-    const CLIENT_ID     = 'clientId';
-    const API_KEY       = 'apiKey';
-    const API_SECRET    = 'apiSecret';
-    const OWNER         = 'owner';
-    const EMAIL         = 'email';
-    const SHA           = 'sha';
-    const TOKEN         = 'token';
-    const IGNORE_DOMAIN = 'ignoreDomain';
+    const
+        ACTIVE        = 'active',
+        ENDPOINT      = 'endpoint',
+        CLIENT_ID     = 'clientId',
+        API_KEY       = 'apiKey',
+        API_SECRET    = 'apiSecret',
+        OWNER         = 'owner',
+        EMAIL         = 'email',
+        SHA           = 'sha',
+        TOKEN         = 'token',
+        IGNORE_DOMAIN = 'ignoreDomain';
     const COOKIE_TTL    = 'cookieTtl';
 
     /**
@@ -27,9 +28,9 @@ class Configuration extends AbstractEntity
     protected $active = false;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $endpoint;
+    protected $endpoint = null;
 
     /**
      * @var string

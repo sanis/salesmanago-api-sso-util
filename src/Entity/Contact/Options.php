@@ -21,16 +21,59 @@ class Options extends AbstractEntity
         CREATED_ON   = 'createdOn',
         LANG         = 'lang';
 
+    /**
+     * @var bool - flag to send contact asynchronously (true) or not (false)
+     */
     private $async            = true;
+
+    /**
+     * @var bool - email optin state
+     */
     private $forceOptIn       = false;
+
+    /**
+     * @var bool - email optout state
+     */
     private $forceOptOut      = false;
+
+    /**
+     * @var bool - phone optin state
+     */
     private $forcePhoneOptIn  = false;
+
+    /**
+     * @var bool - phone optout state
+     */
     private $forcePhoneOptOut = false;
+
+    /**
+     * @var bool - enable (true) or disable (false) tag scoring
+     */
     private $tagScoring       = false;
+
+    /**
+     * @var array - contact tags
+     */
     private $tags             = [];
+
+    /**
+     * @var array - contact tags to remove
+     */
     private $removeTags       = [];
+
+    /**
+     * @var null|string - new contact email; use in case of email change
+     */
     private $newEmail         = null;
+
+    /**
+     * @var null|string - contact creates at time;
+     */
     private $createdOn        = null;
+
+    /**
+     * @var null|string - contact language
+     */
     private $lang             = null;
 
     /**

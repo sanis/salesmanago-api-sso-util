@@ -38,8 +38,19 @@ class Contact extends AbstractEntity
 
     private $score         = null;
 
+    /**
+     * @var Address|null
+     */
     private $Address       = null;
+
+    /**
+     * @var Properties|null
+     */
     private $Properties    = null;
+
+    /**
+     * @var Options|null
+     */
     private $Options       = null;
 
     /**
