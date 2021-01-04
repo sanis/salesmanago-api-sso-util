@@ -19,8 +19,8 @@ class Configuration extends AbstractEntity
         EMAIL         = 'email',
         SHA           = 'sha',
         TOKEN         = 'token',
-        IGNORE_DOMAIN = 'ignoreDomain';
-    const COOKIE_TTL    = 'cookieTtl';
+        IGNORE_DOMAIN = 'ignoreDomain',
+        COOKIE_TTL    = 'cookieTtl';
 
     /**
      * @var boolean
