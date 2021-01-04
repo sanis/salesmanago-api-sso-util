@@ -28,7 +28,9 @@ class SynchronizationService
     }
 
     /**
+     * @param Contact $Contact
      * @return bool
+     * @throws \SALESmanago\Exception\Exception
      */
     public function isNeedSyncContactEmailStatus(Contact $Contact)
     {

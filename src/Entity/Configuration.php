@@ -4,19 +4,23 @@
 namespace SALESmanago\Entity;
 
 
-use SALESmanago\Entity\Contact\ApiDoubleOptIn;
+use SALESmanago\Entity\ApiDoubleOptIn;
+use SALESmanago\Exception\Exception;
 
 class Configuration extends AbstractEntity
 {
-    const ACTIVE     = 'active';
-    const ENDPOINT   = 'endpoint';
-    const CLIENT_ID  = 'clientId';
-    const API_KEY    = 'apiKey';
-    const API_SECRET = 'apiSecret';
-    const OWNER      = 'owner';
-    const EMAIL      = 'email';
-    const SHA        = 'sha';
-    const TOKEN      = 'token';
+    const
+        ACTIVE        = 'active',
+        ENDPOINT      = 'endpoint',
+        CLIENT_ID     = 'clientId',
+        API_KEY       = 'apiKey',
+        API_SECRET    = 'apiSecret',
+        OWNER         = 'owner',
+        EMAIL         = 'email',
+        SHA           = 'sha',
+        TOKEN         = 'token',
+        IGNORE_DOMAIN = 'ignoreDomain',
+        COOKIE_TTL    = 'cookieTtl';
 
     /**
      * @var boolean
@@ -24,9 +28,9 @@ class Configuration extends AbstractEntity
     protected $active = false;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $endpoint;
+    protected $endpoint = null;
 
     /**
      * @var string
@@ -69,6 +73,11 @@ class Configuration extends AbstractEntity
     protected $removeTags;
 
     /**
+     * @var array
+     */
+    protected $ignoreDomain;
+
+    /**
      * @var string
      */
     protected $domain;
@@ -77,11 +86,6 @@ class Configuration extends AbstractEntity
      * @var string
      */
     protected $domainToken;
-
-    /**
-     * @var array
-     */
-    protected $properties;
 
     /**
      * @var array
@@ -102,6 +106,11 @@ class Configuration extends AbstractEntity
      * @var bool Shows if synchronization needed for particular entity (Contact)
      */
     protected $requireSynchronization = false;
+
+    /**
+     * @var int Time in seconds for Cookie expire Time
+     */
+    protected $cookieTtl = 43200;
 
     public function __construct($data = [])
     {
@@ -348,6 +357,31 @@ class Configuration extends AbstractEntity
     }
 
     /**
+     * @param array $ignoreDomain
+     * @return $this
+     * @throws Exception
+     */
+    public function setIgnoreDomain($ignoreDomain)
+    {
+        if(empty($ignoreDomain))
+            return $this;
+        if (!is_array($ignoreDomain)) {
+            throw new Exception('Passed argument isn\'t array');
+        }
+        $this->ignoreDomain = $ignoreDomain;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIgnoreDomain()
+    {
+        return $this->ignoreDomain;
+    }
+
+
+    /**
      * @param string $domain
      * @return $this
      */
@@ -381,22 +415,6 @@ class Configuration extends AbstractEntity
     public function getDomainToken()
     {
         return $this->domainToken;
-    }
-
-    /**
-     * @return array
-     */
-    public function getProperties()
-    {
-        return $this->properties;
-    }
-
-    /**
-     * @param array $properties
-     */
-    public function setProperties($properties)
-    {
-        $this->properties = $properties;
     }
 
     public function getConfig()
@@ -448,7 +466,7 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     * @param boolean $param
+     * @param mixed $param  //ApiDoubleOptIn object is preferred
      * @return $this
      */
     public function setApiDoubleOptIn($param)
@@ -481,7 +499,7 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     * @return $this
+     * @return bool
      */
     public function getActiveSynchronization()
     {
@@ -489,10 +507,10 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     *
      * @param bool $param
+     * @return $this;
      */
-    public function setRequireSyncronization($param)
+    public function setRequireSynchronization($param)
     {
         $this->requireSynchronization = $param;
         return $this;
@@ -501,8 +519,27 @@ class Configuration extends AbstractEntity
     /**
      * @return bool
      */
-    public function getRequireSyncronization()
+    public function getRequireSynchronization()
     {
         return $this->requireSynchronization;
     }
+
+    /**
+     * @param int $param
+     * @return $this;
+     */
+    public function setCookieTtl($param)
+    {
+        $this->cookieTtl = $param;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCookieTtl()
+    {
+        return $this->cookieTtl;
+    }
+
 }

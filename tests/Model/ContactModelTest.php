@@ -8,6 +8,7 @@ use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Contact\Address;
 use SALESmanago\Entity\Contact\Options;
 
+use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 
 use PHPUnit\Framework\TestCase;
@@ -21,6 +22,7 @@ class ContactModelTest extends TestCase
 
     /**
      * @dataProvider provideTestGetContactForUnionTransfer
+     * @throws Exception
      * @param Contact $Contact
      * @param array $expectedArray
      */
@@ -33,7 +35,13 @@ class ContactModelTest extends TestCase
         $this->assertEmpty($aReturn);
     }
 
-    public function arrayRecursiveDiff($array1, $array2)
+    /**
+     * Compare recursive arrays
+     * @param $array1
+     * @param $array2
+     * @return array
+     */
+    protected function arrayRecursiveDiff($array1, $array2)
     {
         $aReturn = array();
         foreach ($array1 as $mKey => $mValue) {
@@ -62,7 +70,7 @@ class ContactModelTest extends TestCase
         $addressFromPlatform = $dummyData['addressFromPlatform'];
         $optionsFromPlatform = $dummyData['optionsFromPlatform'];
 
-        $expectedArrayStructure = self::prepareDummyExpectedContactStructure();
+        $expectedArrayStructure = self::prepareDummyExpectedContactStructure($dummyData);
 
         $Contact->set($contactFromPlatform);
 
@@ -158,7 +166,7 @@ class ContactModelTest extends TestCase
             Options::F_OPT_OUT    => $optionsFromPlatform['forceOptOut'],
             Options::F_P_OPT_IN   => $optionsFromPlatform['forcePhoneOptIn'],
             Options::F_P_OPT_OUT  => $optionsFromPlatform['forcePhoneOptOut'],
-            Options::CREATED_ON   => $optionsFromPlatform['createOn'],
+            Options::CREATED_ON   => $optionsFromPlatform['createdOn'],
             Contact::BIRTHDAY     => $contactFromPlatform['birthday'],
             Address::PROVINCE     => $addressFromPlatform['province'],
             Options::LANG         => $optionsFromPlatform['lang'],

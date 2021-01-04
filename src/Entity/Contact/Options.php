@@ -21,22 +21,83 @@ class Options extends AbstractEntity
         CREATED_ON   = 'createdOn',
         LANG         = 'lang';
 
+    /**
+     * @var bool - flag to send contact asynchronously (true) or not (false)
+     */
     private $async            = true;
+
+    /**
+     * @var bool - email optin state
+     */
     private $forceOptIn       = false;
+
+    /**
+     * @var bool - email optout state
+     */
     private $forceOptOut      = false;
+
+    /**
+     * @var bool - phone optin state
+     */
     private $forcePhoneOptIn  = false;
+
+    /**
+     * @var bool - phone optout state
+     */
     private $forcePhoneOptOut = false;
-    private $properties       = [];
+
+    /**
+     * @var bool - enable (true) or disable (false) tag scoring
+     */
     private $tagScoring       = false;
+
+    /**
+     * @var array - contact tags
+     */
     private $tags             = [];
+
+    /**
+     * @var array - contact tags to remove
+     */
     private $removeTags       = [];
+
+    /**
+     * @var null|string - new contact email; use in case of email change
+     */
     private $newEmail         = null;
+
+    /**
+     * @var null|string - contact creates at time;
+     */
     private $createdOn        = null;
+
+    /**
+     * @var null|string - contact language
+     */
     private $lang             = null;
 
+    /**
+     * Flag for contact subscriptions
+     * Set this flag if contact subscribes
+     * @var bool
+     */
     private $isSubscribes     = false;
+
+    /**
+     * Flag for contact unsubscribe
+     * Set this flag if contact unsubscribes
+     * @var bool
+     */
     private $isUnSubscribes   = false;
-    private $isSubscribtionStatusNoChange = true;
+
+    /**
+     * Flag for contact subscription status no change;
+     * This flag is used by default;
+     * This mean that existing contact in SALESmanago must not change his optin status
+     * or set optOut status while contact doesn exist;
+     * @var bool
+     */
+    private $isSubscriptionStatusNoChange = true;
 
     private $optedOut      = null;
     private $optedOutPhone = null;
@@ -92,23 +153,66 @@ class Options extends AbstractEntity
     }
 
     /**
-     * @param string || array - $param
+     * @param string | array $param
      * @return $this
      */
     public function setTags($param)
     {
+        /* if $param is array */
         if (is_array($param)) {
-            array_walk($param, function($item) {strtoupper(str_replace(' ', '_', $item));});
+            array_walk($param, function($item) {strtoupper(str_replace(' ', '_', trim($item)));});
             $this->tags = $param;
-        } elseif(
-            is_string($param)
-            && (strpos($param, 'are') !== false)
-        ) {
-            $this->tags = explode(',', [strtoupper(str_replace(' ', '_', $param))]);
+
+        /* if $param is string with multiple tags */
+        } elseif(is_string($param) && (strpos($param, ',') !== false)) {
+            $tagsArray = explode(',',  $param);
+            array_walk($tagsArray, function ($item) {
+                strtoupper(str_replace(' ', '_', trim($item)));
+            });
+            $this->tags = $tagsArray;
+
+        /* if $param is single tag */
         } else {
-            $this->tags = [strtoupper(str_replace(' ', '_', $param))];
+            $this->tags = [strtoupper(str_replace(' ', '_', trim($param)))];
         }
 
+        return $this;
+    }
+
+
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function appendTag($param)
+    {
+        if(!empty($param) && !is_string($param)) {
+            $this->tags[] = strtoupper(str_replace(' ', '_', trim($param)));
+        }
+        return $this;
+    }
+
+    /**
+     * @param array | String $param
+     * @return $this
+     */
+    public function appendTags($param)
+    {
+        /* if $param is array */
+        if (is_array($param)) {
+            array_walk($param, function ($item) {
+                strtoupper(str_replace(' ', '_', trim($item)));
+            });
+            $this->tags = array_merge($this->tags, $param);
+
+        /* if $param is string with multiple tags */
+        } elseif (is_string($param) && (strpos($param, ',') !== false)) {
+            $tags = explode(',',  $param);
+            array_walk($tags, function ($item) {
+                strtoupper(str_replace(' ', '_', trim($item)));
+            });
+            $this->tags = array_merge($this->tags, $tags);
+        }
         return $this;
     }
 
@@ -192,17 +296,16 @@ class Options extends AbstractEntity
      * @param bool $param
      * @return $this
      */
-    public function setIsSubscribtionStatusNoChange($param){
-        $this->isSubscribtionStatusNoChange = $param;
+    public function setIsSubscriptionStatusNoChange($param){
+        $this->isSubscriptionStatusNoChange = $param;
         return $this;
     }
 
     /**
-     * @param bool $param
      * @return mixed
      */
-    public function getIsSubscribtionStatusNoChange(){
-        return $this->isSubscribtionStatusNoChange;
+    public function getIsSubscriptionStatusNoChange() {
+        return $this->isSubscriptionStatusNoChange;
     }
 
     /**
