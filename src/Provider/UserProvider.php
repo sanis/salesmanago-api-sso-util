@@ -62,7 +62,6 @@ class UserProvider
         $container::extend(self::USER_NAME, function () use ($settings) {
             return $settings;
         });
-
     }
 
     /**
