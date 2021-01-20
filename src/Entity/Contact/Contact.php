@@ -76,15 +76,10 @@ class Contact extends AbstractEntity
 
     /**
      * @return mixed
-     * @throws Exception
      */
     public function getEmail()
     {
-    	if (isset($this->email) && !empty($this->email)) {
-    		return $this->email;
-	    } else {
-		    throw new Exception('Empty contact email');
-	    }
+        return $this->email;
     }
 
     /**

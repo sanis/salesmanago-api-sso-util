@@ -1,5 +1,8 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 2.6.2 20.01.2021
+ - Add Event types const to Entity\Event\Event;
+
 Version 2.6.1 04.01.2021
  - Add adapter class for GuzzleHttp client;
  - Added Properties;
