@@ -20,11 +20,18 @@ class Event extends AbstractEntity
         DESCRIPTION    = 'description',
         PRODUCTS       = 'products',
         LOCATION       = 'location',
-        VALUE          =  'value',
+        VALUE          = 'value',
         EXT_EVENT_TYPE = 'contactExtEventType',
         DETAIL         = 'detail',
         EXT_ID         = 'externalId',
         SHOP_DOMAIN    = 'shopDomain';
+
+    const
+        EVENT_TYPE_CART         = "CART",
+        EVENT_TYPE_PURCHASE     = "PURCHASE",
+        EVENT_TYPE_CANCELLATION = "CANCELLATION",
+        EVENT_TYPE_RETURN       = "RETURN",
+        EVENT_TYPE_OTHER        = "OTHER";
 
     /**
      * @var string SALESmanago contactId

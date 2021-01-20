@@ -56,7 +56,8 @@ class EventModel
             return $eventDetails;
         }
 
-        array_unshift($eventDetails,"");//this will hel to set array from 1 (detail1, detail2...) (not detail0)
+        //next one help to start set array from 1 (detail1, detail2...) (not from 0 like detail0)
+        array_unshift($eventDetails,"");
         unset($eventDetails[0]);
 
         foreach ($eventDetails as $key => $detail) {
