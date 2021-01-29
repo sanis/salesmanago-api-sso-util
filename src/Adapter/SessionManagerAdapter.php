@@ -18,4 +18,10 @@ interface SessionManagerAdapter
      * @return mixed
      */
     public function getFromSession($varName);
+
+    /**
+     * @param string $varName
+     * @return mixed
+     */
+    public function deleteFromSession($varName);
 }

@@ -15,15 +15,22 @@ interface CookieManagerAdapter
     /**
      * @param string $name
      * @param int $expiry
+     * @param string $value
      * @param bool $httpOnly
      * @param $path
      * @return bool
      */
-    public function setCookie($name, $expiry, $httpOnly = false, $path = '/');
+    public function setCookie($name, $value, $expiry, $httpOnly = false, $path = '/');
 
     /**
      * @param string $name
      * @return bool
      */
     public function deleteCookie($name);
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function getCookie($name);
 }

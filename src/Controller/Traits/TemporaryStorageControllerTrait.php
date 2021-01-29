@@ -30,6 +30,18 @@ trait TemporaryStorageControllerTrait
     /**
      * @return bool
      */
+    public function getSmEvent()
+    {
+        if(!$this->checkIfAdaptersSet()){
+            return false;
+        }
+        //@todo return SmEventID if exist
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
     public function unsetSmEvent()
     {
         if(!$this->checkIfAdaptersSet()){
@@ -49,6 +61,18 @@ trait TemporaryStorageControllerTrait
             return false;
         }
         //@todo set to session set to cookie;
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSmClient()
+    {
+        if(!$this->checkIfAdaptersSet()){
+            return false;
+        }
+        //@todo retrun sm client
         return true;
     }
 

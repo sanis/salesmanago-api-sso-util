@@ -58,6 +58,7 @@ class ContactAndEventTransferController
                 ['settings' => $this->settings]
             );
         }
+
         return array_merge(
             [
                 'settings' =>

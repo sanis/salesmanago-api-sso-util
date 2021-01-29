@@ -47,4 +47,13 @@ class LoginController
     {
        return $this->service->getRedirectToAppUrl();
     }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function getListOwnersEmails()
+    {
+       return $this->service->listOwnersEmails();
+    }
 }
