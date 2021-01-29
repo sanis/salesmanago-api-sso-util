@@ -92,4 +92,25 @@ class RequestService
     {
         $this->statusCode = $statusCode;
     }
+
+    /**
+     * @throws Exception
+     * @param array $response
+     * @return array
+     */
+    public function validateResponse($response)
+    {
+        if (is_array($response)
+            && array_key_exists('success', $response)
+            && $response['success'] == true
+        ) {
+            return $response;
+        } else {
+            //next one fix various SM message forms:
+            $message = is_array($response['message'])
+                ? implode(', ', $response['message'])
+                : $response['message'];
+            throw new Exception($message);
+        }
+    }
 }

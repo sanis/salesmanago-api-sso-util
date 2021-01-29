@@ -30,7 +30,7 @@ class Configuration extends AbstractEntity
     /**
      * @var string|null
      */
-    protected $endpoint = null;
+    protected $endpoint = 'https://app2.salesmanago.pl';
 
     /**
      * @var string
@@ -148,19 +148,9 @@ class Configuration extends AbstractEntity
     /**
      * @return string
      */
-    public function getRequestEndpoint()
-    {
-        return $this->endpoint;
-    }
-
-    /**
-     * @return string
-     */
     public function getEndpoint()
     {
-        if (preg_match("@^(?:https?:\/\/)([^/]+)@i", $this->endpoint, $matches)) {
-            return $matches[1];
-        }
+        return $this->endpoint;
     }
 
     /**
@@ -209,7 +199,9 @@ class Configuration extends AbstractEntity
      */
     public function getApiKey()
     {
-        return $this->apiKey;
+        return empty($this->apiKey)
+                ? md5(time() . get_class($this))
+                : $this->apiKey;
     }
 
     /**
@@ -415,18 +407,6 @@ class Configuration extends AbstractEntity
     public function getDomainToken()
     {
         return $this->domainToken;
-    }
-
-    public function getConfig()
-    {
-        return [
-            self::CLIENT_ID => $this->getClientId(),
-            self::SHA       => $this->getSha(),
-            self::API_KEY   => $this->getApiKey(),
-            self::OWNER     => $this->getOwner(),
-            self::ENDPOINT  => $this->getEndpoint(),
-            self::TOKEN     => $this->getToken()
-        ];
     }
 
     /**

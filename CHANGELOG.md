@@ -1,5 +1,9 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.0 29.01.2021
+ - change structure;
+ - remove unnecessary functionality;
+
 Version 2.6.2 20.01.2021
  - Add Event types const to Entity\Event\Event;
 
