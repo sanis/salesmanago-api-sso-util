@@ -67,8 +67,6 @@ class SimplifyEntityAbstract
                 }
             }
         }
-
-
     }
 
     /**
