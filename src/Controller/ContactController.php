@@ -12,13 +12,8 @@ use SALESmanago\Services\ContactService;
 
 class ContactController
 {
-    const
-        COOKIES_CLIENT    = "smclient",
-        COOKIES_EXT_EVENT = "smevent";
-
     protected $settings;
     protected $service;
-    protected $contactModel;
 
     public function __construct(Configuration $settings)
     {
