@@ -219,7 +219,7 @@ class Configuration extends AbstractEntity
      */
     public function setDefaultApiKey()
     {
-        $this->apiKey = md5(time() . get_class($this));
+        $this->apiKey = md5(time() . mt_rand());
         return $this;
     }
 

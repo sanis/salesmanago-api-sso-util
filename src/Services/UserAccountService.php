@@ -85,7 +85,7 @@ class UserAccountService
 
     protected function accountAuthorize(User $User)
     {
-        $data = $this->UserModel->getUserForAuthorize($User);
+        $data = $this->UserModel->getUserForAuthorization($User);
 
         $response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
@@ -163,15 +163,6 @@ class UserAccountService
         } catch (\Exception $e) {
             throw new Exception('Inactive account', 40);
         }
-    }
-
-    /**
-     * @var  $settings
-     * @return string - url
-     */
-    public function getRedirectToAppUrl()
-    {
-        return $this->conf->getEndpoint() . self::METHOD_REDIRECT_TO_APP . $this->conf->getToken();
     }
 
     /**
