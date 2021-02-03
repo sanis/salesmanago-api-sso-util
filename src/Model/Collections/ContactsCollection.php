@@ -35,7 +35,7 @@ class ContactsCollection extends AbstractCollection
 
         if (!$this->isEmpty()) {
             array_walk($this->collection, function ($contact, $key) use (&$events) {
-                array_push($events, ContactModel::toArray($contact));
+                array_push($events, ContactModel::toArray($contact, $this->conf));
             });
         }
 

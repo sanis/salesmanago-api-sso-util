@@ -22,6 +22,8 @@ class Configuration extends AbstractEntity
         IGNORE_DOMAIN = 'ignoreDomain',
         COOKIE_TTL    = 'cookieTtl';
 
+    private static $instances = [];
+
     /**
      * @var boolean
      */
@@ -112,16 +114,35 @@ class Configuration extends AbstractEntity
      */
     protected $cookieTtl = 43200;
 
-    public function __construct($data = [])
+    protected function __construct() {}
+
+    protected function __clone() {}
+
+    /**
+     * @throws Exception
+     */
+    public function __wakeup()
     {
-        if (!empty($data)) {
-            $this->set($data);
+        throw new Exception("Cannot unserialize a singleton.");
+    }
+
+    /**
+     * @return mixed|static
+     */
+    public static function getInstance()
+    {
+        $cls = static::class;
+        if (!isset(self::$instances[$cls])) {
+            self::$instances[$cls] = new static();
         }
+
+        return self::$instances[$cls];
     }
 
     /**
      * Sets data from array
      * @param $data
+     * @return $this;
      */
     public function set($data)
     {
