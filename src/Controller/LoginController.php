@@ -10,8 +10,7 @@ use SALESmanago\Entity\User;
 use SALESmanago\Exception\Exception;
 
 /**
- * Class LoginAccountController
- * @package SALESmanago\Controller
+ * Class LoginController
  */
 class LoginController
 {
