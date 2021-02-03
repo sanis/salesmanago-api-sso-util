@@ -3,7 +3,10 @@
 
 namespace SALESmanago\Model\Collections;
 
-
+/**
+ * Interface Collection
+ * @package SALESmanago\Model\Collections
+ */
 interface Collection extends \Iterator, \Countable, \JsonSerializable
 {
     /**
@@ -36,7 +39,8 @@ interface Collection extends \Iterator, \Countable, \JsonSerializable
 
     /**
      * Remove Item;
+     * @param int $key;
      * @return $this;
      */
-    public function removeItem();
+    public function removeItem($key);
 }

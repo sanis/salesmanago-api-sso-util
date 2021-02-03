@@ -161,6 +161,17 @@ class ContactModel
     }
 
     /**
+     * @param Contact $Contact
+     * @return array
+     */
+    public static function toArray(Contact $Contact)
+    {
+        return [
+
+        ];
+    }
+
+    /**
      * Checks if subscription status no change
      * @return bool
      */

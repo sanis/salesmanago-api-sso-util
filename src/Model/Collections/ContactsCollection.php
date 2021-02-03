@@ -6,6 +6,7 @@ namespace SALESmanago\Model\Collections;
 
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Exception\Exception;
+use SALESmanago\Model\ContactModel;
 
 class ContactsCollection extends AbstractCollection
 {
@@ -22,5 +23,22 @@ class ContactsCollection extends AbstractCollection
 
         array_push($this->collection, $object);
         return $this;
+    }
+
+    /**
+     * Parse Collection to array
+     * @return array
+     */
+    public function toArray()
+    {
+        $contacts = [];
+
+        if (!$this->isEmpty()) {
+            array_walk($this->collection, function ($contact, $key) use (&$events) {
+                array_push($events, ContactModel::toArray($contact));
+            });
+        }
+
+        return ['events' => $contacts];
     }
 }
