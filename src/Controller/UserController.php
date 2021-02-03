@@ -30,8 +30,8 @@ class UserController
      * @return array
      * @throws Exception
      */
-    public function getListOwnersEmails()
+    public function getOwnersList()
     {
-        return $this->service->listOwnersEmails();
+        return $this->service->listOwnersList();
     }
 }

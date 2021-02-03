@@ -169,7 +169,7 @@ class UserAccountService
      * @return array
      * @throws Exception
      */
-    public function listOwnersEmails()
+    public function listOwnersList()
     {
         $response = $this->RequestService
             ->request(
