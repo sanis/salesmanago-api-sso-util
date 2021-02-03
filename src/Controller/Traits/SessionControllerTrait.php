@@ -22,4 +22,12 @@ trait SessionControllerTrait
         $this->SessionManager = $SessionManager;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    private function checkIfSessionAdapterSet()
+    {
+        return (isset($this->SessionManager) && $this->SessionManager != null);
+    }
 }

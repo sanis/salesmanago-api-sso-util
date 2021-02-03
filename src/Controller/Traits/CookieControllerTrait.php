@@ -22,4 +22,12 @@ trait CookieControllerTrait
         $this->CookieManager = $CookieManager;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    private function checkIfCookieAdapterSet()
+    {
+        return (isset($this->CookieManager) && $this->CookieManager != null);
+    }
 }
