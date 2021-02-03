@@ -3,19 +3,20 @@
 
 namespace SALESmanago\Model\Collections;
 
-use SALESmanago\Entity\Event\Event;
+
+use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Exception\Exception;
 
-class EventsCollection extends AbstractCollection
+class ContactsCollection extends AbstractCollection
 {
     /**
      * @throws Exception
-     * @param Event $object
+     * @param Contact $object
      * @return AbstractCollection|void
      */
     public function addItem($object)
     {
-        if(!($object instanceof Event)) {
+        if(!($object instanceof Contact)) {
             throw new Exception('Not right entity type');
         }
 
