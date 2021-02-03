@@ -61,7 +61,7 @@ class UserAccountService
         $responseAccountAuthorize = $this->accountAuthorize($User);
 
         //set necessary data to conf;
-        $this->conf = $this->ConfModel->setConfAfterAccountAuthorize($responseAccountAuthorize, $User);
+        $this->conf = $this->ConfModel->setConfAfterAccountAuthorization($responseAccountAuthorize, $User);
 
         $responseIntegration = $this->accountIntegrationSettings();
 
