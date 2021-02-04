@@ -22,8 +22,8 @@ class ExportControllerTest extends TestCase
         $eventCollection = new EventsCollection();
 
         $user
-            ->setEmail('ruslan.barlozhetskyi@salesmanago.pl')
-            ->setPass('04ru06sl94an');
+            ->setEmail('semowet930@boldhut.com')
+            ->setPass('#Salesmanago123');
 
         for ($i=0; $i<=100; $i++) {
             $event = new Event();
@@ -41,8 +41,19 @@ class ExportControllerTest extends TestCase
         }
 
         $loginController = new LoginController($conf);
-        $response = $loginController->login($user);
-        $exportController = new ExportController($response->getField('conf'));
+        $loginController->login($user);//this one for property configuration create
+        $exportController = new ExportController($conf);
         $exportController->export($eventCollection);
+    }
+
+    public function testExportContactsSuccess()
+    {
+        $faker = Faker\Factory::create();
+        $conf = Configuration::getInstance();
+        $user = new User();
+
+        $user
+            ->setEmail('ruslan.barlozhetskyi@salesmanago.pl')
+            ->setPass('04ru06sl94an');
     }
 }

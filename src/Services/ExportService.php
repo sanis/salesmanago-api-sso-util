@@ -49,7 +49,7 @@ class ExportService
         $data = array_merge($settings, $collectionArray);
 
         try {
-            return $this->RequestService->request(
+            return $response = $this->RequestService->request(
                 self::REQUEST_METHOD_POST,
                 $endpoint,
                 $data

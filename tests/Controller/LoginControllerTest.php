@@ -11,10 +11,6 @@ use SALESmanago\Entity\User;
 
 class LoginControllerTest extends TestCase
 {
-        const
-            USER_EMAIL = 'ruslan.barlozhetskyi@salesmanago.pl',
-            USER_PASS = '04ru06sl94an';
-
         public function testLoginSuccess()
         {
             $conf = Configuration::getInstance();
@@ -22,8 +18,8 @@ class LoginControllerTest extends TestCase
             $loginController = new LoginController($conf);
 
             $User = $User
-                ->setEmail(self::USER_EMAIL)
-                ->setPass(self::USER_PASS);
+                ->setEmail('semowet930@boldhut.com')
+                ->setPass('#Salesmanago123');
 
             $response = $loginController->login($User);
 
