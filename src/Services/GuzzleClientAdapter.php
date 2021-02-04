@@ -25,11 +25,11 @@ class GuzzleClientAdapter
      * Checking GuzzleClient version.
      * In version 7+ const VERSION doesn't exist.
      * Instead const MAJOR_VERSION.
-     * @param Configuration $settings
+     * @param Configuration $conf
      * @param $headers
      * @return GuzzleClient
      */
-    public function setClient(Configuration $settings, $headers)
+    public function setClient(Configuration $conf, $headers)
     {
         $arrayOfConstant = $this->getConstants();
 
@@ -37,7 +37,7 @@ class GuzzleClientAdapter
 
             if (version_compare(GuzzleClient::VERSION, '6.0.0', '<')) {
                 $this->client = new GuzzleClient([
-                    'base_url' => $settings->getRequestEndpoint(),
+                    'base_url' => $conf->getEndpoint(),
                     'defaults' => array(
                         'verify' => false,
                         'timeout' => 45.0,
@@ -47,7 +47,7 @@ class GuzzleClientAdapter
 
             } elseif (version_compare(GuzzleClient::VERSION, '6.0.0', '>')) {
                 $this->client = new GuzzleClient([
-                    'base_uri' => $settings->getRequestEndpoint(),
+                    'base_uri' => $conf->getEndpoint(),
                     'verify' => false,
                     'timeout' => 45.0,
                     'defaults' => [
@@ -57,7 +57,7 @@ class GuzzleClientAdapter
             }
         } else {
             $this->client = new GuzzleClient([
-                'base_uri' => $settings->getRequestEndpoint(),
+                'base_uri' => $conf->getEndpoint(),
                 'verify' => false,
                 'timeout' => 45.0,
                 'defaults' => [

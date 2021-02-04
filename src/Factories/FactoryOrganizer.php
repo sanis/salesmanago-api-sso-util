@@ -2,51 +2,27 @@
 
 namespace SALESmanago\Factories;
 
-use SALESmanago\Controller\ConnectSalesManagoController;
+
 use SALESmanago\Controller\ContactAndEventTransferController;
-use SALESmanago\Controller\CreateAccountController;
-use SALESmanago\Controller\IntegrationController;
-use SALESmanago\Controller\LoginAccountController;
-use SALESmanago\Controller\UserAccountController;
-use SALESmanago\Exception\UserAccessException;
+use SALESmanago\Controller\LoginController;
+use SALESmanago\Controller\UserController;
 
 class FactoryOrganizer
 {
-    const CONNECT_SALESMANAGO_C = 'ConnectSalesManagoC';
-    const CREATE_ACCOUNT_C      = 'CreateAccountC';
-    const INTEGRATION_C         = 'IntegrationC';
-    const LOGIN_ACCOUNT_C       = 'LoginAccountC';
-    const USER_ACCOUNT_C        = 'UserAccountC';
-    const CONTACT_AND_EVENT_TRANSFER_C = 'ContactAndEventTransferC';
+    const
+        LOGIN_C = 'LoginC',
+        USER_C = 'UserC',
+        CONTACT_AND_EVENT_TRANSFER_C = 'ContactAndEventTransferC';
 
-    const USER_ACCESS_E         = 'UserAccessE';
-
-    const COOKIES_CLIENT       = ConnectSalesManagoController::COOKIES_CLIENT;
-    const COOKIES_EXT_EVENT    = ConnectSalesManagoController::COOKIES_EXT_EVENT;
-
-    public function getInst($const, $paramsFirst = null, $paramsSecond = null)
+    public function getInst($const, $param)
     {
         switch ($const) {
-            case self::CONNECT_SALESMANAGO_C:
-                return new ConnectSalesManagoController($paramsFirst);
-            break;
-            case self::CREATE_ACCOUNT_C:
-                return new CreateAccountController($paramsFirst, $paramsSecond);
-            break;
-            case self::INTEGRATION_C:
-                return new IntegrationController($paramsFirst);
-            break;
-            case self::LOGIN_ACCOUNT_C:
-                return new LoginAccountController($paramsFirst, $paramsSecond);
-            break;
-            case self::USER_ACCOUNT_C:
-                return new UserAccountController($paramsFirst, $paramsSecond);
-            break;
-            case self::USER_ACCESS_E:
-                return new UserAccessException($paramsFirst);
-                break;
+            case self::LOGIN_C:
+                return new LoginController($param);
+            case self::USER_C:
+                return new UserController($param);
             case self::CONTACT_AND_EVENT_TRANSFER_C:
-                return new ContactAndEventTransferController($paramsFirst);
+                return new ContactAndEventTransferController($param);
             default:
                 return false;
             break;

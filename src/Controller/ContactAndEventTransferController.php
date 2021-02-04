@@ -4,6 +4,7 @@
 namespace SALESmanago\Controller;
 
 
+use SALESmanago\Controller\Traits\TemporaryStorageControllerTrait;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Services\ContactAndEventTransferService;
@@ -15,6 +16,9 @@ use SALESmanago\Services\CheckIfIgnoredService as IgnoreService;
 
 class ContactAndEventTransferController
 {
+    //this one is to set cookies and sessions:
+    use TemporaryStorageControllerTrait;
+
     protected $settings;
     protected $service;
 
@@ -54,6 +58,7 @@ class ContactAndEventTransferController
                 ['settings' => $this->settings]
             );
         }
+
         return array_merge(
             [
                 'settings' =>
