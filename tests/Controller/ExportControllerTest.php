@@ -6,7 +6,6 @@ namespace Tests\Controller;
 use Faker;
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Controller\LoginController;
-use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\User;
 use SALESmanago\Controller\ExportController;
 use SALESmanago\Entity\Event\Event;
@@ -17,42 +16,40 @@ use SALESmanago\Entity\Contact\Contact;
 
 class ExportControllerTest extends TestCase
 {
-//    public function testExportEventsSuccess()
-//    {
-//        $faker = Faker\Factory::create();
-//        $conf = Configuration::getInstance();
-//        $user = new User();
-//        $eventCollection = new EventsCollection();
-//
-////        $user
-////            ->setEmail('semowet930@boldhut.com')
-////            ->setPass('#Salesmanago123');
-//
-//        $user
-//            ->setEmail('ruslan.barlozhetskyi@salesmanago.pl')
-//            ->setPass('04ru06sl94an');
-//
-//        $loginController = new LoginController($conf);
-//        $loginController->login($user);//this one for property configuration create
-//
-//        for ($i=0; $i<=100; $i++) {
-//            $event = new Event();
-//            $eventCollection->addItem(
-//                $event
-//                    ->setEmail($faker->email)
-//                    ->setContactExtEventType(Event::EVENT_TYPE_PURCHASE)
-//                    ->setProducts($faker->uuid)
-//                    ->setDescription($faker->text(200))
-//                    ->setDate($faker->time())
-//                    ->setExternalId($faker->uuid)
-//                    ->setLocation($faker->sha1)
-//                    ->setValue($faker->randomNumber())
-//            );
-//        }
-//
-//        $exportController = new ExportController($conf);
-//        $exportController->export($eventCollection);
-//    }
+    public function testExportEventsSuccess()
+    {
+        $faker = Faker\Factory::create();
+        $conf = Configuration::getInstance();
+        $user = new User();
+        $eventCollection = new EventsCollection();
+
+        $user
+            ->setEmail('semowet930@boldhut.com')
+            ->setPass('#Salesmanago123');
+
+        $loginController = new LoginController($conf);
+        $loginController->login($user);//this one for property configuration create
+
+        for ($i=0; $i<=100; $i++) {
+            $event = new Event();
+            $eventCollection->addItem(
+                $event
+                    ->setEmail($faker->email)
+                    ->setContactExtEventType(Event::EVENT_TYPE_PURCHASE)
+                    ->setProducts($faker->uuid)
+                    ->setDescription($faker->text(200))
+                    ->setDate($faker->time())
+                    ->setExternalId($faker->uuid)
+                    ->setLocation($faker->sha1)
+                    ->setValue($faker->randomNumber())
+            );
+        }
+
+        $exportController = new ExportController($conf);
+        $Response = $exportController->export($eventCollection);
+
+        $this->assertEquals(true, $Response->getStatus());
+    }
 
     public function testExportContactsSuccess()
     {
@@ -61,13 +58,9 @@ class ExportControllerTest extends TestCase
             $user = new User();
             $contactsCollection = new ContactsCollection();
 
-//            $user
-//                ->setEmail('semowet930@boldhut.com')
-//                ->setPass('#Salesmanago123');
-
             $user
-                ->setEmail('ruslan.barlozhetskyi@salesmanago.pl')
-                ->setPass('04ru06sl94an');
+                ->setEmail('semowet930@boldhut.com')
+                ->setPass('#Salesmanago123');
 
             $loginController = new LoginController($conf);
             $loginController->login($user);//this one for property configuration create
