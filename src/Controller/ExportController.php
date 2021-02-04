@@ -32,7 +32,7 @@ class ExportController
     //export collection
     public function export(Collection $collection)
     {
-        $this->service->export($collection);
+        return $this->service->export($collection);
     }
 
     //return response from promise export

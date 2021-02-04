@@ -41,9 +41,8 @@ class ExportControllerTest extends TestCase
         }
 
         $loginController = new LoginController($conf);
-        $loginController->login($user);
-        $exportController = new ExportController($conf);
+        $response = $loginController->login($user);
+        $exportController = new ExportController($response->getField('conf'));
         $exportController->export($eventCollection);
-
     }
 }

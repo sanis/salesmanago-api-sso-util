@@ -97,10 +97,9 @@ class Response extends AbstractEntity
 
     /**
      * @param $key
-     * @param $value
      * @return mixed
      */
-    public function getField($key, $value)
+    public function getField($key)
     {
         return $this->fields[$key];
     }

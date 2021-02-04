@@ -44,12 +44,12 @@ class ExportService
                 throw new Exception(get_class($collection) . 'can\'t be exported');
         }
 
-        $settings = $this->ConfModel->getAuthorizationApiData();
+        $settings = $this->ConfModel->getAuthorizationApiDataWithOwner();
         $collectionArray = $collection->toArray();
         $data = array_merge($settings, $collectionArray);
 
         try {
-            $response = $this->RequestService->request(
+            return $this->RequestService->request(
                 self::REQUEST_METHOD_POST,
                 $endpoint,
                 $data

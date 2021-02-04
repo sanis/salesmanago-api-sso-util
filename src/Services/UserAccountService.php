@@ -142,7 +142,7 @@ class UserAccountService
             return $this->RequestService->validateResponse($response);
         } catch (Exception $e) {
             $redirectToAppUrl = $this->conf->getEndpoint() . self::METHOD_REDIRECT_TO_APP . $this->conf->getToken();
-            throw new Exception('Inactive account', 40, $redirectToAppUrl);
+            throw new Exception('Inactive account');
         }
     }
 

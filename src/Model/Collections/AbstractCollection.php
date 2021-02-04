@@ -22,7 +22,7 @@ abstract class AbstractCollection implements Collection
      */
     public function isEmpty()
     {
-        return boolval($this->count());
+        return !boolval($this->count());
     }
 
     /**
