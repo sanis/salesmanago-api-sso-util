@@ -29,12 +29,14 @@ class ExportController
         $this->service = new ExportService($conf);
     }
 
-    //export collection
+    /**
+     * export collection
+     * @param Collection $collection
+     * @return \SALESmanago\Entity\Response
+     * @throws \SALESmanago\Exception\Exception
+     */
     public function export(Collection $collection)
     {
         return $this->service->export($collection);
     }
-
-    //return response from promise export
-    public function getExportResponse(){}
 }

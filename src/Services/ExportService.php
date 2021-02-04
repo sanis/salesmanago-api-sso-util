@@ -5,6 +5,7 @@ namespace SALESmanago\Services;
 
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\Collections\Collection;
 use SALESmanago\Model\Collections\ContactsCollection;
@@ -31,6 +32,11 @@ class ExportService
         $this->RequestService = new RequestService($conf);
     }
 
+    /**
+     * @param Collection $collection
+     * @return Response
+     * @throws Exception
+     */
     public function export(Collection $collection)
     {
         switch(get_class($collection)) {
@@ -46,18 +52,16 @@ class ExportService
 
         $settings = $this->ConfModel->getAuthorizationApiDataWithOwner();
         $collectionArray = $collection->toArray();
+
         $data = array_merge($settings, $collectionArray);
 
-        try {
-            return $this->RequestService->request(
-                self::REQUEST_METHOD_POST,
-                $endpoint,
-                $data
-            );
-        } catch (Exception $exception) {
-            //TODO here we can swith $RequestService type asyns
-        }
-    }
+        $response = $this->RequestService->request(
+            self::REQUEST_METHOD_POST,
+            $endpoint,
+            $data
+        );
 
+        return $this->RequestService->toResponse($response);
+    }
 
 }

@@ -35,11 +35,11 @@ class ContactsCollection extends AbstractCollection
         $contacts = [];
 
         if (!$this->isEmpty()) {
-            array_walk($this->collection, function ($contact, $key) use (&$events) {
-                array_push($events, ContactModel::toArray($contact, Configuration::getInstance()));
+            array_walk($this->collection, function ($contact, $key) use (&$contacts) {
+                array_push($contacts, ContactModel::toExportArray($contact, Configuration::getInstance()));
             });
         }
 
-        return ['contacts' => $contacts];
+        return ['upsertDetails' => $contacts];
     }
 }

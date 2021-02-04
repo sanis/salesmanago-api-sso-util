@@ -100,6 +100,63 @@ class ContactModel
      * @param Configuration $conf
      * @return array
      */
+    public static function toExportArray(Contact $Contact, Configuration $conf) {
+        $Address    = $Contact->getAddress();
+        $Options    = $Contact->getOptions();
+        $Properties = $Contact->getProperties();
+
+        $contactRequestArray = [
+            Contact::CONTACT    => [
+                Contact::EMAIL   => $Contact->getEmail(),
+                Contact::FAX     => $Contact->getFax(),
+                Contact::NAME    => $Contact->getName(),
+                Contact::PHONE   => $Contact->getPhone(),
+                Contact::COMPANY => $Contact->getCompany(),
+                Contact::EXT_ID  => $Contact->getExternalId(),
+                Contact::STATE   => $Contact->getState(),
+                Contact::ADDRESS => [
+                    Address::STREET_AD => $Address->getStreetAddress(),
+                    Address::ZIP_CODE  => $Address->getZipCode(),
+                    Address::CITY      => $Address->getCity(),
+                    Address::COUNTRY   => $Address->getCountry()
+                ],
+            ],
+            Configuration::OWNER   => $conf->getOwner(),
+            Options::N_EMAIL       => $Options->getNewEmail(),
+            Options::F_OPT_IN      => $Options->getForceOptIn(),
+            Options::F_OPT_OUT     => $Options->getForceOptOut(),
+            Options::F_P_OPT_IN    => $Options->getForcePhoneOptIn(),
+            Options::F_P_OPT_OUT   => $Options->getForcePhoneOptOut(),
+            Options::TAGS_SCORING  => $Options->getTagScoring(),
+            Options::TAGS          => $Options->getTags(),
+            Options::R_TAGS        => $Options->getRemoveTags(),
+            Contact::BIRTHDAY      => $Contact->getBirthday(),// attention
+            Address::PROVINCE      => $Address->getProvince(),// attention
+            Options::LANG          => $Options->getLang(),
+            Properties::PROPERTIES => $Properties->get()
+        ];
+
+        //getIsSubscribed() is used for export only
+        if ($Contact->getOptions()->getIsSubscribed()) {
+            $contactRequestArray[Options::F_OPT_IN]    = true;
+            $contactRequestArray[Options::F_OPT_OUT]   = false;
+            $contactRequestArray[Options::F_P_OPT_IN]  = true;
+            $contactRequestArray[Options::F_P_OPT_OUT] = false;
+        } else {
+            $contactRequestArray[Options::F_OPT_IN]    = false;
+            $contactRequestArray[Options::F_OPT_OUT]   = false;
+            $contactRequestArray[Options::F_P_OPT_IN]  = false;
+            $contactRequestArray[Options::F_P_OPT_OUT] = false;
+        }
+
+        return DataHelper::filterDataArray($contactRequestArray);
+    }
+
+    /**
+     * @param Contact $Contact
+     * @param Configuration $conf
+     * @return array
+     */
     public static function toArray(Contact $Contact, Configuration $conf)
     {
         $Address    = $Contact->getAddress();
@@ -171,14 +228,6 @@ class ContactModel
                 ApiDoubleOptIn::D_OPT_IN_TEMPLATE_ID  => $ApiDoubleOptIn->getTemplateId(),
                 ApiDoubleOptIn::D_OPT_IN_EMAIL_SUBJ   => $ApiDoubleOptIn->getSubject()
             ]);
-        }
-
-        //getIsSubscribed() is used for export only
-        if ($Contact->getOptions()->getIsSubscribed()) {
-            $contactRequestArray[Options::F_OPT_IN]    = true;
-            $contactRequestArray[Options::F_OPT_OUT]   = false;
-            $contactRequestArray[Options::F_P_OPT_IN]  = true;
-            $contactRequestArray[Options::F_P_OPT_OUT] = false;
         }
 
         return DataHelper::filterDataArray($contactRequestArray);
