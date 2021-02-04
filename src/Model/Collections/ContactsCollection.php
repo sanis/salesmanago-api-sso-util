@@ -40,6 +40,6 @@ class ContactsCollection extends AbstractCollection
             });
         }
 
-        return ['events' => $contacts];
+        return ['contacts' => $contacts];
     }
 }

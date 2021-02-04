@@ -6,11 +6,14 @@ namespace Tests\Controller;
 use Faker;
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Controller\LoginController;
+use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\User;
 use SALESmanago\Controller\ExportController;
 use SALESmanago\Entity\Event\Event;
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Model\Collections\ContactsCollection;
 use SALESmanago\Model\Collections\EventsCollection;
+use SALESmanago\Entity\Contact\Contact;
 
 class ExportControllerTest extends TestCase
 {
@@ -24,6 +27,9 @@ class ExportControllerTest extends TestCase
         $user
             ->setEmail('semowet930@boldhut.com')
             ->setPass('#Salesmanago123');
+
+        $loginController = new LoginController($conf);
+        $loginController->login($user);//this one for property configuration create
 
         for ($i=0; $i<=100; $i++) {
             $event = new Event();
@@ -40,8 +46,6 @@ class ExportControllerTest extends TestCase
             );
         }
 
-        $loginController = new LoginController($conf);
-        $loginController->login($user);//this one for property configuration create
         $exportController = new ExportController($conf);
         $exportController->export($eventCollection);
     }
@@ -51,9 +55,38 @@ class ExportControllerTest extends TestCase
         $faker = Faker\Factory::create();
         $conf = Configuration::getInstance();
         $user = new User();
+        $eventCollection = new ContactsCollection();
 
         $user
             ->setEmail('ruslan.barlozhetskyi@salesmanago.pl')
             ->setPass('04ru06sl94an');
+
+        $loginController = new LoginController($conf);
+        $loginController->login($user);//this one for property configuration create
+
+        for ($i=0; $i<=100; $i++) {
+            $Contact = new Contact();
+            $eventCollection->addItem(
+                $Contact
+                    ->setName($faker->name)
+                    ->setEmail($faker->email)
+                    ->setContactId($faker->uuid)
+                    ->setFax($faker->phoneNumber)
+                    ->setPhone($faker->phoneNumber)
+                    ->setCompany($faker->company)
+                    ->setExternalId($faker->uuid)
+                    ->setState($faker->randomElement(['CUSTOMER', 'PROSPECT', 'PARTNER', 'OTHER', 'UNKNOWN']))
+                    ->setOptions(
+                        $Contact->getOptions()
+                            ->setTags(strtoupper(str_replace(' ', '_', $faker->words($nb = 3, $asText = false))))
+                            ->setIsSubscribed($faker->boolean)
+                            ->setCreatedOn($faker->unixTime($max = 'now'))
+                    )
+            );
+        }
+
+
+        $exportController = new ExportController($conf);
+        $exportController->export($eventCollection);
     }
 }

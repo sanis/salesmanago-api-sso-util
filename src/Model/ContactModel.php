@@ -173,6 +173,14 @@ class ContactModel
             ]);
         }
 
+        //getIsSubscribed() is used for export only
+        if ($Contact->getOptions()->getIsSubscribed()) {
+            $contactRequestArray[Options::F_OPT_IN]    = true;
+            $contactRequestArray[Options::F_OPT_OUT]   = false;
+            $contactRequestArray[Options::F_P_OPT_IN]  = true;
+            $contactRequestArray[Options::F_P_OPT_OUT] = false;
+        }
+
         return DataHelper::filterDataArray($contactRequestArray);
     }
 
