@@ -4,7 +4,7 @@
 namespace SALESmanago\Services;
 
 
-use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Exception\Exception;
 
 use \GuzzleHttp\Client as GuzzleClient;
@@ -25,10 +25,10 @@ class RequestService
     private $statusCode;
     private $guzzleAdapter;
 
-    public function __construct(Settings $Settings)
+    public function __construct(Configuration $conf)
     {
         $this->guzzleAdapter = new GuzzleClientAdapter();
-        $this->guzzleAdapter->setClient($Settings,
+        $this->guzzleAdapter->setClient($conf,
         $headers = array(
             'Accept'       => 'application/json',
             'Content-Type' => 'application/json;charset=UTF-8'

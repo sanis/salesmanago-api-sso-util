@@ -5,7 +5,6 @@ namespace Tests\Controller;
 
 
 use PHPUnit\Framework\TestCase;
-use Faker;
 use SALESmanago\Controller\LoginController;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\User;
@@ -18,7 +17,7 @@ class LoginControllerTest extends TestCase
 
         public function testLoginSuccess()
         {
-            $conf = new Configuration();
+            $conf = Configuration::getInstance();
             $User = new User();
             $loginController = new LoginController($conf);
 
@@ -28,6 +27,7 @@ class LoginControllerTest extends TestCase
 
             $response = $loginController->login($User);
 
-            var_dump($response);
+            $this->assertInstanceOf('SALESmanago\Entity\Response', $response);
+            $this->assertEquals(true, $response->getStatus());
         }
 }

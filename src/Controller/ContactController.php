@@ -12,13 +12,13 @@ use SALESmanago\Services\ContactService;
 
 class ContactController
 {
-    protected $settings;
+    protected $conf;
     protected $service;
 
-    public function __construct(Configuration $settings)
+    public function __construct(Configuration $conf)
     {
-        $this->settings = $settings;
-        $this->service  = new ContactService($settings);
+        $this->conf = $conf;
+        $this->service  = new ContactService($conf);
     }
 
     /**
@@ -29,7 +29,7 @@ class ContactController
     public function getContactBasic(Contact $Contact)
     {
         $response = $this->service->getContactBasic($Contact);
-        $contactModel = new ContactModel($Contact, $this->settings);
+        $contactModel = new ContactModel($Contact, $this->conf);
 
         if ($response['success'] && !empty($response['contacts'][0])) {
             return $contactModel->getContactFromBasicResponse($response['contacts'][0]);

@@ -3,21 +3,20 @@
 
 namespace SALESmanago\Model;
 
-use SALESmanago\Entity\Configuration as Settings;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\User;
 
-class SettingsModel
+class ConfModel
 {
     const
         REQUEST_TIME = 'requestTime';
 
     /**
-     * @var Settings
+     * @var Configuration
      */
     private $conf;
 
-    public function __construct(Settings $conf)
+    public function __construct(Configuration $conf)
     {
         $this->conf = $conf;
     }
@@ -28,9 +27,9 @@ class SettingsModel
     public function getAuthorizationApiData()
     {
         return [
-            Settings::CLIENT_ID => $this->conf->getClientId(),
-            Settings::API_KEY   => $this->conf->getApiKey(),
-            Settings::SHA       => $this->conf->getSha(),
+            Configuration::CLIENT_ID => $this->conf->getClientId(),
+            Configuration::API_KEY   => $this->conf->getApiKey(),
+            Configuration::SHA       => $this->conf->getSha(),
             self::REQUEST_TIME  => time()
         ];
     }

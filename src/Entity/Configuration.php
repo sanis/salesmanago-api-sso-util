@@ -143,6 +143,7 @@ class Configuration extends AbstractEntity
      * Sets data from array
      * @param $data
      * @return $this;
+     * @throws Exception
      */
     public function set($data)
     {
@@ -393,7 +394,6 @@ class Configuration extends AbstractEntity
         return $this->ignoreDomain;
     }
 
-
     /**
      * @param string $domain
      * @return $this
@@ -542,5 +542,4 @@ class Configuration extends AbstractEntity
     {
         return $this->cookieTtl;
     }
-
 }

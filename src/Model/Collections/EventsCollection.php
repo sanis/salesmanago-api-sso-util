@@ -31,7 +31,8 @@ class EventsCollection extends AbstractCollection
     public function toArray()
     {
         $events = [];
-
+        echo 'Work fine:';
+        var_dump($this->isEmpty());
         if (!$this->isEmpty()) {
             array_walk($this->collection, function ($event, $key) use (&$events) {
                 array_push($events, EventModel::toArray($event));

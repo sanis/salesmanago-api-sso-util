@@ -5,25 +5,25 @@ namespace SALESmanago\Model;
 
 use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\Event\Event;
-use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Helper\DataHelper;
 
 class EventModel
 {
     protected $Event;
-    protected $Settings;
+    protected $conf;
 
-    public function __construct(Event $Event, Settings $Settings)
+    public function __construct(Event $Event, Configuration $conf)
     {
         $this->Event = $Event;
-        $this->Settings = $Settings;
+        $this->conf = $conf;
     }
 
     public function getEventForUnionTransfer()
     {
         $eventRequestArray = [
-            Settings::CLIENT_ID  => $this->Settings->getClientId(),
-            Settings::OWNER      => $this->Settings->getOwner(),
+            Configuration::CLIENT_ID  => $this->conf->getClientId(),
+            Configuration::OWNER      => $this->conf->getOwner(),
             Options::F_OPT_IN    => $this->Event->getForceOptIn(),
             Event::EMAIL         => $this->Event->getEmail(),
             Event::CONTACT_ID    => $this->Event->getContactId(),

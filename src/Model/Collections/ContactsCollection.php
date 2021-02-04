@@ -4,6 +4,7 @@
 namespace SALESmanago\Model\Collections;
 
 
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
@@ -35,7 +36,7 @@ class ContactsCollection extends AbstractCollection
 
         if (!$this->isEmpty()) {
             array_walk($this->collection, function ($contact, $key) use (&$events) {
-                array_push($events, ContactModel::toArray($contact, $this->conf));
+                array_push($events, ContactModel::toArray($contact, Configuration::getInstance()));
             });
         }
 

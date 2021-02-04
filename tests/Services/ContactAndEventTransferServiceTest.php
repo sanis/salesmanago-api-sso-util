@@ -4,7 +4,7 @@ namespace Tests\Services;
 
 
 use PHPUnit\Framework\TestCase;
-use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Contact\Address;
 use SALESmanago\Entity\Contact\Options;

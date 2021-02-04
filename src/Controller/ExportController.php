@@ -1,21 +1,18 @@
 <?php
 
-
-namespace SALESmanago\Controller\Export;
-
+namespace SALESmanago\Controller;
 
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Model\Collections\Collection;
-use SALESmanago\Services\CheckIfIgnoredService as IgnoreService;
 use SALESmanago\Services\ContactAndEventTransferService;
-use SALESmanago\Services\SynchronizationService as SyncService;
+use SALESmanago\Services\ExportService;
 
 class ExportController
 {
     /**
      * @var Configuration
      */
-    protected $settings;
+    protected $conf;
 
     /**
      * @var ContactAndEventTransferService
@@ -24,18 +21,18 @@ class ExportController
 
     /**
      * ExportController constructor.
-     * @param Configuration $settings
+     * @param Configuration $conf
      */
-    public function __construct(Configuration $settings)
+    public function __construct(Configuration $conf)
     {
-        $this->settings      = $settings;
-        $this->service       = ''; //@TODO add service;
+        $this->conf = $conf;
+        $this->service = new ExportService($conf);
     }
 
     //export collection
     public function export(Collection $collection)
     {
-
+        $this->service->export($collection);
     }
 
     //return response from promise export
