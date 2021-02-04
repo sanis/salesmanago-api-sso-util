@@ -50,7 +50,7 @@ class ConfModel
      * @param User $User
      * @return Configuration
      */
-    public function setConfAfterAccountAuthorize($accountAuthorizeResponse, User $User)
+    public function setConfAfterAccountAuthorization($accountAuthorizeResponse, User $User)
     {
         $this->conf
             ->setOwner($User->getEmail())

@@ -12,7 +12,7 @@ class UserModel
      * @param User $User
      * @return array
      */
-    public function getUserForAuthorize(User $User)
+    public function getUserForAuthorization(User $User)
     {
         return DataHelper::filterDataArray([
             User::USERNAME => $User->getEmail(),

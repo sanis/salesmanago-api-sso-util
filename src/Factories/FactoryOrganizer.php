@@ -2,23 +2,27 @@
 
 namespace SALESmanago\Factories;
 
-use SALESmanago\Adapter\CookieManagerAdapter;
-use SALESmanago\Controller\ContactAndEventTransferController;
 
+use SALESmanago\Controller\ContactAndEventTransferController;
 use SALESmanago\Controller\LoginController;
+use SALESmanago\Controller\UserController;
 
 class FactoryOrganizer
 {
-    const LOGIN_ACCOUNT_C       = 'LoginAccountC';
-    const CONTACT_AND_EVENT_TRANSFER_C = 'ContactAndEventTransferC';
+    const
+        LOGIN_C = 'LoginC',
+        USER_C = 'UserC',
+        CONTACT_AND_EVENT_TRANSFER_C = 'ContactAndEventTransferC';
 
-    public function getInst($const, $paramsFirst = null, $paramsSecond = null)
+    public function getInst($const, $param)
     {
         switch ($const) {
-            case self::LOGIN_ACCOUNT_C:
-                return new LoginController($paramsFirst, $paramsSecond);
+            case self::LOGIN_C:
+                return new LoginController($param);
+            case self::USER_C:
+                return new UserController($param);
             case self::CONTACT_AND_EVENT_TRANSFER_C:
-                return new ContactAndEventTransferController($paramsFirst);
+                return new ContactAndEventTransferController($param);
             default:
                 return false;
             break;

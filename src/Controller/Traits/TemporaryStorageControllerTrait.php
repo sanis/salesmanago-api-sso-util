@@ -4,6 +4,7 @@
 namespace SALESmanago\Controller\Traits;
 
 
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Traits\Controller\CookieControllerTrait;
 use SALESmanago\Traits\Controller\SessionControllerTrait;
 use SALESmanago\Adapter\CookieManagerAdapter;
@@ -15,28 +16,48 @@ trait TemporaryStorageControllerTrait
     use SessionControllerTrait;
 
     /**
-     * @param int $id
+     * @var Configuration
+     */
+    protected $conf;
+
+    /**
+     * @param string $id
      * @return bool
      */
     public function setSmEvent($id)
     {
-        if(!$this->checkIfAdaptersSet()){
-            return false;
+        if($this->checkIfCookieAdapterSet()) {
+           $this->CookieManager->setCookie(
+               CookieManagerAdapter::EVENT_COOKIE,
+                    $id,
+               time()+$this->conf->getCookieTTL()
+           );
         }
-        //@todo set to session set to cookie use $this->conf to get cookie smevent expiry time;
+
+        if ($this->checkIfSessionAdapterSet()) {
+            $this->SessionManager->setToSession(CookieManagerAdapter::EVENT_COOKIE, $id);
+        }
+
         return true;
     }
 
     /**
-     * @return bool
+     * @return null
      */
     public function getSmEvent()
     {
-        if(!$this->checkIfAdaptersSet()){
-            return false;
+        $id = null;
+        if($this->checkIfCookieAdapterSet()) {
+            $id = $this->CookieManager->getCookie(CookieManagerAdapter::EVENT_COOKIE);
         }
-        //@todo return SmEventID if exist
-        return true;
+
+        if ($this->checkIfSessionAdapterSet()) {
+            $id = !empty($id)
+                ? $id
+                : $this->SessionManager->getFromSession(CookieManagerAdapter::EVENT_COOKIE);
+        }
+
+        return $id;
     }
 
     /**
@@ -44,23 +65,35 @@ trait TemporaryStorageControllerTrait
      */
     public function unsetSmEvent()
     {
-        if(!$this->checkIfAdaptersSet()){
-            return false;
+        if($this->checkIfCookieAdapterSet()) {
+            $this->CookieManager->deleteCookie(CookieManagerAdapter::EVENT_COOKIE);
         }
-        //@todo unset session unset cookie;
+
+        if ($this->checkIfSessionAdapterSet()) {
+            $this->SessionManager->deleteFromSession(CookieManagerAdapter::EVENT_COOKIE);
+        }
+
         return true;
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return bool
      */
     public function setSmClient($id)
     {
-        if(!$this->checkIfAdaptersSet()){
-            return false;
+        if($this->checkIfCookieAdapterSet()) {
+            $this->CookieManager->setCookie(
+                CookieManagerAdapter::CLIENT_COOKIE,
+                $id,
+                time()+31556926
+            );
         }
-        //@todo set to session set to cookie;
+
+        if ($this->checkIfSessionAdapterSet()) {
+            $this->SessionManager->setToSession(CookieManagerAdapter::CLIENT_COOKIE, $id);
+        }
+
         return true;
     }
 
@@ -69,11 +102,18 @@ trait TemporaryStorageControllerTrait
      */
     public function getSmClient()
     {
-        if(!$this->checkIfAdaptersSet()){
-            return false;
+        $id = null;
+        if($this->checkIfCookieAdapterSet()) {
+            $id = $this->CookieManager->getCookie(CookieManagerAdapter::CLIENT_COOKIE);
         }
-        //@todo retrun sm client
-        return true;
+
+        if ($this->checkIfSessionAdapterSet()) {
+            $id = !empty($id)
+                ? $id
+                : $this->SessionManager->getFromSession(CookieManagerAdapter::CLIENT_COOKIE);
+        }
+
+        return $id;
     }
 
     /**
@@ -81,30 +121,15 @@ trait TemporaryStorageControllerTrait
      */
     public function unsetSmClient()
     {
-        if(!$this->checkIfAdaptersSet()){
-            return false;
+        if($this->checkIfCookieAdapterSet()) {
+            $this->CookieManager->deleteCookie(CookieManagerAdapter::CLIENT_COOKIE);
         }
-        //@todo unset session unset cookie;
+
+        if ($this->checkIfSessionAdapterSet()) {
+            $this->SessionManager->deleteFromSession(CookieManagerAdapter::CLIENT_COOKIE);
+        }
+
         return true;
-    }
-
-
-    /**
-     * @return bool
-     */
-    private function checkIfSessionAdapterSet()
-    {
-        //@todo;
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    private function checkIfCookieAdapterSet()
-    {
-        //@todo;
-        return false;
     }
 
     /**

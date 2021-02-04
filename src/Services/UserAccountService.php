@@ -61,7 +61,7 @@ class UserAccountService
         $responseAccountAuthorize = $this->accountAuthorize($User);
 
         //set necessary data to conf;
-        $this->conf = $this->ConfModel->setConfAfterAccountAuthorize($responseAccountAuthorize, $User);
+        $this->conf = $this->ConfModel->setConfAfterAccountAuthorization($responseAccountAuthorize, $User);
 
         $responseIntegration = $this->accountIntegrationSettings();
 
@@ -85,7 +85,7 @@ class UserAccountService
 
     protected function accountAuthorize(User $User)
     {
-        $data = $this->UserModel->getUserForAuthorize($User);
+        $data = $this->UserModel->getUserForAuthorization($User);
 
         $response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
@@ -166,19 +166,10 @@ class UserAccountService
     }
 
     /**
-     * @var  $settings
-     * @return string - url
-     */
-    public function getRedirectToAppUrl()
-    {
-        return $this->conf->getEndpoint() . self::METHOD_REDIRECT_TO_APP . $this->conf->getToken();
-    }
-
-    /**
      * @return array
      * @throws Exception
      */
-    public function listOwnersEmails()
+    public function listOwnersList()
     {
         $response = $this->RequestService
             ->request(

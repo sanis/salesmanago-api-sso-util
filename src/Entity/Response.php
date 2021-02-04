@@ -68,6 +68,18 @@ class Response extends AbstractEntity
     }
 
     /**
+     * @return bool
+     */
+    public function isSuccess()
+    {
+        if(isset($this->fields['success'])) {
+            return boolval($this->fields['success']);
+        }
+
+        return boolval($this->status);
+    }
+
+    /**
      * @param null|string $message
      */
     public function setMessage($message = null)
