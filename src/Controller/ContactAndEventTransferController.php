@@ -19,7 +19,7 @@ class ContactAndEventTransferController
     //this one is to set cookies and sessions:
     use TemporaryStorageControllerTrait;
 
-    protected $settings;
+    protected $conf;
     protected $service;
 
     /**
@@ -34,14 +34,14 @@ class ContactAndEventTransferController
 
     /**
      * ContactAndEventTransferController constructor.
-     * @param Configuration $settings
+     * @param Configuration $conf
      */
-    public function __construct(Configuration $settings)
+    public function __construct(Configuration $conf)
     {
-        $this->settings      = $settings;
-        $this->service       = new ContactAndEventTransferService($this->settings);
-        $this->syncService   = new SyncService($this->settings);
-        $this->ignoreService = new IgnoreService($this->settings);
+        $this->conf          = $conf;
+        $this->service       = new ContactAndEventTransferService($this->conf);
+        $this->syncService   = new SyncService($this->conf);
+        $this->ignoreService = new IgnoreService($this->conf);
     }
 
     /**
@@ -55,14 +55,14 @@ class ContactAndEventTransferController
         if($this->ignoreService->isContactIgnored($Contact)) {
             return array_merge(
                 $this->ignoreService->getDeclineResponse(),
-                ['settings' => $this->settings]
+                ['conf' => $this->conf]
             );
         }
 
         return array_merge(
             [
-                'settings' =>
-                    $this->settings->setRequireSynchronization(
+                'conf' =>
+                    $this->conf->setRequireSynchronization(
                         $this->syncService->isNeedSyncContactEmailStatus(clone $Contact)
                     )
             ],
@@ -79,7 +79,7 @@ class ContactAndEventTransferController
     {
         return array_merge(
             [
-                Configuration::COOKIE_TTL => $this->settings->getCookieTtl()
+                Configuration::COOKIE_TTL => $this->conf->getCookieTtl()
             ],
             $this->service->transferEvent($Event)
         );
@@ -95,14 +95,14 @@ class ContactAndEventTransferController
         if($this->ignoreService->isContactIgnored($Contact)) {
             return array_merge(
                 $this->ignoreService->getDeclineResponse(),
-                ['settings' => $this->settings]
+                ['conf' => $this->conf]
             );
         }
 
         return array_merge(
             [
-                'settings' =>
-                    $this->settings->setRequireSynchronization(
+                'conf' =>
+                    $this->conf->setRequireSynchronization(
                         $this->syncService->isNeedSyncContactEmailStatus(clone $Contact)
                     )
             ],

@@ -10,7 +10,7 @@ use SALESmanago\Entity\Event\Event;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\EventModel;
-use SALESmanago\Model\SettingsModel;
+use SALESmanago\Model\ConfModel;
 
 class ContactService
 {
@@ -19,14 +19,14 @@ class ContactService
         API_METHOD_BASIC    = '/api/contact/basic';
 
     private $RequestService;
-    private $Settings;
-    private $SettingsModel;
+    private $conf;
+    private $ConfModel;
 
-    public function __construct(Configuration $Settings)
+    public function __construct(Configuration $conf)
     {
-        $this->Settings = $Settings;
-        $this->SettingsModel = new SettingsModel($Settings);
-        $this->RequestService = new RequestService($Settings);
+        $this->conf = $conf;
+        $this->ConfModel = new ConfModel($conf);
+        $this->RequestService = new RequestService($conf);
     }
 
     /**
@@ -36,8 +36,8 @@ class ContactService
      */
     public function getContactBasic(Contact $Contact)
     {
-        $ContactModel = new ContactModel($Contact, $this->Settings);
-        $settings = $this->SettingsModel->getAuthorizationApiData();
+        $ContactModel = new ContactModel($Contact, $this->conf);
+        $settings = $this->ConfModel->getAuthorizationApiData();
 
         $contact = $ContactModel->getContactForBasicRequest();
 

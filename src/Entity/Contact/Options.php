@@ -78,10 +78,18 @@ class Options extends AbstractEntity
 
     /**
      * Flag for contact subscriptions
-     * Set this flag if contact subscribes
+     * Set this flag if contact subscribes at the current moment
      * @var bool
      */
     private $isSubscribes     = false;
+
+    /**
+     * Flag fir contact subscription state
+     * Shows if contact already subscribed
+     *
+     * @var bool
+     */
+    private $isSubscribed = false;
 
     /**
      * Flag for contact unsubscribe
@@ -261,7 +269,7 @@ class Options extends AbstractEntity
     }
 
     /**
-     * Sets subscriber actual subscribing flag,
+     * Get subscriber actual subscribing flag,
      * $this->isSubscribes - if contact is subscribing at that moment;
      *
      * @return bool $this->isSubscribes
@@ -269,6 +277,30 @@ class Options extends AbstractEntity
     public function getIsSubscribes()
     {
         return $this->isSubscribes;
+    }
+
+    /**
+     * Sets boolean $this->isSubscribed sate of contact subscribed at platform
+     * !Use Only for exports
+     * @param boolean $param
+     * @return $this
+     * */
+    public function setIsSubscribed($param)
+    {
+        $this->isSubscribed = boolval($param);
+        return $this;
+    }
+
+    /**
+     * Get subscriber actual subscribed flag,
+     * !Use Only for exports
+     * $this->isSubscribed - if contact is subscribed at platform;
+     *
+     * @return bool $this->isSubscribed
+     */
+    public function getIsSubscribed()
+    {
+        return $this->isSubscribed;
     }
 
     /**

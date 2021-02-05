@@ -109,12 +109,13 @@ class Response extends AbstractEntity
 
     /**
      * @param $key
-     * @param $value
      * @return mixed
      */
-    public function getField($key, $value)
+    public function getField($key)
     {
-        return $this->fields[$key];
+        return isset($this->fields[$key])
+            ? $this->fields[$key]
+            : null;
     }
 
     /**
@@ -133,5 +134,13 @@ class Response extends AbstractEntity
     public function getFields()
     {
         return $this->fields;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isSuccess()
+    {
+        return boolval($this->getStatus());
     }
 }

@@ -4,7 +4,8 @@
 namespace SALESmanago\Services;
 
 
-use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 
 use \GuzzleHttp\Client as GuzzleClient;
@@ -25,10 +26,10 @@ class RequestService
     private $statusCode;
     private $guzzleAdapter;
 
-    public function __construct(Settings $Settings)
+    public function __construct(Configuration $conf)
     {
         $this->guzzleAdapter = new GuzzleClientAdapter();
-        $this->guzzleAdapter->setClient($Settings,
+        $this->guzzleAdapter->setClient($conf,
         $headers = array(
             'Accept'       => 'application/json',
             'Content-Type' => 'application/json;charset=UTF-8'
@@ -112,5 +113,31 @@ class RequestService
                 : $response['message'];
             throw new Exception($message);
         }
+    }
+
+    /**
+     * @param array $apiResponse
+     * @return Response;
+     */
+    public function toResponse(array $apiResponse)
+    {
+        $Response = new Response();
+
+        $Response
+            ->setStatus($apiResponse['success'])
+            ->setMessage(is_array($apiResponse['message'])
+                ? implode(' ', $apiResponse['message'])
+                : $apiResponse['message']);
+
+        unset($apiResponse['success']);
+        unset($apiResponse['message']);
+
+        if (!empty($apiResponse)) {
+            array_walk($apiResponse, function ($value, $key) use (&$Response) {
+                $Response->setField($key, $value);
+            });
+        }
+
+        return $Response;
     }
 }

@@ -9,7 +9,7 @@ use SALESmanago\Entity\Event\Event;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\EventModel;
-use SALESmanago\Model\SettingsModel;
+use SALESmanago\Model\ConfModel;
 
 use SALESmanago\Entity\Configuration;
 
@@ -22,14 +22,14 @@ class ContactAndEventTransferService
         EVENT_OBJ_NAME      = 'addContactExtEventRequest';
 
     private $RequestService;
-    private $Settings;
-    private $SettingsModel;
+    private $conf;
+    private $ConfModel;
 
-    public function __construct(Configuration $Settings)
+    public function __construct(Configuration $conf)
     {
-        $this->Settings = $Settings;
-        $this->SettingsModel = new SettingsModel($Settings);
-        $this->RequestService = new RequestService($Settings);
+        $this->conf = $conf;
+        $this->ConfModel = new ConfModel($conf);
+        $this->RequestService = new RequestService($conf);
     }
 
     /**
@@ -40,10 +40,10 @@ class ContactAndEventTransferService
      */
     public function transferBoth(Contact $Contact, Event $Event)
     {
-        $ContactModel = new ContactModel($Contact, $this->Settings);
-        $EventModel   = new EventModel($Event, $this->Settings);
+        $ContactModel = new ContactModel($Contact, $this->conf);
+        $EventModel   = new EventModel($Event, $this->conf);
 
-        $settings = $this->SettingsModel->getAuthorizationApiData();
+        $settings = $this->ConfModel->getAuthorizationApiData();
         $contact  = $ContactModel->getContactForUnionTransfer();
         $event    = $EventModel->getEventForUnionTransfer();
 
@@ -71,9 +71,9 @@ class ContactAndEventTransferService
      */
     public function transferEvent(Event $Event)
     {
-        $EventModel = new EventModel($Event, $this->Settings);
+        $EventModel = new EventModel($Event, $this->conf);
 
-        $settings = $this->SettingsModel->getAuthorizationApiData();
+        $settings = $this->ConfModel->getAuthorizationApiData();
         $event    = $EventModel->getEventForUnionTransfer();
 
         $data = array_merge(
@@ -100,9 +100,9 @@ class ContactAndEventTransferService
      */
     public function transferContact(Contact $Contact)
     {
-        $ContactModel = new ContactModel($Contact, $this->Settings);
+        $ContactModel = new ContactModel($Contact, $this->conf);
 
-        $settings = $this->SettingsModel->getAuthorizationApiData();
+        $settings = $this->ConfModel->getAuthorizationApiData();
         $contact  = $ContactModel->getContactForUnionTransfer();
 
         $data = array_merge(

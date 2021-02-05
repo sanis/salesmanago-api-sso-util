@@ -5,25 +5,25 @@ namespace SALESmanago\Model;
 
 use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\Event\Event;
-use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Helper\DataHelper;
 
 class EventModel
 {
     protected $Event;
-    protected $Settings;
+    protected $conf;
 
-    public function __construct(Event $Event, Settings $Settings)
+    public function __construct(Event $Event, Configuration $conf)
     {
         $this->Event = $Event;
-        $this->Settings = $Settings;
+        $this->conf = $conf;
     }
 
     public function getEventForUnionTransfer()
     {
         $eventRequestArray = [
-            Settings::CLIENT_ID  => $this->Settings->getClientId(),
-            Settings::OWNER      => $this->Settings->getOwner(),
+            Configuration::CLIENT_ID  => $this->conf->getClientId(),
+            Configuration::OWNER      => $this->conf->getOwner(),
             Options::F_OPT_IN    => $this->Event->getForceOptIn(),
             Event::EMAIL         => $this->Event->getEmail(),
             Event::CONTACT_ID    => $this->Event->getContactId(),
@@ -40,17 +40,44 @@ class EventModel
             ]
         ];
 
-        $eventRequestArray[Event::CONTACT_EVENT] = array_merge($eventRequestArray[Event::CONTACT_EVENT], $this->getEventDetailsRequestArray());
+        $eventRequestArray[Event::CONTACT_EVENT] = array_merge(
+            $eventRequestArray[Event::CONTACT_EVENT],
+            self::getEventDetailsRequestArray($this->Event)
+        );
         return DataHelper::filterDataArray($eventRequestArray);
     }
 
     /**
+     * @param Event $Event
+     * @return array
+     */
+    public static function toArray(Event $Event)
+    {
+        return DataHelper::filterDataArray([
+            Event::EMAIL         => $Event->getEmail(),
+            Event::CONTACT_ID    => $Event->getContactId(),
+            Event::CONTACT_EVENT => array_merge([
+                Event::EVENT_ID       => $Event->getEventId(),
+                Event::DATE           => $Event->getDate(),
+                Event::DESCRIPTION    => $Event->getDescription(),
+                Event::PRODUCTS       => $Event->getProducts(),
+                Event::LOCATION       => $Event->getLocation(),
+                Event::VALUE          => $Event->getValue(),
+                Event::EXT_EVENT_TYPE => $Event->getContactExtEventType(),
+                Event::EXT_ID         => $Event->getExternalId(),
+                Event::SHOP_DOMAIN    => $Event->getShopDomain()
+            ], self::getEventDetailsRequestArray($Event)
+            )]);
+    }
+
+    /**
      * Get evnt details from Entity & set event detail array keys for request
+     * @param Event $Event
      * @return array of event details
      */
-    protected function getEventDetailsRequestArray()
+    protected static function getEventDetailsRequestArray(Event $Event)
     {
-        $eventDetails = $this->Event->getDetails();
+        $eventDetails = $Event->getDetails();
 
         if (empty($eventDetails)) {
             return $eventDetails;

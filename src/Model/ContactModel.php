@@ -9,7 +9,7 @@ use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\Contact\Properties;
 use SALESmanago\Entity\ApiDoubleOptIn;
 
-use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Exception\Exception;
 
 use SALESmanago\Helper\DataHelper;
@@ -17,93 +17,28 @@ use SALESmanago\Helper\DataHelper;
 
 class ContactModel
 {
+    /**
+     * @var Contact
+     */
     protected $Contact;
-    protected $Settings;
 
-    public function __construct(Contact $Contact, Settings $Settings)
+    /**
+     * @var Configuration
+     */
+    protected $conf;
+
+    public function __construct(Contact $Contact, Configuration $conf)
     {
         $this->Contact = $Contact;
-        $this->Settings = $Settings;
+        $this->conf = $conf;
     }
 
     /**
-     * @throws Exception
      * @return array
      */
     public function getContactForUnionTransfer()
     {
-        $Address    = $this->Contact->getAddress();
-        $Options    = $this->Contact->getOptions();
-        $Properties = $this->Contact->getProperties();
-
-        $contactRequestArray = [
-            Settings::CLIENT_ID => $this->Settings->getClientId(),
-            Options::ASYNC      => $Options->getAsync(),
-            Contact::CONTACT    => [
-                Contact::EMAIL   => $this->Contact->getEmail(),
-                Contact::FAX     => $this->Contact->getFax(),
-                Contact::NAME    => $this->Contact->getName(),
-                Contact::PHONE   => $this->Contact->getPhone(),
-                Contact::COMPANY => $this->Contact->getCompany(),
-                Contact::EXT_ID  => $this->Contact->getExternalId(),
-                Contact::STATE   => $this->Contact->getState(),
-                Contact::ADDRESS => [
-                    Address::STREET_AD => $Address->getStreetAddress(),
-                    Address::ZIP_CODE  => $Address->getZipCode(),
-                    Address::CITY      => $Address->getCity(),
-                    Address::COUNTRY   => $Address->getCountry()
-                ],
-            ],
-            Settings::OWNER        => $this->Settings->getOwner(),
-            Options::N_EMAIL       => $Options->getNewEmail(),
-            Options::F_OPT_IN      => $Options->getForceOptIn(),
-            Options::F_OPT_OUT     => $Options->getForceOptOut(),
-            Options::F_P_OPT_IN    => $Options->getForcePhoneOptIn(),
-            Options::F_P_OPT_OUT   => $Options->getForcePhoneOptOut(),
-            Options::TAGS_SCORING  => $Options->getTagScoring(),
-            Options::TAGS          => $Options->getTags(),
-            Options::R_TAGS        => $Options->getRemoveTags(),
-            Contact::BIRTHDAY      => $this->Contact->getBirthday(),// attention
-            Address::PROVINCE      => $Address->getProvince(),// attention
-            Options::LANG          => $Options->getLang(),
-            Properties::PROPERTIES => $Properties->get()
-        ];
-
-        if ($this->isSubscriptionStatusNoChangeChecker()) {
-            $contactRequestArray[Options::F_OPT_IN]              = false;
-            $contactRequestArray[Options::F_OPT_OUT]             = false;
-            $contactRequestArray[Options::F_P_OPT_IN]            = false;
-            $contactRequestArray[Options::F_P_OPT_OUT]           = false;
-            $contactRequestArray[ApiDoubleOptIn::U_API_D_OPT_IN] = false;
-        }
-
-        if ($this->Contact->getOptions()->getIsUnSubscribes()) {
-            $contactRequestArray[Options::F_OPT_IN]    = false;
-            $contactRequestArray[Options::F_OPT_OUT]   = true;
-            $contactRequestArray[Options::F_P_OPT_IN]  = false;
-            $contactRequestArray[Options::F_P_OPT_OUT] = true;
-        }
-
-        if ($this->Contact->getOptions()->getIsSubscribes()) {
-            $contactRequestArray[Options::F_OPT_IN]    = true;
-            $contactRequestArray[Options::F_OPT_OUT]   = false;
-            $contactRequestArray[Options::F_P_OPT_IN]  = true;
-            $contactRequestArray[Options::F_P_OPT_OUT] = false;
-        }
-
-        if ($this->apiDoubleOptInChecker()) {
-            $ApiDoubleOptIn = $this->Settings->getApiDoubleOptIn();
-
-            $contactRequestArray = array_merge(
-                $contactRequestArray, [
-                ApiDoubleOptIn::U_API_D_OPT_IN        => $ApiDoubleOptIn->getEnabled(),
-                ApiDoubleOptIn::D_OPT_IN_EMAIL_ACC_ID => $ApiDoubleOptIn->getAccountId(),
-                ApiDoubleOptIn::D_OPT_IN_TEMPLATE_ID  => $ApiDoubleOptIn->getTemplateId(),
-                ApiDoubleOptIn::D_OPT_IN_EMAIL_SUBJ   => $ApiDoubleOptIn->getSubject()
-            ]);
-        }
-
-        return DataHelper::filterDataArray($contactRequestArray);
+        return self::toArray($this->Contact, $this->conf);
     }
 
     /**
@@ -112,12 +47,12 @@ class ContactModel
     public function getContactForBasicRequest()
     {
         return DataHelper::filterDataArray([
-            Settings::CLIENT_ID => $this->Settings->getClientId(),
+            Configuration::CLIENT_ID => $this->conf->getClientId(),
             Options::ASYNC => $this->Contact->getOptions()->getAsync(),
             Contact::EMAIL => [
                 $this->Contact->getEmail()
             ],
-            Settings::OWNER => $this->Settings->getOwner(),
+            Configuration::OWNER => $this->conf->getOwner(),
         ]);
     }
 
@@ -161,26 +96,166 @@ class ContactModel
     }
 
     /**
+     * @param Contact $Contact
+     * @param Configuration $conf
+     * @return array
+     */
+    public static function toExportArray(Contact $Contact, Configuration $conf) {
+        $Address    = $Contact->getAddress();
+        $Options    = $Contact->getOptions();
+        $Properties = $Contact->getProperties();
+
+        $contactRequestArray = [
+            Contact::CONTACT    => [
+                Contact::EMAIL   => $Contact->getEmail(),
+                Contact::FAX     => $Contact->getFax(),
+                Contact::NAME    => $Contact->getName(),
+                Contact::PHONE   => $Contact->getPhone(),
+                Contact::COMPANY => $Contact->getCompany(),
+                Contact::EXT_ID  => $Contact->getExternalId(),
+                Contact::STATE   => $Contact->getState(),
+                Contact::ADDRESS => [
+                    Address::STREET_AD => $Address->getStreetAddress(),
+                    Address::ZIP_CODE  => $Address->getZipCode(),
+                    Address::CITY      => $Address->getCity(),
+                    Address::COUNTRY   => $Address->getCountry()
+                ],
+            ],
+            Configuration::OWNER   => $conf->getOwner(),
+            Options::N_EMAIL       => $Options->getNewEmail(),
+            Options::F_OPT_IN      => $Options->getForceOptIn(),
+            Options::F_OPT_OUT     => $Options->getForceOptOut(),
+            Options::F_P_OPT_IN    => $Options->getForcePhoneOptIn(),
+            Options::F_P_OPT_OUT   => $Options->getForcePhoneOptOut(),
+            Options::TAGS_SCORING  => $Options->getTagScoring(),
+            Options::TAGS          => $Options->getTags(),
+            Options::R_TAGS        => $Options->getRemoveTags(),
+            Contact::BIRTHDAY      => $Contact->getBirthday(),// attention
+            Address::PROVINCE      => $Address->getProvince(),// attention
+            Options::LANG          => $Options->getLang(),
+            Properties::PROPERTIES => $Properties->get()
+        ];
+
+        //getIsSubscribed() is used for export only
+        if ($Contact->getOptions()->getIsSubscribed()) {
+            $contactRequestArray[Options::F_OPT_IN]    = true;
+            $contactRequestArray[Options::F_OPT_OUT]   = false;
+            $contactRequestArray[Options::F_P_OPT_IN]  = true;
+            $contactRequestArray[Options::F_P_OPT_OUT] = false;
+        } else {
+            $contactRequestArray[Options::F_OPT_IN]    = false;
+            $contactRequestArray[Options::F_OPT_OUT]   = false;
+            $contactRequestArray[Options::F_P_OPT_IN]  = false;
+            $contactRequestArray[Options::F_P_OPT_OUT] = false;
+        }
+
+        return DataHelper::filterDataArray($contactRequestArray);
+    }
+
+    /**
+     * @param Contact $Contact
+     * @param Configuration $conf
+     * @return array
+     */
+    public static function toArray(Contact $Contact, Configuration $conf)
+    {
+        $Address    = $Contact->getAddress();
+        $Options    = $Contact->getOptions();
+        $Properties = $Contact->getProperties();
+
+        $contactRequestArray = [
+            Configuration::CLIENT_ID => $conf->getClientId(),
+            Options::ASYNC      => $Options->getAsync(),
+            Contact::CONTACT    => [
+                Contact::EMAIL   => $Contact->getEmail(),
+                Contact::FAX     => $Contact->getFax(),
+                Contact::NAME    => $Contact->getName(),
+                Contact::PHONE   => $Contact->getPhone(),
+                Contact::COMPANY => $Contact->getCompany(),
+                Contact::EXT_ID  => $Contact->getExternalId(),
+                Contact::STATE   => $Contact->getState(),
+                Contact::ADDRESS => [
+                    Address::STREET_AD => $Address->getStreetAddress(),
+                    Address::ZIP_CODE  => $Address->getZipCode(),
+                    Address::CITY      => $Address->getCity(),
+                    Address::COUNTRY   => $Address->getCountry()
+                ],
+            ],
+            Configuration::OWNER   => $conf->getOwner(),
+            Options::N_EMAIL       => $Options->getNewEmail(),
+            Options::F_OPT_IN      => $Options->getForceOptIn(),
+            Options::F_OPT_OUT     => $Options->getForceOptOut(),
+            Options::F_P_OPT_IN    => $Options->getForcePhoneOptIn(),
+            Options::F_P_OPT_OUT   => $Options->getForcePhoneOptOut(),
+            Options::TAGS_SCORING  => $Options->getTagScoring(),
+            Options::TAGS          => $Options->getTags(),
+            Options::R_TAGS        => $Options->getRemoveTags(),
+            Contact::BIRTHDAY      => $Contact->getBirthday(),// attention
+            Address::PROVINCE      => $Address->getProvince(),// attention
+            Options::LANG          => $Options->getLang(),
+            Properties::PROPERTIES => $Properties->get()
+        ];
+
+        if (self::isSubscriptionStatusNoChangeChecker($Contact)) {
+            $contactRequestArray[Options::F_OPT_IN]              = false;
+            $contactRequestArray[Options::F_OPT_OUT]             = false;
+            $contactRequestArray[Options::F_P_OPT_IN]            = false;
+            $contactRequestArray[Options::F_P_OPT_OUT]           = false;
+            $contactRequestArray[ApiDoubleOptIn::U_API_D_OPT_IN] = false;
+        }
+
+        if ($Contact->getOptions()->getIsUnSubscribes()) {
+            $contactRequestArray[Options::F_OPT_IN]    = false;
+            $contactRequestArray[Options::F_OPT_OUT]   = true;
+            $contactRequestArray[Options::F_P_OPT_IN]  = false;
+            $contactRequestArray[Options::F_P_OPT_OUT] = true;
+        }
+
+        if ($Contact->getOptions()->getIsSubscribes()) {
+            $contactRequestArray[Options::F_OPT_IN]    = true;
+            $contactRequestArray[Options::F_OPT_OUT]   = false;
+            $contactRequestArray[Options::F_P_OPT_IN]  = true;
+            $contactRequestArray[Options::F_P_OPT_OUT] = false;
+        }
+
+        if (self::apiDoubleOptInChecker($Contact, $conf)) {
+            $ApiDoubleOptIn = $conf->getApiDoubleOptIn();
+
+            $contactRequestArray = array_merge(
+                $contactRequestArray, [
+                ApiDoubleOptIn::U_API_D_OPT_IN        => $ApiDoubleOptIn->getEnabled(),
+                ApiDoubleOptIn::D_OPT_IN_EMAIL_ACC_ID => $ApiDoubleOptIn->getAccountId(),
+                ApiDoubleOptIn::D_OPT_IN_TEMPLATE_ID  => $ApiDoubleOptIn->getTemplateId(),
+                ApiDoubleOptIn::D_OPT_IN_EMAIL_SUBJ   => $ApiDoubleOptIn->getSubject()
+            ]);
+        }
+
+        return DataHelper::filterDataArray($contactRequestArray);
+    }
+
+    /**
      * Checks if subscription status no change
+     * @param Contact $Contact
      * @return bool
      */
-    protected function isSubscriptionStatusNoChangeChecker()
+    public static function isSubscriptionStatusNoChangeChecker(Contact $Contact)
     {
-        return (!$this->Contact->getOptions()->getIsSubscribes()
-            && $this->Contact->getOptions()->getIsSubscriptionStatusNoChange()
-            && !$this->Contact->getOptions()->getForceOptIn());
+        return (!$Contact->getOptions()->getIsSubscribes()
+            && $Contact->getOptions()->getIsSubscriptionStatusNoChange()
+            && !$Contact->getOptions()->getForceOptIn());
     }
 
     /**
      * Checking for need add apiDoubleOptIn to request;
-     *
+     * @param Configuration $conf
+     * @param Contact $Contact;
      * @return bool
      */
-    protected function apiDoubleOptInChecker()
+    public static function apiDoubleOptInChecker(Contact $Contact, Configuration $conf)
     {
-        $isApiDoubleOptInEnabled = $this->Settings->getApiDoubleOptIn()->getEnabled();
+        $isApiDoubleOptInEnabled = $conf->getApiDoubleOptIn()->getEnabled();
 
-        if ($isApiDoubleOptInEnabled && $this->Contact->getOptions()->getIsSubscribes()) {
+        if ($isApiDoubleOptInEnabled && $Contact->getOptions()->getIsSubscribes()) {
            return true;
         }
         return false;

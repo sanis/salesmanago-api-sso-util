@@ -5,29 +5,25 @@ namespace Tests\Controller;
 
 
 use PHPUnit\Framework\TestCase;
-use Faker;
 use SALESmanago\Controller\LoginController;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\User;
 
 class LoginControllerTest extends TestCase
 {
-        const
-            USER_EMAIL = 'ruslan.barlozhetskyi@salesmanago.pl',
-            USER_PASS = '04ru06sl94an';
-
         public function testLoginSuccess()
         {
-            $conf = new Configuration();
+            $conf = Configuration::getInstance();
             $User = new User();
             $loginController = new LoginController($conf);
 
             $User = $User
-                ->setEmail(self::USER_EMAIL)
-                ->setPass(self::USER_PASS);
+                ->setEmail('semowet930@boldhut.com')
+                ->setPass('#Salesmanago123');
 
             $response = $loginController->login($User);
 
-            var_dump($response);
+            $this->assertInstanceOf('SALESmanago\Entity\Response', $response);
+            $this->assertEquals(true, $response->getStatus());
         }
 }

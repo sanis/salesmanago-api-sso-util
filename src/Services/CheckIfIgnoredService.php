@@ -13,13 +13,13 @@ class CheckIfIgnoredService
         IS_IGNORED = 'isIgnored',
         IGNORED_MESSAGE = "Contact was ignored";
 
-    private $Settings;
+    private $conf;
 
     private $Contact;
 
-    public function __construct(Configuration $Settings)
+    public function __construct(Configuration $conf)
     {
-        $this->Settings = $Settings;
+        $this->conf = $conf;
     }
 
     public function getDeclineResponse()
@@ -55,11 +55,11 @@ class CheckIfIgnoredService
      */
     protected function checkIgnoreDomain()
     {
-        if (!empty($this->Settings->getIgnoreDomain())
-            && is_array($this->Settings->getIgnoreDomain())
+        if (!empty($this->conf->getIgnoreDomain())
+            && is_array($this->conf->getIgnoreDomain())
             && !empty($this->Contact->getEmail())) {
             $emailDomain = explode('@', $this->Contact->getEmail())[1];
-            return in_array($emailDomain, $this->Settings->getIgnoreDomain());
+            return in_array($emailDomain, $this->conf->getIgnoreDomain());
         }
         return false; //no reason to ignore Contact
     }

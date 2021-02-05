@@ -3,20 +3,22 @@
 
 namespace SALESmanago\Model\Collections;
 
-use SALESmanago\Entity\Event\Event;
-use SALESmanago\Exception\Exception;
-use SALESmanago\Model\EventModel;
 
-class EventsCollection extends AbstractCollection
+use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\Contact\Contact;
+use SALESmanago\Exception\Exception;
+use SALESmanago\Model\ContactModel;
+
+class ContactsCollection extends AbstractCollection
 {
     /**
      * @throws Exception
-     * @param Event $object
+     * @param Contact $object
      * @return AbstractCollection|void
      */
     public function addItem($object)
     {
-        if(!($object instanceof Event)) {
+        if(!($object instanceof Contact)) {
             throw new Exception('Not right entity type');
         }
 
@@ -30,12 +32,14 @@ class EventsCollection extends AbstractCollection
      */
     public function toArray()
     {
-        $events = [];
+        $contacts = [];
+
         if (!$this->isEmpty()) {
-            array_walk($this->collection, function ($event, $key) use (&$events) {
-                array_push($events, EventModel::toArray($event));
+            array_walk($this->collection, function ($contact, $key) use (&$contacts) {
+                array_push($contacts, ContactModel::toExportArray($contact, Configuration::getInstance()));
             });
         }
-        return ['events' => $events];
+
+        return ['upsertDetails' => $contacts];
     }
 }

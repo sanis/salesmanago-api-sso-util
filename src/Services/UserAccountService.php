@@ -7,7 +7,7 @@ use SALESmanago\Entity\Response;
 use SALESmanago\Entity\User;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\UserModel;
-use SALESmanago\Model\SettingsModel;
+use SALESmanago\Model\ConfModel;
 
 /**
  * Class UserAccountService - implements functionality with salesmanago user/owner account;
@@ -34,7 +34,7 @@ class UserAccountService
     protected $UserModel;
 
     /**
-     * @var SettingsModel
+     * @var ConfModel
      */
     protected $ConfModel;
 
@@ -47,7 +47,7 @@ class UserAccountService
     {
         $this->conf = $conf;
         $this->UserModel = new UserModel();
-        $this->ConfModel = new SettingsModel($this->conf);
+        $this->ConfModel = new ConfModel($this->conf);
         $this->RequestService = new RequestService($this->conf);
     }
 
@@ -101,7 +101,7 @@ class UserAccountService
 
     /**
      * @throws Exception
-     * @var Configuration $settings
+     * @var Configuration $conf
      * @return array
      */
     protected function accountIntegrationSettings()
@@ -142,7 +142,7 @@ class UserAccountService
             return $this->RequestService->validateResponse($response);
         } catch (Exception $e) {
             $redirectToAppUrl = $this->conf->getEndpoint() . self::METHOD_REDIRECT_TO_APP . $this->conf->getToken();
-            throw new Exception('Inactive account', 40, $redirectToAppUrl);
+            throw new Exception('Inactive account');
         }
     }
 
