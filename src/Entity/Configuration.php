@@ -114,8 +114,15 @@ class Configuration extends AbstractEntity
      */
     protected $cookieTtl = 43200;
 
-    protected function __construct() {}
+    /**
+     * Configuration schema version used to specify
+     * which settings version is used by client;
+     *
+     * @var string - version
+     */
+    protected $confSchemaVer = '1.0.0';
 
+    protected function __construct() {}
     protected function __clone() {}
 
     /**
@@ -541,5 +548,23 @@ class Configuration extends AbstractEntity
     public function getCookieTtl()
     {
         return $this->cookieTtl;
+    }
+
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function setConfSchemaVer($param)
+    {
+        $this->confSchemaVer = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfSchemaVer()
+    {
+        return $this->confSchemaVer;
     }
 }
