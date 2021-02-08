@@ -228,9 +228,11 @@ class Configuration extends AbstractEntity
      */
     public function getApiKey()
     {
-        return empty($this->apiKey)
-                ? md5(time() . mt_rand())
-                : $this->apiKey;
+        if (empty($this->apiKey)) {
+            $this->apiKey = md5(time() . mt_rand());
+        }
+
+        return $this->apiKey;
     }
 
     /**
