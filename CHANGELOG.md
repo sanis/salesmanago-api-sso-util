@@ -4,6 +4,7 @@ Version 3.0.0 29.01.2021
  - change structure;
  - remove unnecessary functionality;
  - add new mechanism for login;
+ - add configuration schema version in Entity\Configuration;
 
 Version 2.6.2 20.01.2021
  - Add Event types const to Entity\Event\Event;
