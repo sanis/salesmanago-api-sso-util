@@ -5,8 +5,8 @@ namespace SALESmanago\Controller\Traits;
 
 
 use SALESmanago\Entity\Configuration;
-use SALESmanago\Traits\Controller\CookieControllerTrait;
-use SALESmanago\Traits\Controller\SessionControllerTrait;
+use SALESmanago\Controller\Traits\CookieControllerTrait;
+use SALESmanago\Controller\Traits\SessionControllerTrait;
 use SALESmanago\Adapter\CookieManagerAdapter;
 use SALESmanago\Adapter\SessionManagerAdapter;
 
