@@ -41,7 +41,7 @@ class RequestService
      * @param string $method
      * @param string $uri
      * @param array $data
-     * @return array
+     * @return Response
      */
     final public function request($method, $uri, $data)
     {
@@ -50,7 +50,7 @@ class RequestService
             $this->setStatusCode($response->getStatusCode());
             $rawResponse = $response->getBody()->getContents();
 
-            return json_decode($rawResponse, true);
+            return $this->toResponse(json_decode($rawResponse, true));
         } catch (ConnectException $e) {
             throw new Exception($e->getMessage());
         } catch (ClientException $e) {
@@ -63,10 +63,9 @@ class RequestService
     }
 
     /**
-     * @throws Exception
-     * @param array $response
+     * @param Response $response
      * @param array $statement
-     * @return array
+     * @return Response
      */
     public function validateCustomResponse($response, $statement = array())
     {
@@ -74,7 +73,7 @@ class RequestService
         $condition = array_merge($condition, $statement);
 
         if (!in_array(false, $condition)) {
-            return $response;
+            return $this->toResponse($response);
         } else {
             $message = is_array($response['message'])
                 ? EntityDataHelper::setStrFromArr($response['message'], ', ')
@@ -82,7 +81,7 @@ class RequestService
 
             $response['message'] = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $message;
             $response['success'] = false;
-            return $response;
+            return $this->toResponse($response);
         }
     }
 
@@ -97,7 +96,7 @@ class RequestService
     /**
      * @throws Exception
      * @param array $response
-     * @return array
+     * @return Response
      */
     public function validateResponse($response)
     {
@@ -105,7 +104,7 @@ class RequestService
             && array_key_exists('success', $response)
             && $response['success'] == true
         ) {
-            return $response;
+            return $this->toResponse($response);
         } else {
             //next one fix various SM message forms:
             $message = is_array($response['message'])

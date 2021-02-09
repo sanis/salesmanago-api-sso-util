@@ -6,6 +6,7 @@ namespace SALESmanago\Services;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
 
+use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\EventModel;
@@ -96,7 +97,7 @@ class ContactAndEventTransferService
     /**
      * @throws Exception
      * @param Contact $Contact
-     * @return array
+     * @return Response
      */
     public function transferContact(Contact $Contact)
     {
@@ -116,9 +117,10 @@ class ContactAndEventTransferService
             $data
         );
 
-        return $this->RequestService->validateCustomResponse(
-            $response,
-            array(array_key_exists('contactId', $response))
-        );
+        return $this->RequestService
+            ->validateCustomResponse(
+                $response,
+                array(array_key_exists('contactId', $response))
+            );
     }
 }
