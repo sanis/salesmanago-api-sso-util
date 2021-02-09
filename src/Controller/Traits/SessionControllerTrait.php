@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SALESmanago\Traits\Controller;
+namespace SALESmanago\Controller\Traits;
 
 
 use SALESmanago\Adapter\SessionManagerAdapter;
