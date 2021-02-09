@@ -18,12 +18,6 @@ use SALESmanago\Helper\EntityDataHelper;
 
 class RequestService
 {
-    const METHOD_POST = 'POST';
-
-    /**
-     * @var integer
-     */
-    private $statusCode;
     private $guzzleAdapter;
 
     public function __construct(Configuration $conf)
@@ -63,25 +57,22 @@ class RequestService
     }
 
     /**
-     * @param Response $response
-     * @param array $statement
+     * @param Response $Response
+     * @param array $conditions - array of booleans;
      * @return Response
      */
-    public function validateCustomResponse($response, $statement = array())
+    public function validateCustomResponse(Response $Response, $conditions = array())
     {
-        $condition = array(is_array($response), array_key_exists('success', $response), $response['success'] == true);
-        $condition = array_merge($condition, $statement);
+        $condition = array_merge(array(boolval($Response->isSuccess())), $conditions);
 
         if (!in_array(false, $condition)) {
-            return $this->toResponse($response);
+            return $Response;
         } else {
-            $message = is_array($response['message'])
-                ? EntityDataHelper::setStrFromArr($response['message'], ', ')
-                : $response['message'];
+            $message = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $Response->getMessage();
+            $Response->setMessage($message);
+            $Response->setStatus(false);
 
-            $response['message'] = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $message;
-            $response['success'] = false;
-            return $this->toResponse($response);
+            return $Response;
         }
     }
 
@@ -95,22 +86,15 @@ class RequestService
 
     /**
      * @throws Exception
-     * @param array $response
+     * @param Response $Response
      * @return Response
      */
-    public function validateResponse($response)
+    public function validateResponse($Response)
     {
-        if (is_array($response)
-            && array_key_exists('success', $response)
-            && $response['success'] == true
-        ) {
-            return $this->toResponse($response);
+        if ($Response->isSuccess()) {
+            return $Response;
         } else {
-            //next one fix various SM message forms:
-            $message = is_array($response['message'])
-                ? implode(', ', $response['message'])
-                : $response['message'];
-            throw new Exception($message);
+            throw new Exception($Response->getMessage());
         }
     }
 
@@ -118,15 +102,13 @@ class RequestService
      * @param array $apiResponse
      * @return Response;
      */
-    public function toResponse(array $apiResponse)
+    public function toResponse($apiResponse)
     {
         $Response = new Response();
 
         $Response
             ->setStatus($apiResponse['success'])
-            ->setMessage(is_array($apiResponse['message'])
-                ? implode(' ', $apiResponse['message'])
-                : $apiResponse['message']);
+            ->setMessage($apiResponse['message']);
 
         unset($apiResponse['success']);
         unset($apiResponse['message']);
