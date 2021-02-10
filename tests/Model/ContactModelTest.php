@@ -28,7 +28,7 @@ class ContactModelTest extends TestCase
      */
     public function testGetContactForUnionTransferStructure(Contact $Contact, $expectedArray)
     {
-        $Model = new ContactModel($Contact, new Configuration());
+        $Model = new ContactModel($Contact, Configuration::getInstance());
         $contactRequestArray = $Model->getContactForUnionTransfer();
 
         $aReturn = $this->arrayRecursiveDiff($contactRequestArray, $expectedArray);

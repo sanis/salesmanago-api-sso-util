@@ -13,13 +13,16 @@ use SALESmanago\Entity\Configuration;
 use SALESmanago\Model\Collections\ContactsCollection;
 use SALESmanago\Model\Collections\EventsCollection;
 use SALESmanago\Entity\Contact\Contact;
+use SALESmanago\Exception\Exception;
 
 class ExportControllerTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testExportEventsSuccess()
     {
         $faker = Faker\Factory::create();
-        $conf = Configuration::getInstance();
         $user = new User();
         $eventCollection = new EventsCollection();
 
@@ -27,7 +30,7 @@ class ExportControllerTest extends TestCase
             ->setEmail('semowet930@boldhut.com')
             ->setPass('#Salesmanago123');
 
-        $loginController = new LoginController($conf);
+        $loginController = new LoginController(Configuration::getInstance());
         $loginController->login($user);//this one for property configuration create
 
         for ($i=0; $i<=100; $i++) {
@@ -45,12 +48,14 @@ class ExportControllerTest extends TestCase
             );
         }
 
-        $exportController = new ExportController($conf);
+        $exportController = new ExportController(Configuration::getInstance());
         $Response = $exportController->export($eventCollection);
-
         $this->assertEquals(true, $Response->getStatus());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testExportContactsSuccess()
     {
             $faker = Faker\Factory::create();
@@ -59,8 +64,8 @@ class ExportControllerTest extends TestCase
             $contactsCollection = new ContactsCollection();
 
             $user
-                ->setEmail('semowet930@boldhut.com')
-                ->setPass('#Salesmanago123');
+                ->setEmail('ruslan.barlozhetskyi@salesmanago.pl')
+                ->setPass('04ru06sl94an');
 
             $loginController = new LoginController($conf);
             $loginController->login($user);//this one for property configuration create

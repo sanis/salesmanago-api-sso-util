@@ -115,6 +115,11 @@ class Configuration extends AbstractEntity
     protected $cookieTtl = 43200;
 
     /**
+     * @var string unique store id for SALESmanago (used with events, feed)
+     */
+    protected $location;
+
+    /**
      * Configuration schema version used to specify
      * which settings version is used by client;
      *
@@ -568,5 +573,22 @@ class Configuration extends AbstractEntity
     public function getConfSchemaVer()
     {
         return $this->confSchemaVer;
+    }
+
+    /**
+     * @param $param
+     */
+    public function setLocation($param)
+    {
+        $this->location = $param;
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 }

@@ -180,6 +180,11 @@ class UserAccountService
                 self::METHOD_LIST_USERS,
                 $this->ConfModel->getAuthorizationApiDataWithOwner()
             );
-        return $this->RequestService->validateResponse($Response);
+        return $this->RequestService->validateCustomResponse(
+            $Response,
+            [
+                boolval(!empty($Response->getField('users')))
+            ]
+        );
     }
 }
