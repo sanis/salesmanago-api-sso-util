@@ -46,9 +46,6 @@ class LoginControllerTest extends TestCase
             ->setEmail('notright@mail.com')
             ->setPass('test123#123');
 
-        $Response = $loginController->login($User);
-
-//        $this->assertInstanceOf('SALESmanago\Entity\Response', $Response);
-//        $this->assertEquals(true, $Response->getStatus());
+        $loginController->login($User);
     }
 }
