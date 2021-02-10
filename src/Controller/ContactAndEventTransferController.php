@@ -6,6 +6,7 @@ namespace SALESmanago\Controller;
 
 use SALESmanago\Controller\Traits\TemporaryStorageControllerTrait;
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Services\ContactAndEventTransferService;
 
@@ -47,67 +48,53 @@ class ContactAndEventTransferController
     /**
      * @param Contact $Contact
      * @param Event $Event
-     * @return array
+     * @return Response
      * @throws Exception
      */
     public function transferBoth(Contact $Contact, Event $Event)
     {
-        if($this->ignoreService->isContactIgnored($Contact)) {
-            return array_merge(
-                $this->ignoreService->getDeclineResponse(),
-                ['conf' => $this->conf]
-            );
+        if ($this->ignoreService->isContactIgnored($Contact)) {
+            $Response = $this->ignoreService->getDeclineResponse();
+            return $Response->setField('conf', $this->conf);
         }
 
-        return array_merge(
-            [
-                'conf' =>
-                    $this->conf->setRequireSynchronization(
-                        $this->syncService->isNeedSyncContactEmailStatus(clone $Contact)
-                    )
-            ],
-            $this->service->transferBoth($Contact, $Event)
+        Configuration::getInstance()->setRequireSynchronization(
+            $this->syncService->isNeedSyncContactEmailStatus(clone $Contact)
         );
+
+        $Response = $this->service->transferBoth($Contact, $Event);
+        return $Response->setField('conf', Configuration::getInstance());
+
     }
 
     /**
      * @param Event $Event
-     * @return array
+     * @return Response
      * @throws Exception
      */
     public function transferEvent(Event $Event)
     {
-        return array_merge(
-            [
-                Configuration::COOKIE_TTL => $this->conf->getCookieTtl()
-            ],
-            $this->service->transferEvent($Event)
-        );
+        return $this->service->transferEvent($Event);
     }
 
     /**
      * @param Contact $Contact
-     * @return array
+     * @return Response
      * @throws Exception
      */
     public function transferContact(Contact $Contact)
     {
-        if($this->ignoreService->isContactIgnored($Contact)) {
-            return array_merge(
-                $this->ignoreService->getDeclineResponse(),
-                ['conf' => $this->conf]
-            );
+        if ($this->ignoreService->isContactIgnored($Contact)) {
+            return $this->ignoreService->getDeclineResponse();
         }
 
-        return array_merge(
-            [
-                'conf' =>
-                    $this->conf->setRequireSynchronization(
-                        $this->syncService->isNeedSyncContactEmailStatus(clone $Contact)
-                    )
-            ],
-            $this->service->transferContact($Contact)
+        Configuration::getInstance()
+            ->setRequireSynchronization(
+            $this->syncService->isNeedSyncContactEmailStatus(clone $Contact)
         );
+
+        $Response = $this->service->transferContact($Contact);
+        return $Response->setField('conf', Configuration::getInstance());
     }
 
 }

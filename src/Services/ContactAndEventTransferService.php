@@ -93,7 +93,10 @@ class ContactAndEventTransferService
 
         return $this->RequestService->validateCustomResponse(
             $Response,
-            array(boolval($Response->getField('eventId')))
+            array(
+                boolval($Response->getField('eventId')
+                )
+            )
         );
     }
 
@@ -123,7 +126,10 @@ class ContactAndEventTransferService
         return $this->RequestService
             ->validateCustomResponse(
                 $Response,
-                array(boolval($Response->getField('contactId')))
+                array(
+                    boolval($Response->getField('contactId')
+                    )
+                )
             );
     }
 }

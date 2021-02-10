@@ -32,6 +32,7 @@ class UserController
      */
     public function getOwnersList()
     {
-        return $this->service->listOwnersList();
+        $Response = $this->service->listOwnersList();
+        $Response->getField();//todo
     }
 }

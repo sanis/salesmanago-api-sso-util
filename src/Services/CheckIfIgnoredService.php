@@ -14,8 +14,14 @@ class CheckIfIgnoredService
         IS_IGNORED = 'isIgnored',
         IGNORED_MESSAGE = "Contact was ignored";
 
+    /**
+     * @var Configuration
+     */
     private $conf;
 
+    /**
+     * @var Contact
+     */
     private $Contact;
 
     public function __construct(Configuration $conf)

@@ -57,26 +57,6 @@ class RequestService
     }
 
     /**
-     * @param Response $Response
-     * @param array $conditions - array of booleans;
-     * @return Response
-     */
-    public function validateCustomResponse(Response $Response, $conditions = array())
-    {
-        $condition = array_merge(array(boolval($Response->isSuccess())), $conditions);
-
-        if (!in_array(false, $condition)) {
-            return $Response;
-        } else {
-            $message = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $Response->getMessage();
-            $Response->setMessage($message);
-            $Response->setStatus(false);
-
-            return $Response;
-        }
-    }
-
-    /**
      * @param int $statusCode
      */
     private function setStatusCode($statusCode)
@@ -95,6 +75,26 @@ class RequestService
             return $Response;
         } else {
             throw new Exception($Response->getMessage());
+        }
+    }
+
+    /**
+     * @param Response $Response
+     * @param array $conditions - array of booleans;
+     * @return Response
+     * @throws Exception
+     */
+    public function validateCustomResponse(Response $Response, $conditions = array())
+    {
+        $condition = array_merge(array(boolval($Response->isSuccess())), $conditions);
+
+        if (!in_array(false, $condition)) {
+            return $Response;
+        } else {
+            $message = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $Response->getMessage();
+            $Response->setMessage($message);
+            $Response->setStatus(false);
+            throw new Exception($message);
         }
     }
 
