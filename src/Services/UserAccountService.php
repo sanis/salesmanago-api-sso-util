@@ -173,7 +173,7 @@ class UserAccountService
      * @return Response
      * @throws Exception
      */
-    public function listOwnersList()
+    public function getOwnersList()
     {
         $Response = $this->RequestService->request(
                 self::REQUEST_METHOD_POST,
