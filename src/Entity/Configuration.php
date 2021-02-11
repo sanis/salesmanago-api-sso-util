@@ -25,6 +25,7 @@ class Configuration extends AbstractEntity
     private static $instances = [];
 
     /**
+     * Flag to detect if module/component/plugin is active on platform;
      * @var boolean
      */
     protected $active = false;
