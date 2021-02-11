@@ -18,12 +18,6 @@ use SALESmanago\Helper\EntityDataHelper;
 
 class RequestService
 {
-    const METHOD_POST = 'POST';
-
-    /**
-     * @var integer
-     */
-    private $statusCode;
     private $guzzleAdapter;
 
     public function __construct(Configuration $conf)
@@ -41,7 +35,7 @@ class RequestService
      * @param string $method
      * @param string $uri
      * @param array $data
-     * @return array
+     * @return Response
      */
     final public function request($method, $uri, $data)
     {
@@ -50,7 +44,7 @@ class RequestService
             $this->setStatusCode($response->getStatusCode());
             $rawResponse = $response->getBody()->getContents();
 
-            return json_decode($rawResponse, true);
+            return $this->toResponse(json_decode($rawResponse, true));
         } catch (ConnectException $e) {
             throw new Exception($e->getMessage());
         } catch (ClientException $e) {
@@ -59,30 +53,6 @@ class RequestService
             throw new Exception($e->getMessage());
         } catch (GuzzleException $e) {
             throw new Exception($e->getMessage());
-        }
-    }
-
-    /**
-     * @throws Exception
-     * @param array $response
-     * @param array $statement
-     * @return array
-     */
-    public function validateCustomResponse($response, $statement = array())
-    {
-        $condition = array(is_array($response), array_key_exists('success', $response), $response['success'] == true);
-        $condition = array_merge($condition, $statement);
-
-        if (!in_array(false, $condition)) {
-            return $response;
-        } else {
-            $message = is_array($response['message'])
-                ? EntityDataHelper::setStrFromArr($response['message'], ', ')
-                : $response['message'];
-
-            $response['message'] = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $message;
-            $response['success'] = false;
-            return $response;
         }
     }
 
@@ -96,21 +66,34 @@ class RequestService
 
     /**
      * @throws Exception
-     * @param array $response
-     * @return array
+     * @param Response $Response
+     * @return Response
      */
-    public function validateResponse($response)
+    public function validateResponse($Response)
     {
-        if (is_array($response)
-            && array_key_exists('success', $response)
-            && $response['success'] == true
-        ) {
-            return $response;
+        if ($Response->isSuccess()) {
+            return $Response;
         } else {
-            //next one fix various SM message forms:
-            $message = is_array($response['message'])
-                ? implode(', ', $response['message'])
-                : $response['message'];
+            throw new Exception($Response->getMessage());
+        }
+    }
+
+    /**
+     * @param Response $Response
+     * @param array $conditions - array of booleans;
+     * @return Response
+     * @throws Exception
+     */
+    public function validateCustomResponse(Response $Response, $conditions = array())
+    {
+        $condition = array_merge(array(boolval($Response->isSuccess())), $conditions);
+
+        if (!in_array(false, $condition)) {
+            return $Response;
+        } else {
+            $message = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $Response->getMessage();
+            $Response->setMessage($message);
+            $Response->setStatus(false);
             throw new Exception($message);
         }
     }
@@ -119,15 +102,13 @@ class RequestService
      * @param array $apiResponse
      * @return Response;
      */
-    public function toResponse(array $apiResponse)
+    public function toResponse($apiResponse)
     {
         $Response = new Response();
 
         $Response
             ->setStatus($apiResponse['success'])
-            ->setMessage(is_array($apiResponse['message'])
-                ? implode(' ', $apiResponse['message'])
-                : $apiResponse['message']);
+            ->setMessage($apiResponse['message']);
 
         unset($apiResponse['success']);
         unset($apiResponse['message']);

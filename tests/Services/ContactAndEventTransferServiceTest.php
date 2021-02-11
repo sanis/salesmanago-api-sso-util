@@ -4,11 +4,13 @@ namespace Tests\Services;
 
 
 use PHPUnit\Framework\TestCase;
+use SALESmanago\Controller\LoginController;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Contact\Address;
 use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\Event\Event;
+use SALESmanago\Entity\User;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Services\ContactAndEventTransferService;
@@ -21,18 +23,14 @@ class ContactAndEventTransferServiceTest extends TestCase
 {
     public function testTransferContact()
     {
-        $Settings = new Settings();
         $Contact = new Contact();
+        $user = new User();
+        $user
+            ->setEmail('semowet930@boldhut.com')
+            ->setPass('#Salesmanago123');
 
-        /**
-         * @todo here we need to create new owner instead using hard code data:
-         */
-        $Settings->setClientId('ye4vodnswfo6zp75')
-            ->setDefaultApiKey()
-            ->setApiSecret('123')
-            ->generateSha()
-            ->setOwner('qa.benhauer@gmx.com')
-            ->setEndpoint('3.125.8.44:8080', false);
+        $loginController = new LoginController(Configuration::getInstance());
+        $loginController->login($user);//this one for property configuration create
 
 
         $dummyData = ContactModelTest::prepareDummyDataForContactEntity();
@@ -52,60 +50,49 @@ class ContactAndEventTransferServiceTest extends TestCase
             $Options->set($optionsFromPlatform)
         );
 
-        $service = new ContactAndEventTransferService($Settings);
+        $service = new ContactAndEventTransferService(Configuration::getInstance());
 
-        $response = $service->transferContact($Contact);
+        $Response = $service->transferContact($Contact);
 
-        $this->assertArrayHasKey('success', $response);
-        $this->assertArrayHasKey(Contact::C_ID, $response);
-        $this->assertNotNull($response[Contact::C_ID]);
-        $this->assertNotNull($response[Contact::C_ID]);
+        $this->assertInstanceOf('SALESmanago\Entity\Response', $Response);
+        $this->assertNotNull($Response->getField(Contact::C_ID));
     }
 
     public function testTransferEvent()
     {
-        $Settings = new Settings();
         $Event = new Event();
+        $user = new User();
+        $user
+            ->setEmail('semowet930@boldhut.com')
+            ->setPass('#Salesmanago123');
 
-        /**
-         * @todo here we need to create new owner instead using hard code data:
-         */
-        $Settings->setClientId('ye4vodnswfo6zp75')
-            ->setDefaultApiKey()
-            ->setApiSecret('123')
-            ->generateSha()
-            ->setOwner('qa.benhauer@gmx.com')
-            ->setEndpoint('3.125.8.44:8080', false);
+        $loginController = new LoginController(Configuration::getInstance());
+        $loginController->login($user);//this one for property configuration create
 
         $dummyData = EventModelTest::prepareDummyDataForEventEntity();
 
         $Event->set($dummyData);
 
-        $service = new ContactAndEventTransferService($Settings);
+        $service = new ContactAndEventTransferService(Configuration::getInstance());
 
-        $response = $service->transferEvent($Event);
+        $Response = $service->transferEvent($Event);
 
-        $this->assertArrayHasKey('success', $response);
-        $this->assertArrayHasKey(Event::EVENT_ID, $response);
-        $this->assertNotNull($response[Event::EVENT_ID]);
-        $this->assertNotNull($response[Event::EVENT_ID]);
+        $this->assertInstanceOf('SALESmanago\Entity\Response', $Response);
+        $this->assertNotNull($Response->getField(Event::EVENT_ID));
     }
 
     public function testTransferBoth()
     {
-        $Settings = new Settings();
         $Contact  = new Contact();
         $Event    = new Event(EventModelTest::prepareDummyDataForEventEntity());
+        $user     = new User();
 
-        /**
-         * @todo here we need to create new owner instead using hard code data:
-         */
-        $Settings->setClientId('ye4vodnswfo6zp75')
-            ->setDefaultApiKey()
-            ->setApiSecret('123')
-            ->generateSha()
-            ->setOwner('qa.benhauer@gmx.com')
-            ->setEndpoint('3.125.8.44:8080', false);
+        $user
+            ->setEmail('semowet930@boldhut.com')
+            ->setPass('#Salesmanago123');
+
+        $loginController = new LoginController(Configuration::getInstance());
+        $loginController->login($user);//this one for property configuration create
 
         $dummyData           = ContactModelTest::prepareDummyDataForContactEntity();
         $contactFromPlatform = $dummyData['contactFromPlatform'];
@@ -124,18 +111,12 @@ class ContactAndEventTransferServiceTest extends TestCase
             $Options->set($optionsFromPlatform)
         );
 
-        $service = new ContactAndEventTransferService($Settings);
+        $service = new ContactAndEventTransferService(Configuration::getInstance());
 
-        $response = $service->transferBoth($Contact, $Event);
+        $Response = $service->transferBoth($Contact, $Event);
 
-        $this->assertArrayHasKey('success', $response);
-
-        $this->assertArrayHasKey(Contact::C_ID, $response);
-        $this->assertNotNull($response[Contact::C_ID]);
-        $this->assertNotNull($response[Contact::C_ID]);
-
-        $this->assertArrayHasKey(Event::EVENT_ID, $response);
-        $this->assertNotNull($response[Event::EVENT_ID]);
-        $this->assertNotNull($response[Event::EVENT_ID]);
+        $this->assertInstanceOf('SALESmanago\Entity\Response', $Response);
+        $this->assertNotNull($Response->getField(Contact::C_ID));
+        $this->assertNotNull($Response->getField(Event::EVENT_ID));
     }
 }

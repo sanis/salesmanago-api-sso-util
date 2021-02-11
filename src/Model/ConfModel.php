@@ -4,6 +4,7 @@
 namespace SALESmanago\Model;
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\Response;
 use SALESmanago\Entity\User;
 
 class ConfModel
@@ -46,28 +47,28 @@ class ConfModel
     }
 
     /**
-     * @param $accountAuthorizeResponse
+     * @param Response $ResponseAccountAuthorize
      * @param User $User
      * @return Configuration
      */
-    public function setConfAfterAccountAuthorization($accountAuthorizeResponse, User $User)
+    public function setConfAfterAccountAuthorization(Response $ResponseAccountAuthorize, User $User)
     {
         $this->conf
             ->setOwner($User->getEmail())
-            ->setToken($accountAuthorizeResponse[Configuration::TOKEN])
-            ->setEndpoint($accountAuthorizeResponse['endpoint']);
+            ->setToken($ResponseAccountAuthorize->getField(Configuration::TOKEN))
+            ->setEndpoint($ResponseAccountAuthorize->getField(Configuration::ENDPOINT));
 
         return $this->conf;
     }
 
     /**
-     * @param array $responseIntegration
+     * @param Response $ResponseIntegration
      * @return Configuration
      */
-    public function setConfAfterIntegration($responseIntegration = []) {
+    public function setConfAfterIntegration($ResponseIntegration) {
         $this->conf
-            ->setSha($responseIntegration['sha1'])
-            ->setClientId($responseIntegration['shortId']);
+            ->setSha($ResponseIntegration->getField(User::SHA1))
+            ->setClientId($ResponseIntegration->getField(User::SHORT_ID));
 
         return $this->conf;
     }

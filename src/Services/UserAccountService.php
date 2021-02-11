@@ -79,67 +79,71 @@ class UserAccountService
 
     /**
      * @param User $User
-     * @return array
-     * @throws \SALESmanago\Exception\Exception
+     * @return Response
+     * @throws Exception
      */
 
     protected function accountAuthorize(User $User)
     {
         $data = $this->UserModel->getUserForAuthorization($User);
 
-        $response = $this->RequestService->request(
+        $Response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::METHOD_LOGIN_AUTHORIZE,
             $data
         );
 
         return $this->RequestService->validateCustomResponse(
-            $response,
-            array(array_key_exists(Configuration::TOKEN, $response))
+            $Response,
+            [
+                boolval($Response->getField(Configuration::TOKEN))
+            ]
         );
     }
 
     /**
      * @throws Exception
      * @var Configuration $conf
-     * @return array
+     * @return Response
      */
     protected function accountIntegrationSettings()
     {
         $this->RequestService = new RequestService($this->conf);
 
-        $data = array(
+        $data = [
             Configuration::TOKEN   => $this->conf->getToken(),
             Configuration::API_KEY => $this->conf->getApiKey(),
-        );
+        ];
 
-        $response = $this->RequestService->request(
+        $Response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::METHOD_ACCOUNT_INTEGRATION,
             $data
         );
 
         return $this->RequestService->validateCustomResponse(
-            $response,
-            array(array_key_exists('shortId', $response))
+            $Response,
+            [
+                boolval($Response->getField(User::SHORT_ID))
+            ]
         );
     }
 
     /**
-     * @return array
+     * @return Response
      * @throws Exception
      */
     protected function checkIfAccountIsActive()
     {
         try {
-            $response = $this->RequestService
+            $Response = $this->RequestService
                 ->request(
                     self::REQUEST_METHOD_POST,
                     self::METHOD_LIST_USERS,
                     $this->ConfModel->getAuthorizationApiDataWithOwner()
                 );
 
-            return $this->RequestService->validateResponse($response);
+            return $this->RequestService->validateResponse($Response);
         } catch (Exception $e) {
             $redirectToAppUrl = $this->conf->getEndpoint() . self::METHOD_REDIRECT_TO_APP . $this->conf->getToken();
             throw new Exception('Inactive account');
@@ -147,36 +151,40 @@ class UserAccountService
     }
 
     /**
-     * @return array
+     * @return Response
      * @throws Exception
      */
     public function refreshToken()
     {
         try {
-            $response = $this->RequestService
+            $Response = $this->RequestService
                 ->request(
                     self::REQUEST_METHOD_POST,
                     self::METHOD_REFRESH_TOKEN,
                     $this->ConfModel->getAuthorizationApiDataWithOwner()
                 );
-            return $this->RequestService->validateResponse($response);
+            return $this->RequestService->validateResponse($Response);
         } catch (\Exception $e) {
             throw new Exception('Inactive account', 40);
         }
     }
 
     /**
-     * @return array
+     * @return Response
      * @throws Exception
      */
     public function listOwnersList()
     {
-        $response = $this->RequestService
-            ->request(
+        $Response = $this->RequestService->request(
                 self::REQUEST_METHOD_POST,
                 self::METHOD_LIST_USERS,
                 $this->ConfModel->getAuthorizationApiDataWithOwner()
             );
-        return $this->RequestService->validateResponse($response);
+        return $this->RequestService->validateCustomResponse(
+            $Response,
+            [
+                boolval(!empty($Response->getField('users')))
+            ]
+        );
     }
 }
