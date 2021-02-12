@@ -4,6 +4,7 @@
 namespace SALESmanago\Controller;
 
 
+use SALESmanago\Controller\Traits\ContactStatusSynchronizationTrait;
 use SALESmanago\Controller\Traits\TemporaryStorageControllerTrait;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\Response;
@@ -21,6 +22,8 @@ class ContactAndEventTransferController
 {
     //this one is to set cookies and sessions:
     use TemporaryStorageControllerTrait;
+    //this one allow to synchronize contact status:
+    use ContactStatusSynchronizationTrait;
 
     protected $conf;
     protected $service;
