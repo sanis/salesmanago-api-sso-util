@@ -41,7 +41,6 @@ class RequestService
     {
         try {
             $response = $this->guzzleAdapter->transfer($method, $uri, $data);
-            $this->setStatusCode($response->getStatusCode());
             $rawResponse = $response->getBody()->getContents();
 
             return $this->toResponse(json_decode($rawResponse, true));
@@ -54,14 +53,6 @@ class RequestService
         } catch (GuzzleException $e) {
             throw new Exception($e->getMessage());
         }
-    }
-
-    /**
-     * @param int $statusCode
-     */
-    private function setStatusCode($statusCode)
-    {
-        $this->statusCode = $statusCode;
     }
 
     /**
