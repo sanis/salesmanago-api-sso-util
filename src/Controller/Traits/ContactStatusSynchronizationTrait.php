@@ -7,13 +7,14 @@ namespace SALESmanago\Controller\Traits;
 use SALESmanago\Adapter\ContactStatusSynchronizationManagerAdapter as ContactSyncAdapter;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\Contact\Contact;
+use SALESmanago\Services\SynchronizationService;
 
 trait ContactStatusSynchronizationTrait
 {
     /**
-     * @var ContactSyncAdapter
+     * @var SynchronizationService
      */
-    private $ContactSyncManager;
+    private $syncService;
 
     /**
      * @param ContactSyncAdapter $ContactSyncManager
@@ -21,7 +22,10 @@ trait ContactStatusSynchronizationTrait
      */
     public function setContactSyncManager(ContactSyncAdapter $ContactSyncManager)
     {
-        $this->ContactSyncManager = $ContactSyncManager;
+        if (isset($this->syncService)) {
+            $this->syncService->setContactSyncManager($ContactSyncManager);
+        }
+
         return $this;
     }
 }
