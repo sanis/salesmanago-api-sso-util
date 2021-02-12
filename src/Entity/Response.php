@@ -68,11 +68,15 @@ class Response extends AbstractEntity
     }
 
     /**
-     * @param null|string $message
+     * @param null|string|array $message
+     * @return $this
      */
     public function setMessage($message = null)
     {
-        $this->message = $message;
+        $this->message = is_array($message)
+            ? implode(' ', $message)
+            : $message;
+
         return $this;
     }
 
@@ -135,5 +139,4 @@ class Response extends AbstractEntity
 
         return boolval($this->getStatus());
     }
-
 }

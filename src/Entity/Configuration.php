@@ -25,6 +25,7 @@ class Configuration extends AbstractEntity
     private static $instances = [];
 
     /**
+     * Flag to detect if module/component/plugin is active on platform;
      * @var boolean
      */
     protected $active = false;
@@ -113,6 +114,11 @@ class Configuration extends AbstractEntity
      * @var int Time in seconds for Cookie expire Time
      */
     protected $cookieTtl = 43200;
+
+    /**
+     * @var string unique store id for SALESmanago (used with events, feed)
+     */
+    protected $location;
 
     /**
      * Configuration schema version used to specify
@@ -568,5 +574,22 @@ class Configuration extends AbstractEntity
     public function getConfSchemaVer()
     {
         return $this->confSchemaVer;
+    }
+
+    /**
+     * @param $param
+     */
+    public function setLocation($param)
+    {
+        $this->location = $param;
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 }

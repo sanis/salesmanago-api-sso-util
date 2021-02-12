@@ -55,13 +55,11 @@ class ExportService
 
         $data = array_merge($settings, $collectionArray);
 
-        $response = $this->RequestService->request(
+        return $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             $endpoint,
             $data
         );
-
-        return $this->RequestService->toResponse($response);
     }
 
 }
