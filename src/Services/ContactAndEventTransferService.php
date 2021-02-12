@@ -6,6 +6,7 @@ namespace SALESmanago\Services;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
 
+use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\EventModel;
@@ -35,7 +36,7 @@ class ContactAndEventTransferService
     /**
      * @param Contact $Contact
      * @param Event $Event
-     * @return array
+     * @return Response
      * @throws Exception
      */
     public function transferBoth(Contact $Contact, Event $Event)
@@ -52,22 +53,25 @@ class ContactAndEventTransferService
             [self::CONTACT_OBJ_NAME => $contact, self::EVENT_OBJ_NAME => $event]
         );
 
-        $response = $this->RequestService->request(
+        $Response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::API_METHOD,
             $data
         );
 
         return $this->RequestService->validateCustomResponse(
-            $response,
-            array(array_key_exists('contactId', $response), array_key_exists('eventId', $response))
+            $Response,
+            array(
+                boolval($Response->getField('contactId')),
+                boolval($Response->getField('eventId'))
+            )
         );
     }
 
     /**
      * @throws Exception
      * @param Event $Event
-     * @return array
+     * @return Response
      */
     public function transferEvent(Event $Event)
     {
@@ -81,22 +85,25 @@ class ContactAndEventTransferService
             [self::EVENT_OBJ_NAME => $event]
         );
 
-        $response = $this->RequestService->request(
+        $Response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::API_METHOD,
             $data
         );
 
         return $this->RequestService->validateCustomResponse(
-            $response,
-            array(array_key_exists('eventId', $response))
+            $Response,
+            array(
+                boolval($Response->getField('eventId')
+                )
+            )
         );
     }
 
     /**
      * @throws Exception
      * @param Contact $Contact
-     * @return array
+     * @return Response
      */
     public function transferContact(Contact $Contact)
     {
@@ -110,15 +117,19 @@ class ContactAndEventTransferService
             [self::CONTACT_OBJ_NAME => $contact]
         );
 
-        $response = $this->RequestService->request(
+        $Response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::API_METHOD,
             $data
         );
 
-        return $this->RequestService->validateCustomResponse(
-            $response,
-            array(array_key_exists('contactId', $response))
-        );
+        return $this->RequestService
+            ->validateCustomResponse(
+                $Response,
+                array(
+                    boolval($Response->getField('contactId')
+                    )
+                )
+            );
     }
 }

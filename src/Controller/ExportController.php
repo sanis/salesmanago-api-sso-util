@@ -6,6 +6,8 @@ use SALESmanago\Entity\Configuration;
 use SALESmanago\Model\Collections\Collection;
 use SALESmanago\Services\ContactAndEventTransferService;
 use SALESmanago\Services\ExportService;
+use SALESmanago\Entity\Response;
+use SALESmanago\Exception\Exception;
 
 class ExportController
 {
@@ -32,8 +34,8 @@ class ExportController
     /**
      * export collection
      * @param Collection $collection
-     * @return \SALESmanago\Entity\Response
-     * @throws \SALESmanago\Exception\Exception
+     * @return Response
+     * @throws Exception
      */
     public function export(Collection $collection)
     {

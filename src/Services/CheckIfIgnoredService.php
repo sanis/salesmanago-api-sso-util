@@ -6,6 +6,7 @@ namespace SALESmanago\Services;
 
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\Contact\Contact;
+use SALESmanago\Entity\Response;
 
 class CheckIfIgnoredService
 {
@@ -13,8 +14,14 @@ class CheckIfIgnoredService
         IS_IGNORED = 'isIgnored',
         IGNORED_MESSAGE = "Contact was ignored";
 
+    /**
+     * @var Configuration
+     */
     private $conf;
 
+    /**
+     * @var Contact
+     */
     private $Contact;
 
     public function __construct(Configuration $conf)
@@ -22,14 +29,18 @@ class CheckIfIgnoredService
         $this->conf = $conf;
     }
 
+    /**
+     * @return Response
+     */
     public function getDeclineResponse()
     {
-        return array(
-            'success'    => false,
-            'message'    => array(CheckIfIgnoredService::IGNORED_MESSAGE),
-            'contactId'  => null,
-            'eventId'    => null
-        );
+        $Response = new Response();
+
+        return $Response
+            ->setStatus(false)
+            ->setMessage(array(CheckIfIgnoredService::IGNORED_MESSAGE))
+            ->setField('contactId', null)
+            ->setField('eventId', null);
     }
 
     /**

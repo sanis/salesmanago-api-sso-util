@@ -25,6 +25,7 @@ class Configuration extends AbstractEntity
     private static $instances = [];
 
     /**
+     * Flag to detect if module/component/plugin is active on platform;
      * @var boolean
      */
     protected $active = false;
@@ -118,6 +119,11 @@ class Configuration extends AbstractEntity
      * @var array - owners list for SM account
      */
     protected $ownersList = [];
+
+    /**
+     * @var string unique store id for SALESmanago (used with events, feed)
+     */
+    protected $location;
 
     /**
      * Configuration schema version used to specify
@@ -591,5 +597,23 @@ class Configuration extends AbstractEntity
     public function getOwnersList()
     {
         return $this->ownersList;
+    }
+
+    /**
+     * @param $param
+     * @return $this
+     */
+    public function setLocation($param)
+    {
+        $this->location = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 }

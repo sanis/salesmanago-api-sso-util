@@ -8,7 +8,9 @@ class User
 {
     const
         USERNAME = 'username',
-        PASSWORD = 'password';
+        PASSWORD = 'password',
+        SHA1 = 'sha1',
+        SHORT_ID = 'shortId';
 
     /**
      * @var string
