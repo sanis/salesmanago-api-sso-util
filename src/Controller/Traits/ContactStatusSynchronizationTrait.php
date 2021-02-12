@@ -24,19 +24,4 @@ trait ContactStatusSynchronizationTrait
         $this->ContactSyncManager = $ContactSyncManager;
         return $this;
     }
-
-    /**
-     * @param Contact $Contact
-     * @return bool
-     */
-    public function subscribeContact(Contact $Contact)
-    {
-        if (isset($this->ContactSyncManager)
-            && Configuration::getInstance()->getRequireSynchronization()
-        ) {
-           return $this->ContactSyncManager->subscribe($Contact);
-        }
-
-        return false;
-    }
 }
