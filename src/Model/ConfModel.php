@@ -73,6 +73,10 @@ class ConfModel
         return $this->conf;
     }
 
+    /**
+     * @param Response $Response
+     * @return Configuration
+     */
     public function setOwnersListToConf(Response $Response)
     {
         return $this->conf
