@@ -22,14 +22,13 @@ class ContactModelTest extends TestCase
 
     /**
      * @dataProvider provideTestGetContactForUnionTransfer
-     * @throws Exception
      * @param Contact $Contact
      * @param array $expectedArray
      */
     public function testGetContactForUnionTransferStructure(Contact $Contact, $expectedArray)
     {
-        $Model = new ContactModel($Contact, new Configuration());
-        $contactRequestArray = $Model->getContactForUnionTransfer();
+        $model = new ContactModel($Contact, Configuration::getInstance());
+        $contactRequestArray = $model->getContactForUnionTransfer();
 
         $aReturn = $this->arrayRecursiveDiff($contactRequestArray, $expectedArray);
         $this->assertEmpty($aReturn);
@@ -62,7 +61,6 @@ class ContactModelTest extends TestCase
      */
     public function provideTestGetContactForUnionTransfer()
     {
-        $Settings = new Settings();
         $Contact = new Contact();
 
         $dummyData = self::prepareDummyDataForContactEntity();
