@@ -72,4 +72,10 @@ class ConfModel
 
         return $this->conf;
     }
+
+    public function setOwnersListToConf(Response $Response)
+    {
+        return $this->conf
+            ->setOwnersList($Response->getField('users'));
+    }
 }

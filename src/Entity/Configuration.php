@@ -116,9 +116,9 @@ class Configuration extends AbstractEntity
     protected $cookieTtl = 43200;
 
     /**
-     * @var array - owners list for SM account
+     * @var array|null - owners list for SM account
      */
-    protected $ownersList = [];
+    protected $ownersList = null;
 
     /**
      * @var string unique store id for SALESmanago (used with events, feed)

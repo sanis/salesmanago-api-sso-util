@@ -68,7 +68,12 @@ class UserAccountService
         //set necessary data to conf;
         $this->conf = $this->ConfModel->setConfAfterIntegration($responseIntegration);
 
-        $this->checkIfAccountIsActive();
+        $responseCheckIfAccountActive = $this->checkIfAccountIsActive();
+
+        $this->conf = $this->ConfModel->setOwnersListToConf($responseCheckIfAccountActive);
+
+        var_dump(Configuration::getInstance());
+        die();
 
         return new Response([
             'status' => true,
