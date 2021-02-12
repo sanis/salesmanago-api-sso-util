@@ -115,6 +115,11 @@ class Configuration extends AbstractEntity
     protected $cookieTtl = 43200;
 
     /**
+     * @var array - owners list for SM account
+     */
+    protected $ownersList = [];
+
+    /**
      * Configuration schema version used to specify
      * which settings version is used by client;
      *
@@ -568,5 +573,23 @@ class Configuration extends AbstractEntity
     public function getConfSchemaVer()
     {
         return $this->confSchemaVer;
+    }
+
+    /**
+     * @param $param
+     * @return $this
+     */
+    public function setOwnersList($param)
+    {
+        $this->ownersList = $param;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOwnersList()
+    {
+        return $this->ownersList;
     }
 }
