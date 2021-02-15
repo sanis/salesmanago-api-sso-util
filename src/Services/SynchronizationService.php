@@ -4,11 +4,13 @@
 namespace SALESmanago\Services;
 
 
+use SALESmanago\Adapter\ContactStatusSynchronizationManagerAdapter as ContactSyncAdapter;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\ConfModel;
 use SALESmanago\Controller\ContactController;
+use SALESmanago\Exception\Exception;
 
 class SynchronizationService
 {
@@ -20,7 +22,16 @@ class SynchronizationService
     private $ConfModel;
 
     private $requiresSynchronization = false;
+
+    /**
+     * @var Contact
+     */
     private $Contact;
+
+    /**
+     * @var ContactSyncAdapter
+     */
+    private $ContactSyncManager;
 
     public function __construct(Configuration $conf)
     {
@@ -28,9 +39,31 @@ class SynchronizationService
     }
 
     /**
+     * @param ContactSyncAdapter $ContactSyncManager
+     * @return $this;
+     */
+    public function setContactSyncManager(ContactSyncAdapter $ContactSyncManager)
+    {
+        $this->ContactSyncManager = $ContactSyncManager;
+        return $this;
+    }
+
+    /**
+     * Synchronize Contact through Adapter
      * @param Contact $Contact
      * @return bool
-     * @throws \SALESmanago\Exception\Exception
+     */
+    private function syncContactWithManager(Contact $Contact)
+    {
+        return isset($this->ContactSyncManager)
+            ? $this->ContactSyncManager->subscribe($this->Contact)
+            : false;
+    }
+
+    /**
+     * @param Contact $Contact
+     * @return bool
+     * @throws Exception
      */
     public function isNeedSyncContactEmailStatus(Contact $Contact)
     {
@@ -42,7 +75,17 @@ class SynchronizationService
         $contactController = new ContactController($this->conf);
         $ContactBasic = $contactController->getContactBasic($this->Contact);
 
-        return $this->checkSyncContactEmailStatus($ContactBasic);
+        $checkSyncContactEmailStatus = $this->checkSyncContactEmailStatus($ContactBasic);
+
+        //Try to synchronize contact email subscription through adapter
+        if (isset($this->ContactSyncManager)
+            && $checkSyncContactEmailStatus
+        ) {
+            //if synchronization will be ok, we don't need to return that contact need sync;
+            $checkSyncContactEmailStatus = !$this->syncContactWithManager($this->Contact);
+        }
+
+        return $checkSyncContactEmailStatus;
     }
 
     /**
