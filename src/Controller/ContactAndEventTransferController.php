@@ -15,6 +15,8 @@ use SALESmanago\Entity\Event\Event;
 use SALESmanago\Services\SynchronizationService as SyncService;
 use SALESmanago\Services\CheckIfIgnoredService as IgnoreService;
 
+use SALESmanago\Adapter\CookieManagerAdapter;
+
 class ContactAndEventTransferController
 {
     //this one is to set cookies and sessions:
@@ -63,8 +65,18 @@ class ContactAndEventTransferController
         );
 
         $Response = $this->service->transferBoth($Contact, $Event);
-        return $Response->setField('conf', Configuration::getInstance());
 
+        //set cookies if adapter exist:
+        $this->setSmClient($Response->getField(CookieManagerAdapter::CLIENT_COOKIE));
+
+        //set cookies if adapter exist:
+        if ($Event->getContactExtEventType() == Event::EVENT_TYPE_CART) {
+            $this->setSmEvent($Response->getField(CookieManagerAdapter::EVENT_COOKIE));
+        } elseif($Event->getContactExtEventType() == Event::EVENT_TYPE_PURCHASE) {
+            $this->unsetSmEvent();
+        }
+
+        return $Response->setField('conf', Configuration::getInstance());
     }
 
     /**
@@ -74,7 +86,15 @@ class ContactAndEventTransferController
      */
     public function transferEvent(Event $Event)
     {
-        return $this->service->transferEvent($Event);
+        $Response = $this->service->transferEvent($Event);
+
+        //set cookies if adapter exist:
+        if ($Event->getContactExtEventType() == Event::EVENT_TYPE_CART) {
+            $this->setSmEvent($Response->getField(CookieManagerAdapter::EVENT_COOKIE));
+        } elseif($Event->getContactExtEventType() == Event::EVENT_TYPE_PURCHASE) {
+            $this->unsetSmEvent();
+        }
+        return $Response;
     }
 
     /**
@@ -94,6 +114,10 @@ class ContactAndEventTransferController
         );
 
         $Response = $this->service->transferContact($Contact);
+
+        //set cookies if adapter exist:
+        $this->setSmClient($Response->getField(CookieManagerAdapter::CLIENT_COOKIE));
+
         return $Response->setField('conf', Configuration::getInstance());
     }
 
