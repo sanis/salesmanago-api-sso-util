@@ -68,7 +68,9 @@ class UserAccountService
         //set necessary data to conf;
         $this->conf = $this->ConfModel->setConfAfterIntegration($responseIntegration);
 
-        $this->checkIfAccountIsActive();
+        $responseCheckIfAccountActive = $this->checkIfAccountIsActive();
+
+        $this->conf = $this->ConfModel->setOwnersListToConf($responseCheckIfAccountActive);
 
         return new Response([
             'status' => true,
@@ -82,7 +84,6 @@ class UserAccountService
      * @return Response
      * @throws Exception
      */
-
     protected function accountAuthorize(User $User)
     {
         $data = $this->UserModel->getUserForAuthorization($User);
@@ -145,7 +146,6 @@ class UserAccountService
 
             return $this->RequestService->validateResponse($Response);
         } catch (Exception $e) {
-            $redirectToAppUrl = $this->conf->getEndpoint() . self::METHOD_REDIRECT_TO_APP . $this->conf->getToken();
             throw new Exception('Inactive account');
         }
     }

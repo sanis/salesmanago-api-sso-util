@@ -116,6 +116,11 @@ class Configuration extends AbstractEntity
     protected $cookieTtl = 43200;
 
     /**
+     * @var array|null - owners list for SM account
+     */
+    protected $ownersList = null;
+
+    /**
      * @var string unique store id for SALESmanago (used with events, feed)
      */
     protected $location;
@@ -578,6 +583,25 @@ class Configuration extends AbstractEntity
 
     /**
      * @param $param
+     * @return $this
+     */
+    public function setOwnersList($param)
+    {
+        $this->ownersList = $param;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOwnersList()
+    {
+        return $this->ownersList;
+    }
+
+    /**
+     * @param $param
+     * @return $this
      */
     public function setLocation($param)
     {
@@ -586,7 +610,7 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     *
+     * @return string
      */
     public function getLocation()
     {
