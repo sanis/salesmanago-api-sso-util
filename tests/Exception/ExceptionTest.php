@@ -10,42 +10,47 @@ use SALESmanago\Exception\Exception;
 
 class ExceptionTest extends TestCase
 {
-    public function testGetLogMessage()
+    /**
+     * test for get exception for log files
+     */
+    public function testGetRightLogMessageSuccess()
     {
-        try {
-            throw new Exception('This is log test massage');
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $viewMessage = $exception->getViewMessage();
-        }
+        $faker = Faker\Factory::create();
+        $thrownMessage = $faker->text(100);
 
-        $this->assertEquals('This is log test massage', $message);
-        $this->assertEquals('This is log test massage', $viewMessage);
+        try {
+            throw new Exception($thrownMessage);
+        } catch (Exception $e) {
+            $expectedMessage = Exception::EXCEPTION_HEADER_NAME;
+            $expectedMessage.= Exception::MESSAGE;
+            $expectedMessage.= $thrownMessage . PHP_EOL;
+            $expectedMessage.= Exception::FILE . $e->getFile() . PHP_EOL;
+            $expectedMessage.= Exception::LINE . $e->getLine() . PHP_EOL;
+            $expectedMessage.= Exception::TRACE;
+            $expectedMessage.= $e->getTraceAsString() . PHP_EOL;
+
+            $this->assertEquals($expectedMessage, $e->getLogMessage());
+        }
     }
 
-    public function testGetViewMessage()
+    /**
+     * test for get exception for view
+     */
+    public function testGetRightViewMessageSuccess()
     {
+        $faker = Faker\Factory::create();
+        $thrownMessage = $faker->text(100);
+
         try {
-            throw new Exception('This is view test massage');
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $viewMessage = $exception->getViewMessage();
+            throw new Exception($thrownMessage);
+        } catch (Exception $e) {
+            $expectedMessage = $e->getMessage() . ': ';
+            $expectedMessage.= $e->getFile() . ': ';
+            $expectedMessage.= $e->getLine() . PHP_EOL;
+
+            $this->assertEquals($expectedMessage, $e->getViewMessage());
         }
 
-        $this->assertEquals('This is view test massage', $message);
-        $this->assertEquals('This is view test massage', $viewMessage);
-    }
 
-    public function testGetConsoleMessage()
-    {
-        try {
-            throw new Exception('This is Console test massage');
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $viewMessage = $exception->getViewMessage();
-        }
-
-        $this->assertEquals('This is view Console massage', $message);
-        $this->assertEquals('This is view Console massage', $viewMessage);
     }
 }
