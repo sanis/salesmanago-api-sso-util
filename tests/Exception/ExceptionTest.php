@@ -28,7 +28,8 @@ class ExceptionTest extends TestCase
             $expectedMessage.= Exception::LINE . $e->getLine() . PHP_EOL;
             $expectedMessage.= Exception::TRACE;
             $expectedMessage.= $e->getTraceAsString() . PHP_EOL;
-
+            print_r($expectedMessage);
+            die;
             $this->assertEquals($expectedMessage, $e->getLogMessage());
         }
     }

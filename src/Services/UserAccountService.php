@@ -72,9 +72,6 @@ class UserAccountService
 
         $this->conf = $this->ConfModel->setOwnersListToConf($responseCheckIfAccountActive);
 
-        var_dump(Configuration::getInstance());
-        die();
-
         return new Response([
             'status' => true,
             'message' => '',
@@ -87,7 +84,6 @@ class UserAccountService
      * @return Response
      * @throws Exception
      */
-
     protected function accountAuthorize(User $User)
     {
         $data = $this->UserModel->getUserForAuthorization($User);
