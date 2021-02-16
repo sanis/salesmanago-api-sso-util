@@ -7,7 +7,7 @@ namespace SALESmanago\Entity;
 use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Exception\Exception;
 
-class Configuration extends AbstractEntity
+class Configuration extends AbstractEntity implements \JsonSerializable
 {
     const
         ACTIVE        = 'active',
@@ -19,7 +19,7 @@ class Configuration extends AbstractEntity
         EMAIL         = 'email',
         SHA           = 'sha',
         TOKEN         = 'token',
-        IGNORE_DOMAIN = 'ignoreDomain',
+        IGNORE_DOMAIN = 'ignoredDomains',
         COOKIE_TTL    = 'cookieTtl';
 
     private static $instances = [];
@@ -78,7 +78,7 @@ class Configuration extends AbstractEntity
     /**
      * @var array
      */
-    protected $ignoreDomain;
+    protected $ignoredDomains;
 
     /**
      * @var string
@@ -391,27 +391,27 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     * @param array $ignoreDomain
+     * @param array $ignoredDomains
      * @return $this
      * @throws Exception
      */
-    public function setIgnoreDomain($ignoreDomain)
+    public function setIgnoredDomains($ignoredDomains)
     {
-        if(empty($ignoreDomain))
+        if(empty($ignoredDomains))
             return $this;
-        if (!is_array($ignoreDomain)) {
+        if (!is_array($ignoredDomains)) {
             throw new Exception('Passed argument isn\'t array');
         }
-        $this->ignoreDomain = $ignoreDomain;
+        $this->ignoredDomains = $ignoredDomains;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getIgnoreDomain()
+    public function getIgnoredDomains()
     {
-        return $this->ignoreDomain;
+        return $this->ignoredDomains;
     }
 
     /**

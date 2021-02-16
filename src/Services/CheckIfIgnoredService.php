@@ -51,7 +51,7 @@ class CheckIfIgnoredService
     {
         $this->Contact = $Contact;
 
-        if($this->checkIgnoreDomain()) {
+        if($this->checkIgnoredDomains()) {
             return true;
         }
         // <--put other functions to ignore contact here -->
@@ -64,13 +64,13 @@ class CheckIfIgnoredService
      * @param null
      * @return bool Returns true if contact should be ignored
      */
-    protected function checkIgnoreDomain()
+    protected function checkIgnoredDomains()
     {
-        if (!empty($this->conf->getIgnoreDomain())
-            && is_array($this->conf->getIgnoreDomain())
+        if (!empty($this->conf->getIgnoredDomains())
+            && is_array($this->conf->getIgnoredDomains())
             && !empty($this->Contact->getEmail())) {
             $emailDomain = explode('@', $this->Contact->getEmail())[1];
-            return in_array($emailDomain, $this->conf->getIgnoreDomain());
+            return in_array($emailDomain, $this->conf->getIgnoredDomains());
         }
         return false; //no reason to ignore Contact
     }
