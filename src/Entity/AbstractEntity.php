@@ -31,6 +31,9 @@ class AbstractEntity
         }
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         $out = array();
@@ -44,6 +47,9 @@ class AbstractEntity
         return $out;
     }
 
+    /**
+     * @return array
+     */
     private function toArray()
     {
         $out = array();

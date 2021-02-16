@@ -10,17 +10,17 @@ use SALESmanago\Exception\Exception;
 class Configuration extends AbstractEntity implements \JsonSerializable
 {
     const
-        ACTIVE        = 'active',
-        ENDPOINT      = 'endpoint',
-        CLIENT_ID     = 'clientId',
-        API_KEY       = 'apiKey',
-        API_SECRET    = 'apiSecret',
-        OWNER         = 'owner',
-        EMAIL         = 'email',
-        SHA           = 'sha',
-        TOKEN         = 'token',
-        IGNORE_DOMAIN = 'ignoredDomains',
-        COOKIE_TTL    = 'cookieTtl';
+        ACTIVE          = 'active',
+        ENDPOINT        = 'endpoint',
+        CLIENT_ID       = 'clientId',
+        API_KEY         = 'apiKey',
+        API_SECRET      = 'apiSecret',
+        OWNER           = 'owner',
+        EMAIL           = 'email',
+        SHA             = 'sha',
+        TOKEN           = 'token',
+        IGNORED_DOMAINS = 'ignoredDomains',
+        COOKIE_TTL      = 'cookieTtl';
 
     private static $instances = [];
 
@@ -397,9 +397,9 @@ class Configuration extends AbstractEntity implements \JsonSerializable
      */
     public function setIgnoredDomains($ignoredDomains)
     {
-        if(empty($ignoredDomains))
+        if(empty($ignoredDomains)) {
             return $this;
-        if (!is_array($ignoredDomains)) {
+        } elseif (!is_array($ignoredDomains)) {
             throw new Exception('Passed argument isn\'t array');
         }
         $this->ignoredDomains = $ignoredDomains;
