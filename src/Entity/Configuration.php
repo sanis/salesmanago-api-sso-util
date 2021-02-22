@@ -179,10 +179,12 @@ class Configuration extends AbstractEntity implements \JsonSerializable
 
     /**
      * @param boolean $active
+     * @return $this
      */
     public function setActive($active)
     {
         $this->active = $active;
+        return $this;
     }
 
     /**
