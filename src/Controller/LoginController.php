@@ -2,11 +2,12 @@
 
 namespace SALESmanago\Controller;
 
+
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Services\UserAccountService;
 use SALESmanago\Entity\User;
-
 use SALESmanago\Exception\Exception;
 
 /**
@@ -15,7 +16,7 @@ use SALESmanago\Exception\Exception;
 class LoginController
 {
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     protected $conf;
 
@@ -24,10 +25,15 @@ class LoginController
      */
     protected $service;
 
-    public function __construct(Configuration $conf)
+    /**
+     * LoginController constructor.
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(ConfigurationInterface $conf)
     {
+        Configuration::setInstance($conf);
         $this->conf = $conf;
-        $this->service = new UserAccountService($conf);
+        $this->service = new UserAccountService($this->conf);
     }
 
     /**

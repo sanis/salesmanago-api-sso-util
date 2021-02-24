@@ -2,12 +2,13 @@
 
 namespace SALESmanago\Services;
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Entity\User;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\UserModel;
 use SALESmanago\Model\ConfModel;
+use SALESmanago\Entity\Configuration;
 
 /**
  * Class UserAccountService - implements functionality with salesmanago user/owner account;
@@ -24,7 +25,7 @@ class UserAccountService
         METHOD_REFRESH_TOKEN = '/api/authorization/refreshToken';
 
     /**
-     * @var Configuration - integration configuration
+     * @var ConfigurationInterface - integration configuration
      */
     protected $conf;
 
@@ -43,12 +44,15 @@ class UserAccountService
      */
     protected $RequestService;
 
-    public function __construct(Configuration $conf)
+    /**
+     * UserAccountService constructor.
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(ConfigurationInterface $conf)
     {
-        $this->conf = $conf;
         $this->UserModel = new UserModel();
-        $this->ConfModel = new ConfModel($this->conf);
-        $this->RequestService = new RequestService($this->conf);
+        $this->ConfModel = new ConfModel(Configuration::setInstance($conf));
+        $this->RequestService = new RequestService(Configuration::getInstance());
     }
 
     /**
@@ -104,7 +108,7 @@ class UserAccountService
 
     /**
      * @throws Exception
-     * @var Configuration $conf
+     * @var ConfigurationInterface $conf
      * @return Response
      */
     protected function accountIntegrationSettings()

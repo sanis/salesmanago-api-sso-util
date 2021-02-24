@@ -5,6 +5,7 @@ namespace SALESmanago\Services;
 
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
 use SALESmanago\Entity\Response;
@@ -23,7 +24,11 @@ class ContactService
     private $conf;
     private $ConfModel;
 
-    public function __construct(Configuration $conf)
+    /**
+     * ContactService constructor.
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
         $this->ConfModel = new ConfModel($conf);

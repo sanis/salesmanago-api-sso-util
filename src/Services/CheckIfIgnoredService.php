@@ -5,6 +5,7 @@ namespace SALESmanago\Services;
 
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Response;
 
@@ -24,7 +25,11 @@ class CheckIfIgnoredService
      */
     private $Contact;
 
-    public function __construct(Configuration $conf)
+    /**
+     * CheckIfIgnoredService constructor.
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
     }

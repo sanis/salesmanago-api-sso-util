@@ -6,6 +6,7 @@ namespace SALESmanago\Services;
 
 use SALESmanago\Adapter\ContactStatusSynchronizationManagerAdapter as ContactSyncAdapter;
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\ConfModel;
@@ -33,7 +34,11 @@ class SynchronizationService
      */
     private $ContactSyncManager;
 
-    public function __construct(Configuration $conf)
+    /**
+     * SynchronizationService constructor.
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
     }

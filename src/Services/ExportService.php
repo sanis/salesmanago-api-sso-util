@@ -4,15 +4,13 @@
 namespace SALESmanago\Services;
 
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\Collections\Collection;
 use SALESmanago\Model\Collections\ContactsCollection;
 use SALESmanago\Model\Collections\EventsCollection;
 use SALESmanago\Model\ConfModel;
-use SALESmanago\Model\ContactModel;
-use function PHPUnit\Framework\throwException;
 
 class ExportService
 {
@@ -25,7 +23,7 @@ class ExportService
     private $conf;
     private $ConfModel;
 
-    public function __construct(Configuration $conf)
+    public function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
         $this->ConfModel = new ConfModel($conf);
