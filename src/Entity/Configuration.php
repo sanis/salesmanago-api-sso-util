@@ -6,8 +6,9 @@ namespace SALESmanago\Entity;
 
 use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Exception\Exception;
+use SALESmanago\Entity\ConfigurationInterface;
 
-class Configuration extends AbstractEntity implements \JsonSerializable
+class Configuration extends AbstractEntity implements ConfigurationInterface, \JsonSerializable
 {
     const
         ACTIVE          = 'active',
@@ -158,6 +159,20 @@ class Configuration extends AbstractEntity implements \JsonSerializable
     }
 
     /**
+     * @param \SALESmanago\Entity\ConfigurationInterface $class
+     * @return mixed
+     */
+    public static function setInstance(ConfigurationInterface $class)
+    {
+        $cls = static::class;
+        if (!isset(self::$instances[$cls])) {
+            self::$instances[$cls] = $class;
+        }
+
+        return self::$instances[$cls];
+    }
+
+    /**
      * Sets data from array
      * @param $data
      * @return $this;
@@ -270,7 +285,7 @@ class Configuration extends AbstractEntity implements \JsonSerializable
     /**
      * @return string
      */
-    protected function getApiSecret()
+    public function getApiSecret()
     {
         return $this->apiSecret;
     }

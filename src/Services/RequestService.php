@@ -4,23 +4,21 @@
 namespace SALESmanago\Services;
 
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 
-use \GuzzleHttp\Client as GuzzleClient;
 use \GuzzleHttp\Exception\ConnectException;
 use \GuzzleHttp\Exception\ClientException;
 use \GuzzleHttp\Exception\GuzzleException;
 use \GuzzleHttp\Exception\ServerException;
-use SALESmanago\Helper\DataHelper;
-use SALESmanago\Helper\EntityDataHelper;
+
 
 class RequestService
 {
     private $guzzleAdapter;
 
-    public function __construct(Configuration $conf)
+    public function __construct(ConfigurationInterface $conf)
     {
         $this->guzzleAdapter = new GuzzleClientAdapter();
         $this->guzzleAdapter->setClient($conf,

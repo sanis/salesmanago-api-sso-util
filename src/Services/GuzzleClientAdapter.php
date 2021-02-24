@@ -3,7 +3,9 @@
 namespace SALESmanago\Services;
 
 use \GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\ClientInterface;
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 
 class GuzzleClientAdapter
 {
@@ -25,11 +27,11 @@ class GuzzleClientAdapter
      * Checking GuzzleClient version.
      * In version 7+ const VERSION doesn't exist.
      * Instead const MAJOR_VERSION.
-     * @param Configuration $conf
+     * @param ConfigurationInterface $conf
      * @param $headers
-     * @return GuzzleClient
+     * @return void
      */
-    public function setClient(Configuration $conf, $headers)
+    public function setClient(ConfigurationInterface $conf, $headers)
     {
         $arrayOfConstant = $this->getConstants();
 

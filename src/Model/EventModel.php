@@ -3,6 +3,7 @@
 
 namespace SALESmanago\Model;
 
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\Event\Event;
 use SALESmanago\Entity\Configuration;
@@ -13,7 +14,7 @@ class EventModel
     protected $Event;
     protected $conf;
 
-    public function __construct(Event $Event, Configuration $conf)
+    public function __construct(Event $Event, ConfigurationInterface $conf)
     {
         $this->Event = $Event;
         $this->conf = $conf;

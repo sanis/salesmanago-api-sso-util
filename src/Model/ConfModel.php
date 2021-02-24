@@ -4,6 +4,7 @@
 namespace SALESmanago\Model;
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Entity\User;
 
@@ -13,11 +14,11 @@ class ConfModel
         REQUEST_TIME = 'requestTime';
 
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $conf;
 
-    public function __construct(Configuration $conf)
+    public function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
     }
@@ -63,7 +64,7 @@ class ConfModel
 
     /**
      * @param Response $ResponseIntegration
-     * @return Configuration
+     * @return ConfigurationInterface
      */
     public function setConfAfterIntegration($ResponseIntegration) {
         $this->conf
@@ -75,7 +76,7 @@ class ConfModel
 
     /**
      * @param Response $Response
-     * @return Configuration
+     * @return ConfigurationInterface
      */
     public function setOwnersListToConf(Response $Response)
     {

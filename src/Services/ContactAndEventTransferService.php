@@ -3,16 +3,15 @@
 
 namespace SALESmanago\Services;
 
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
-
 use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\EventModel;
 use SALESmanago\Model\ConfModel;
 
-use SALESmanago\Entity\Configuration;
 
 class ContactAndEventTransferService
 {
@@ -26,7 +25,11 @@ class ContactAndEventTransferService
     private $conf;
     private $ConfModel;
 
-    public function __construct(Configuration $conf)
+    /**
+     * ContactAndEventTransferService constructor.
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
         $this->ConfModel = new ConfModel($conf);

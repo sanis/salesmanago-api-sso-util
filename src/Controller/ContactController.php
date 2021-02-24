@@ -5,18 +5,20 @@ namespace SALESmanago\Controller;
 
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
-use SALESmanago\Exception\SalesManagoException;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Services\ContactService;
+use \SALESmanago\Exception\Exception;
 
 class ContactController
 {
     protected $conf;
     protected $service;
 
-    public function __construct(Configuration $conf)
+    public function __construct(ConfigurationInterface $conf)
     {
+        Configuration::setInstance($conf);
         $this->conf = $conf;
         $this->service  = new ContactService($conf);
     }
@@ -24,7 +26,7 @@ class ContactController
     /**
      * @param Contact $Contact
      * @return Contact|null
-     * @throws \SALESmanago\Exception\Exception
+     * @throws Exception
      */
     public function getContactBasic(Contact $Contact)
     {

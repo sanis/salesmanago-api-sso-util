@@ -14,7 +14,7 @@ trait ContactStatusSynchronizationTrait
     /**
      * @var SynchronizationService
      */
-    private $syncService;
+    protected $syncService;
 
     /**
      * @param ContactSyncAdapter $ContactSyncManager

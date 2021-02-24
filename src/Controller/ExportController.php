@@ -3,6 +3,7 @@
 namespace SALESmanago\Controller;
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Model\Collections\Collection;
 use SALESmanago\Services\ContactAndEventTransferService;
 use SALESmanago\Services\ExportService;
@@ -23,10 +24,11 @@ class ExportController
 
     /**
      * ExportController constructor.
-     * @param Configuration $conf
+     * @param ConfigurationInterface $conf
      */
-    public function __construct(Configuration $conf)
+    public function __construct(ConfigurationInterface $conf)
     {
+        Configuration::setInstance($conf);
         $this->conf = $conf;
         $this->service = new ExportService($conf);
     }

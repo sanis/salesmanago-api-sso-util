@@ -3,6 +3,7 @@
 
 namespace SALESmanago\Model;
 
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Contact\Address;
 use SALESmanago\Entity\Contact\Options;
@@ -10,7 +11,6 @@ use SALESmanago\Entity\Contact\Properties;
 use SALESmanago\Entity\ApiDoubleOptIn;
 
 use SALESmanago\Entity\Configuration;
-use SALESmanago\Exception\Exception;
 
 use SALESmanago\Helper\DataHelper;
 
@@ -23,11 +23,16 @@ class ContactModel
     protected $Contact;
 
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     protected $conf;
 
-    public function __construct(Contact $Contact, Configuration $conf)
+    /**
+     * ContactModel constructor.
+     * @param Contact $Contact
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(Contact $Contact, ConfigurationInterface $conf)
     {
         $this->Contact = $Contact;
         $this->conf = $conf;
@@ -97,10 +102,10 @@ class ContactModel
 
     /**
      * @param Contact $Contact
-     * @param Configuration $conf
+     * @param ConfigurationInterface $conf
      * @return array
      */
-    public static function toExportArray(Contact $Contact, Configuration $conf) {
+    public static function toExportArray(Contact $Contact, ConfigurationInterface $conf) {
         $Address    = $Contact->getAddress();
         $Options    = $Contact->getOptions();
         $Properties = $Contact->getProperties();
@@ -154,10 +159,10 @@ class ContactModel
 
     /**
      * @param Contact $Contact
-     * @param Configuration $conf
+     * @param ConfigurationInterface $conf
      * @return array
      */
-    public static function toArray(Contact $Contact, Configuration $conf)
+    public static function toArray(Contact $Contact, ConfigurationInterface $conf)
     {
         $Address    = $Contact->getAddress();
         $Options    = $Contact->getOptions();
@@ -247,11 +252,11 @@ class ContactModel
 
     /**
      * Checking for need add apiDoubleOptIn to request;
-     * @param Configuration $conf
+     * @param ConfigurationInterface $conf
      * @param Contact $Contact;
      * @return bool
      */
-    public static function apiDoubleOptInChecker(Contact $Contact, Configuration $conf)
+    public static function apiDoubleOptInChecker(Contact $Contact, ConfigurationInterface $conf)
     {
         $isApiDoubleOptInEnabled = $conf->getApiDoubleOptIn()->getEnabled();
 
