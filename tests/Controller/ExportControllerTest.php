@@ -64,8 +64,8 @@ class ExportControllerTest extends TestCase
             $contactsCollection = new ContactsCollection();
 
             $user
-                ->setEmail('ruslan.barlozhetskyi@salesmanago.pl')
-                ->setPass('04ru06sl94an');
+                ->setEmail('semowet930@boldhut.com')
+                ->setPass('#Salesmanago123');
 
             $loginController = new LoginController($conf);
             $loginController->login($user);//this one for property configuration create
