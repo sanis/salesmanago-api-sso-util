@@ -3,15 +3,15 @@
 
 namespace SALESmanago\Services;
 
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
-
+use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\EventModel;
-use SALESmanago\Model\SettingsModel;
+use SALESmanago\Model\ConfModel;
 
-use SALESmanago\Entity\Configuration;
 
 class ContactAndEventTransferService
 {
@@ -22,28 +22,32 @@ class ContactAndEventTransferService
         EVENT_OBJ_NAME      = 'addContactExtEventRequest';
 
     private $RequestService;
-    private $Settings;
-    private $SettingsModel;
+    private $conf;
+    private $ConfModel;
 
-    public function __construct(Configuration $Settings)
+    /**
+     * ContactAndEventTransferService constructor.
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(ConfigurationInterface $conf)
     {
-        $this->Settings = $Settings;
-        $this->SettingsModel = new SettingsModel($Settings);
-        $this->RequestService = new RequestService($Settings);
+        $this->conf = $conf;
+        $this->ConfModel = new ConfModel($conf);
+        $this->RequestService = new RequestService($conf);
     }
 
     /**
      * @param Contact $Contact
      * @param Event $Event
-     * @return array
+     * @return Response
      * @throws Exception
      */
     public function transferBoth(Contact $Contact, Event $Event)
     {
-        $ContactModel = new ContactModel($Contact, $this->Settings);
-        $EventModel   = new EventModel($Event, $this->Settings);
+        $ContactModel = new ContactModel($Contact, $this->conf);
+        $EventModel   = new EventModel($Event, $this->conf);
 
-        $settings = $this->SettingsModel->getAuthorizationApiData();
+        $settings = $this->ConfModel->getAuthorizationApiData();
         $contact  = $ContactModel->getContactForUnionTransfer();
         $event    = $EventModel->getEventForUnionTransfer();
 
@@ -52,28 +56,31 @@ class ContactAndEventTransferService
             [self::CONTACT_OBJ_NAME => $contact, self::EVENT_OBJ_NAME => $event]
         );
 
-        $response = $this->RequestService->request(
+        $Response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::API_METHOD,
             $data
         );
 
         return $this->RequestService->validateCustomResponse(
-            $response,
-            array(array_key_exists('contactId', $response), array_key_exists('eventId', $response))
+            $Response,
+            array(
+                boolval($Response->getField('contactId')),
+                boolval($Response->getField('eventId'))
+            )
         );
     }
 
     /**
      * @throws Exception
      * @param Event $Event
-     * @return array
+     * @return Response
      */
     public function transferEvent(Event $Event)
     {
-        $EventModel = new EventModel($Event, $this->Settings);
+        $EventModel = new EventModel($Event, $this->conf);
 
-        $settings = $this->SettingsModel->getAuthorizationApiData();
+        $settings = $this->ConfModel->getAuthorizationApiData();
         $event    = $EventModel->getEventForUnionTransfer();
 
         $data = array_merge(
@@ -81,28 +88,31 @@ class ContactAndEventTransferService
             [self::EVENT_OBJ_NAME => $event]
         );
 
-        $response = $this->RequestService->request(
+        $Response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::API_METHOD,
             $data
         );
 
         return $this->RequestService->validateCustomResponse(
-            $response,
-            array(array_key_exists('eventId', $response))
+            $Response,
+            array(
+                boolval($Response->getField('eventId')
+                )
+            )
         );
     }
 
     /**
      * @throws Exception
      * @param Contact $Contact
-     * @return array
+     * @return Response
      */
     public function transferContact(Contact $Contact)
     {
-        $ContactModel = new ContactModel($Contact, $this->Settings);
+        $ContactModel = new ContactModel($Contact, $this->conf);
 
-        $settings = $this->SettingsModel->getAuthorizationApiData();
+        $settings = $this->ConfModel->getAuthorizationApiData();
         $contact  = $ContactModel->getContactForUnionTransfer();
 
         $data = array_merge(
@@ -110,15 +120,19 @@ class ContactAndEventTransferService
             [self::CONTACT_OBJ_NAME => $contact]
         );
 
-        $response = $this->RequestService->request(
+        $Response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::API_METHOD,
             $data
         );
 
-        return $this->RequestService->validateCustomResponse(
-            $response,
-            array(array_key_exists('contactId', $response))
-        );
+        return $this->RequestService
+            ->validateCustomResponse(
+                $Response,
+                array(
+                    boolval($Response->getField('contactId')
+                    )
+                )
+            );
     }
 }

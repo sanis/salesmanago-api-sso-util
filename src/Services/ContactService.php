@@ -5,12 +5,14 @@ namespace SALESmanago\Services;
 
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
+use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Model\EventModel;
-use SALESmanago\Model\SettingsModel;
+use SALESmanago\Model\ConfModel;
 
 class ContactService
 {
@@ -19,41 +21,45 @@ class ContactService
         API_METHOD_BASIC    = '/api/contact/basic';
 
     private $RequestService;
-    private $Settings;
-    private $SettingsModel;
+    private $conf;
+    private $ConfModel;
 
-    public function __construct(Configuration $Settings)
+    /**
+     * ContactService constructor.
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(ConfigurationInterface $conf)
     {
-        $this->Settings = $Settings;
-        $this->SettingsModel = new SettingsModel($Settings);
-        $this->RequestService = new RequestService($Settings);
+        $this->conf = $conf;
+        $this->ConfModel = new ConfModel($conf);
+        $this->RequestService = new RequestService($conf);
     }
 
     /**
      * @param Contact $Contact
-     * @return array
+     * @return Response
      * @throws Exception
      */
     public function getContactBasic(Contact $Contact)
     {
-        $ContactModel = new ContactModel($Contact, $this->Settings);
-        $settings = $this->SettingsModel->getAuthorizationApiData();
+        $ContactModel = new ContactModel($Contact, $this->conf);
+        $settings = $this->ConfModel->getAuthorizationApiData();
 
         $contact = $ContactModel->getContactForBasicRequest();
 
         $data = array_merge($settings, $contact);
 
-        $response = $this->RequestService->request(
+        $Response = $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::API_METHOD_BASIC,
             $data
         );
 
         return $this->RequestService->validateCustomResponse(
-            $response,
+            $Response,
             array(
-                array_key_exists('contacts', $response),
-                (count($response['contacts']) === 1)
+                boolval($Response->getField('contacts')),
+                (count($Response->getField('contacts')) === 1)
             )
         );
     }

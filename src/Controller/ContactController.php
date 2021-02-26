@@ -5,36 +5,33 @@ namespace SALESmanago\Controller;
 
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
-use SALESmanago\Exception\SalesManagoException;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Services\ContactService;
+use \SALESmanago\Exception\Exception;
 
 class ContactController
 {
-    const
-        COOKIES_CLIENT    = "smclient",
-        COOKIES_EXT_EVENT = "smevent";
-
-    protected $settings;
+    protected $conf;
     protected $service;
-    protected $contactModel;
 
-    public function __construct(Configuration $settings)
+    public function __construct(ConfigurationInterface $conf)
     {
-        $this->settings = $settings;
-        $this->service  = new ContactService($settings);
+        Configuration::setInstance($conf);
+        $this->conf = $conf;
+        $this->service  = new ContactService($conf);
     }
 
     /**
      * @param Contact $Contact
      * @return Contact|null
-     * @throws \SALESmanago\Exception\Exception
+     * @throws Exception
      */
     public function getContactBasic(Contact $Contact)
     {
         $response = $this->service->getContactBasic($Contact);
-        $contactModel = new ContactModel($Contact, $this->settings);
+        $contactModel = new ContactModel($Contact, $this->conf);
 
         if ($response['success'] && !empty($response['contacts'][0])) {
             return $contactModel->getContactFromBasicResponse($response['contacts'][0]);

@@ -5,7 +5,9 @@ namespace SALESmanago\Services;
 
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
+use SALESmanago\Entity\Response;
 
 class CheckIfIgnoredService
 {
@@ -13,23 +15,37 @@ class CheckIfIgnoredService
         IS_IGNORED = 'isIgnored',
         IGNORED_MESSAGE = "Contact was ignored";
 
-    private $Settings;
+    /**
+     * @var Configuration
+     */
+    private $conf;
 
+    /**
+     * @var Contact
+     */
     private $Contact;
 
-    public function __construct(Configuration $Settings)
+    /**
+     * CheckIfIgnoredService constructor.
+     * @param ConfigurationInterface $conf
+     */
+    public function __construct(ConfigurationInterface $conf)
     {
-        $this->Settings = $Settings;
+        $this->conf = $conf;
     }
 
+    /**
+     * @return Response
+     */
     public function getDeclineResponse()
     {
-        return array(
-            'success'    => false,
-            'message'    => array(CheckIfIgnoredService::IGNORED_MESSAGE),
-            'contactId'  => null,
-            'eventId'    => null
-        );
+        $Response = new Response();
+
+        return $Response
+            ->setStatus(false)
+            ->setMessage(array(CheckIfIgnoredService::IGNORED_MESSAGE))
+            ->setField('contactId', null)
+            ->setField('eventId', null);
     }
 
     /**
@@ -40,7 +56,7 @@ class CheckIfIgnoredService
     {
         $this->Contact = $Contact;
 
-        if($this->checkIgnoreDomain()) {
+        if($this->checkIgnoredDomains()) {
             return true;
         }
         // <--put other functions to ignore contact here -->
@@ -53,13 +69,13 @@ class CheckIfIgnoredService
      * @param null
      * @return bool Returns true if contact should be ignored
      */
-    protected function checkIgnoreDomain()
+    protected function checkIgnoredDomains()
     {
-        if (!empty($this->Settings->getIgnoreDomain())
-            && is_array($this->Settings->getIgnoreDomain())
+        if (!empty($this->conf->getIgnoredDomains())
+            && is_array($this->conf->getIgnoredDomains())
             && !empty($this->Contact->getEmail())) {
             $emailDomain = explode('@', $this->Contact->getEmail())[1];
-            return in_array($emailDomain, $this->Settings->getIgnoreDomain());
+            return in_array($emailDomain, $this->conf->getIgnoredDomains());
         }
         return false; //no reason to ignore Contact
     }

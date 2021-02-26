@@ -4,31 +4,24 @@
 namespace SALESmanago\Services;
 
 
-use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Entity\ConfigurationInterface;
+use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 
-use \GuzzleHttp\Client as GuzzleClient;
 use \GuzzleHttp\Exception\ConnectException;
 use \GuzzleHttp\Exception\ClientException;
 use \GuzzleHttp\Exception\GuzzleException;
 use \GuzzleHttp\Exception\ServerException;
-use SALESmanago\Helper\DataHelper;
-use SALESmanago\Helper\EntityDataHelper;
+
 
 class RequestService
 {
-    const METHOD_POST = 'POST';
-
-    /**
-     * @var integer
-     */
-    private $statusCode;
     private $guzzleAdapter;
 
-    public function __construct(Settings $Settings)
+    public function __construct(ConfigurationInterface $conf)
     {
         $this->guzzleAdapter = new GuzzleClientAdapter();
-        $this->guzzleAdapter->setClient($Settings,
+        $this->guzzleAdapter->setClient($conf,
         $headers = array(
             'Accept'       => 'application/json',
             'Content-Type' => 'application/json;charset=UTF-8'
@@ -40,16 +33,15 @@ class RequestService
      * @param string $method
      * @param string $uri
      * @param array $data
-     * @return array
+     * @return Response
      */
     final public function request($method, $uri, $data)
     {
         try {
             $response = $this->guzzleAdapter->transfer($method, $uri, $data);
-            $this->setStatusCode($response->getStatusCode());
             $rawResponse = $response->getBody()->getContents();
 
-            return json_decode($rawResponse, true);
+            return $this->toResponse(json_decode($rawResponse, true));
         } catch (ConnectException $e) {
             throw new Exception($e->getMessage());
         } catch (ClientException $e) {
@@ -63,33 +55,59 @@ class RequestService
 
     /**
      * @throws Exception
-     * @param array $response
-     * @param array $statement
-     * @return array
+     * @param Response $Response
+     * @return Response
      */
-    public function validateCustomResponse($response, $statement = array())
+    public function validateResponse($Response)
     {
-        $condition = array(is_array($response), array_key_exists('success', $response), $response['success'] == true);
-        $condition = array_merge($condition, $statement);
-
-        if (!in_array(false, $condition)) {
-            return $response;
+        if ($Response->isSuccess()) {
+            return $Response;
         } else {
-            $message = is_array($response['message'])
-                ? EntityDataHelper::setStrFromArr($response['message'], ', ')
-                : $response['message'];
-
-            $response['message'] = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $message;
-            $response['success'] = false;
-            return $response;
+            throw new Exception($Response->getMessage());
         }
     }
 
     /**
-     * @param int $statusCode
+     * @param Response $Response
+     * @param array $conditions - array of booleans;
+     * @return Response
+     * @throws Exception
      */
-    private function setStatusCode($statusCode)
+    public function validateCustomResponse(Response $Response, $conditions = array())
     {
-        $this->statusCode = $statusCode;
+        $condition = array_merge(array(boolval($Response->isSuccess())), $conditions);
+
+        if (!in_array(false, $condition)) {
+            return $Response;
+        } else {
+            $message = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $Response->getMessage();
+            $Response->setMessage($message);
+            $Response->setStatus(false);
+            throw new Exception($message);
+        }
+    }
+
+    /**
+     * @param array $apiResponse
+     * @return Response;
+     */
+    public function toResponse($apiResponse)
+    {
+        $Response = new Response();
+
+        $Response
+            ->setStatus($apiResponse['success'])
+            ->setMessage($apiResponse['message']);
+
+        unset($apiResponse['success']);
+        unset($apiResponse['message']);
+
+        if (!empty($apiResponse)) {
+            array_walk($apiResponse, function ($value, $key) use (&$Response) {
+                $Response->setField($key, $value);
+            });
+        }
+
+        return $Response;
     }
 }

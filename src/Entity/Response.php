@@ -3,37 +3,140 @@
 namespace SALESmanago\Entity;
 
 
-class Response
-{
-    const SUCCESS = 'success';
+use SALESmanago\Entity\Contact\Address;
+use SALESmanago\Exception\Exception;
 
+class Response extends AbstractEntity
+{
     protected $response = array();
 
-    protected function array_push_assoc($key, $value)
-    {
-        $this->response[$key] = $value;
+    /**
+     * @var null|bool - response status;
+     */
+    protected $status = null;
+
+    /**
+     * @var null|string - response message;
+     */
+    protected $message = null;
+
+    /**
+     * @var array - additional response fields;
+     */
+    protected $fields = [];
+
+    /**
+     * Response constructor.
+     * @param array $data
+     * @throws Exception
+     */
+    public function __construct(
+        $data = []
+    ) {
+        if (!empty($data)) {
+            $this->setDataWithSetters($data);
+        }
     }
 
-    public function addStatus($status)
-    {
-        $this->array_push_assoc(self::SUCCESS, $status);
+    /**
+     * @param array $data;
+     *
+     * @return $this;
+     * @throws Exception;
+     */
+    public function set($data) {
+        $this->setDataWithSetters($data);
         return $this;
     }
 
-    public function addField($key, $value)
+    /**
+     * @param bool $status
+     * @return $this
+     */
+    public function setStatus($status)
     {
-        $this->array_push_assoc($key, $value);
+        $this->status = $status;
         return $this;
     }
 
-    public function addArray($arr)
+    /**
+     * @return bool|null
+     */
+    public function getStatus()
     {
-        $this->response = array_merge($this->response, $arr);
+        return $this->status;
+    }
+
+    /**
+     * @param null|string|array $message
+     * @return $this
+     */
+    public function setMessage($message = null)
+    {
+        $this->message = is_array($message)
+            ? implode(' ', $message)
+            : $message;
+
         return $this;
     }
 
-    public function build()
+    /**
+     * @return string|null
+     */
+    public function getMessage()
     {
-        return $this->response;
+        return $this->message;
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function setField($key, $value)
+    {
+        $this->fields[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function getField($key)
+    {
+        return isset($this->fields[$key])
+            ? $this->fields[$key]
+            : null;
+    }
+
+    /**
+     * @param array $fields
+     * @return $this
+     */
+    public function setFields($fields = [])
+    {
+        $this->fields = $fields;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuccess()
+    {
+        if(isset($this->fields['success'])) {
+            return boolval($this->fields['success']);
+        }
+
+        return boolval($this->getStatus());
     }
 }

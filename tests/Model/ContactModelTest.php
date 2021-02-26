@@ -3,7 +3,7 @@
 namespace Tests\Model;
 
 
-use SALESmanago\Entity\Configuration as Settings;
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Contact\Address;
 use SALESmanago\Entity\Contact\Options;
@@ -22,14 +22,13 @@ class ContactModelTest extends TestCase
 
     /**
      * @dataProvider provideTestGetContactForUnionTransfer
-     * @throws Exception
      * @param Contact $Contact
      * @param array $expectedArray
      */
     public function testGetContactForUnionTransferStructure(Contact $Contact, $expectedArray)
     {
-        $Model = new ContactModel($Contact, new Settings());
-        $contactRequestArray = $Model->getContactForUnionTransfer();
+        $model = new ContactModel($Contact, Configuration::getInstance());
+        $contactRequestArray = $model->getContactForUnionTransfer();
 
         $aReturn = $this->arrayRecursiveDiff($contactRequestArray, $expectedArray);
         $this->assertEmpty($aReturn);
@@ -62,7 +61,6 @@ class ContactModelTest extends TestCase
      */
     public function provideTestGetContactForUnionTransfer()
     {
-        $Settings = new Settings();
         $Contact = new Contact();
 
         $dummyData = self::prepareDummyDataForContactEntity();

@@ -3,7 +3,9 @@
 namespace SALESmanago\Services;
 
 use \GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\ClientInterface;
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 
 class GuzzleClientAdapter
 {
@@ -25,11 +27,11 @@ class GuzzleClientAdapter
      * Checking GuzzleClient version.
      * In version 7+ const VERSION doesn't exist.
      * Instead const MAJOR_VERSION.
-     * @param Configuration $settings
+     * @param ConfigurationInterface $conf
      * @param $headers
-     * @return GuzzleClient
+     * @return void
      */
-    public function setClient(Configuration $settings, $headers)
+    public function setClient(ConfigurationInterface $conf, $headers)
     {
         $arrayOfConstant = $this->getConstants();
 
@@ -37,7 +39,7 @@ class GuzzleClientAdapter
 
             if (version_compare(GuzzleClient::VERSION, '6.0.0', '<')) {
                 $this->client = new GuzzleClient([
-                    'base_url' => $settings->getRequestEndpoint(),
+                    'base_url' => $conf->getEndpoint(),
                     'defaults' => array(
                         'verify' => false,
                         'timeout' => 45.0,
@@ -47,7 +49,7 @@ class GuzzleClientAdapter
 
             } elseif (version_compare(GuzzleClient::VERSION, '6.0.0', '>')) {
                 $this->client = new GuzzleClient([
-                    'base_uri' => $settings->getRequestEndpoint(),
+                    'base_uri' => $conf->getEndpoint(),
                     'verify' => false,
                     'timeout' => 45.0,
                     'defaults' => [
@@ -57,7 +59,7 @@ class GuzzleClientAdapter
             }
         } else {
             $this->client = new GuzzleClient([
-                'base_uri' => $settings->getRequestEndpoint(),
+                'base_uri' => $conf->getEndpoint(),
                 'verify' => false,
                 'timeout' => 45.0,
                 'defaults' => [

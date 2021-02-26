@@ -1,5 +1,12 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.0 24.02.2021
+ - change structure;
+ - remove unnecessary functionality;
+ - add new mechanism for a login;
+ - add configuration schema version in Entity\Configuration;
+ - change Entity\Configuration to implement ConfigurationInterface;
+
 Version 2.6.2 20.01.2021
  - Add Event types const to Entity\Event\Event;
 

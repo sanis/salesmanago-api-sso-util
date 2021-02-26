@@ -1,7 +1,11 @@
 {
     "name": "salesmanago/api-sso-util",
     "description": "core api code",
-    "version": "2.6.2",
+    "version": "3.0.0",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
     "authors": [
         {
             "name": "SALESmanago",

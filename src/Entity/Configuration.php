@@ -6,23 +6,27 @@ namespace SALESmanago\Entity;
 
 use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Exception\Exception;
+use SALESmanago\Entity\ConfigurationInterface;
 
-class Configuration extends AbstractEntity
+class Configuration extends AbstractEntity implements ConfigurationInterface, \JsonSerializable
 {
     const
-        ACTIVE        = 'active',
-        ENDPOINT      = 'endpoint',
-        CLIENT_ID     = 'clientId',
-        API_KEY       = 'apiKey',
-        API_SECRET    = 'apiSecret',
-        OWNER         = 'owner',
-        EMAIL         = 'email',
-        SHA           = 'sha',
-        TOKEN         = 'token',
-        IGNORE_DOMAIN = 'ignoreDomain',
-        COOKIE_TTL    = 'cookieTtl';
+        ACTIVE          = 'active',
+        ENDPOINT        = 'endpoint',
+        CLIENT_ID       = 'clientId',
+        API_KEY         = 'apiKey',
+        API_SECRET      = 'apiSecret',
+        OWNER           = 'owner',
+        EMAIL           = 'email',
+        SHA             = 'sha',
+        TOKEN           = 'token',
+        IGNORED_DOMAINS = 'ignoredDomains',
+        COOKIE_TTL      = 'cookieTtl';
+
+    private static $instances = [];
 
     /**
+     * Flag to detect if module/component/plugin is active on platform;
      * @var boolean
      */
     protected $active = false;
@@ -30,7 +34,7 @@ class Configuration extends AbstractEntity
     /**
      * @var string|null
      */
-    protected $endpoint = null;
+    protected $endpoint = 'https://app2.salesmanago.pl';
 
     /**
      * @var string
@@ -75,7 +79,7 @@ class Configuration extends AbstractEntity
     /**
      * @var array
      */
-    protected $ignoreDomain;
+    protected $ignoredDomains;
 
     /**
      * @var string
@@ -112,16 +116,67 @@ class Configuration extends AbstractEntity
      */
     protected $cookieTtl = 43200;
 
-    public function __construct($data = [])
+    /**
+     * @var array|null - owners list for SM account
+     */
+    protected $ownersList = null;
+
+    /**
+     * @var string unique store id for SALESmanago (used with events, feed)
+     */
+    protected $location;
+
+    /**
+     * Configuration schema version used to specify
+     * which settings version is used by client;
+     *
+     * @var string - version
+     */
+    protected $confSchemaVer = '1.0.0';
+
+    protected function __construct() {}
+    protected function __clone() {}
+
+    /**
+     * @throws Exception
+     */
+    public function __wakeup()
     {
-        if (!empty($data)) {
-            $this->set($data);
+        throw new Exception("Cannot unserialize a singleton.");
+    }
+
+    /**
+     * @return mixed|static
+     */
+    public static function getInstance()
+    {
+        $cls = static::class;
+        if (!isset(self::$instances[$cls])) {
+            self::$instances[$cls] = new static();
         }
+
+        return self::$instances[$cls];
+    }
+
+    /**
+     * @param \SALESmanago\Entity\ConfigurationInterface $class
+     * @return mixed
+     */
+    public static function setInstance(ConfigurationInterface $class)
+    {
+        $cls = static::class;
+        if (!isset(self::$instances[$cls])) {
+            self::$instances[$cls] = $class;
+        }
+
+        return self::$instances[$cls];
     }
 
     /**
      * Sets data from array
      * @param $data
+     * @return $this;
+     * @throws Exception
      */
     public function set($data)
     {
@@ -139,18 +194,12 @@ class Configuration extends AbstractEntity
 
     /**
      * @param boolean $active
+     * @return $this
      */
     public function setActive($active)
     {
         $this->active = $active;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRequestEndpoint()
-    {
-        return $this->endpoint;
+        return $this;
     }
 
     /**
@@ -158,9 +207,7 @@ class Configuration extends AbstractEntity
      */
     public function getEndpoint()
     {
-        if (preg_match("@^(?:https?:\/\/)([^/]+)@i", $this->endpoint, $matches)) {
-            return $matches[1];
-        }
+        return $this->endpoint;
     }
 
     /**
@@ -209,6 +256,10 @@ class Configuration extends AbstractEntity
      */
     public function getApiKey()
     {
+        if (empty($this->apiKey)) {
+            $this->apiKey = md5(time() . mt_rand());
+        }
+
         return $this->apiKey;
     }
 
@@ -227,14 +278,14 @@ class Configuration extends AbstractEntity
      */
     public function setDefaultApiKey()
     {
-        $this->apiKey = md5(time() . get_class($this));
+        $this->apiKey = md5(time() . mt_rand());
         return $this;
     }
 
     /**
      * @return string
      */
-    protected function getApiSecret()
+    public function getApiSecret()
     {
         return $this->apiSecret;
     }
@@ -357,29 +408,28 @@ class Configuration extends AbstractEntity
     }
 
     /**
-     * @param array $ignoreDomain
+     * @param array $ignoredDomains
      * @return $this
      * @throws Exception
      */
-    public function setIgnoreDomain($ignoreDomain)
+    public function setIgnoredDomains($ignoredDomains)
     {
-        if(empty($ignoreDomain))
+        if(empty($ignoredDomains)) {
             return $this;
-        if (!is_array($ignoreDomain)) {
+        } elseif (!is_array($ignoredDomains)) {
             throw new Exception('Passed argument isn\'t array');
         }
-        $this->ignoreDomain = $ignoreDomain;
+        $this->ignoredDomains = $ignoredDomains;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getIgnoreDomain()
+    public function getIgnoredDomains()
     {
-        return $this->ignoreDomain;
+        return $this->ignoredDomains;
     }
-
 
     /**
      * @param string $domain
@@ -415,18 +465,6 @@ class Configuration extends AbstractEntity
     public function getDomainToken()
     {
         return $this->domainToken;
-    }
-
-    public function getConfig()
-    {
-        return [
-            self::CLIENT_ID => $this->getClientId(),
-            self::SHA       => $this->getSha(),
-            self::API_KEY   => $this->getApiKey(),
-            self::OWNER     => $this->getOwner(),
-            self::ENDPOINT  => $this->getEndpoint(),
-            self::TOKEN     => $this->getToken()
-        ];
     }
 
     /**
@@ -542,4 +580,57 @@ class Configuration extends AbstractEntity
         return $this->cookieTtl;
     }
 
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function setConfSchemaVer($param)
+    {
+        $this->confSchemaVer = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfSchemaVer()
+    {
+        return $this->confSchemaVer;
+    }
+
+    /**
+     * @param $param
+     * @return $this
+     */
+    public function setOwnersList($param)
+    {
+        $this->ownersList = $param;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOwnersList()
+    {
+        return $this->ownersList;
+    }
+
+    /**
+     * @param $param
+     * @return $this
+     */
+    public function setLocation($param)
+    {
+        $this->location = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
 }
