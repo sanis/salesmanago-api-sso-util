@@ -30,11 +30,11 @@ class ContactController
      */
     public function getContactBasic(Contact $Contact)
     {
-        $response = $this->service->getContactBasic($Contact);
+        $Response = $this->service->getContactBasic($Contact);
         $contactModel = new ContactModel($Contact, $this->conf);
 
-        if ($response['success'] && !empty($response['contacts'][0])) {
-            return $contactModel->getContactFromBasicResponse($response['contacts'][0]);
+        if ($Response->isSuccess() && !empty($Response->getField('contacts')[0])) {
+            return $contactModel->getContactFromBasicResponse($Response->getField('contacts')[0]);
         }
 
         return null;
