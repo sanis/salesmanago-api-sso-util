@@ -55,12 +55,8 @@ class ContactService
             $data
         );
 
-        return $this->RequestService->validateCustomResponse(
-            $Response,
-            array(
-                boolval($Response->getField('contacts')),
-                (count($Response->getField('contacts')) === 1)
-            )
+        return $this->RequestService->validateResponse(
+            $Response
         );
     }
 }
