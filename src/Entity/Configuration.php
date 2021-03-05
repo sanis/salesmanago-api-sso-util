@@ -217,6 +217,10 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, \J
      */
     public function setEndpoint($endpoint, $ssl = true)
     {
+        if (empty($endpoint)) {//endpoint stay default
+            return $this;
+        }
+
         if (preg_match('/^https?:\/\//', $endpoint)) {
             if ($ssl === true && preg_match("@^(?:http:\/\/)([^/]+)@i", $endpoint, $matches)) {
                 $this->endpoint = "https://" . $matches[1];
