@@ -1,6 +1,6 @@
 SALESmanago library for integrations
 ------------------------------------
-Version 3.0.0 03.03.2021
+Version 3.0.1 03.03.2021
  - fix response in ContactController
 
 Version 3.0.0 24.02.2021
