@@ -8,6 +8,12 @@ use SALESmanago\Exception\Exception;
 
 class Response extends AbstractEntity
 {
+    const
+        //name for response field with eventId (to be set as smevent)
+        EVENT_ID = 'eventId',
+        //name for response field with clientId (to be set as smclient)
+        CONTACT_ID = 'contactId';
+
     protected $response = array();
 
     /**
