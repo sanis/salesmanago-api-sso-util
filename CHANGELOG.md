@@ -1,5 +1,9 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.2 09.03.2021
+ - Fix cookie setting via TSCT.php
+ - Added error code resolver
+
 Version 3.0.1 03.03.2021
  - fix response in ContactController
 

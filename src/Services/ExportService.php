@@ -45,12 +45,16 @@ class ExportService
                 $endpoint = self::API_METHOD_EXPORT_EVENTS;
                 break;
             default:
-                throw new Exception(get_class($collection) . 'can\'t be exported');
+                throw new Exception(get_class($collection) . 'can\'t be exported', 301);
         }
 
         $settings = $this->ConfModel->getAuthorizationApiDataWithOwner();
-        $collectionArray = $collection->toArray();
 
+        try {
+            $collectionArray = $collection->toArray();
+        } catch (\Exception $e) {
+            throw new Exception('Collection to array conversion failed: ' . $e->getMessage(), 302);
+        }
         $data = array_merge($settings, $collectionArray);
 
         return $this->RequestService->request(

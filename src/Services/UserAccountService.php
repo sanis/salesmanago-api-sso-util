@@ -76,6 +76,8 @@ class UserAccountService
 
         $this->conf = $this->ConfModel->setOwnersListToConf($responseCheckIfAccountActive);
 
+        $this->conf->setActive(true);
+
         return new Response([
             'status' => true,
             'message' => '',
@@ -140,18 +142,14 @@ class UserAccountService
      */
     protected function checkIfAccountIsActive()
     {
-        try {
-            $Response = $this->RequestService
-                ->request(
-                    self::REQUEST_METHOD_POST,
-                    self::METHOD_LIST_USERS,
-                    $this->ConfModel->getAuthorizationApiDataWithOwner()
-                );
+        $Response = $this->RequestService
+            ->request(
+                self::REQUEST_METHOD_POST,
+                self::METHOD_LIST_USERS,
+                $this->ConfModel->getAuthorizationApiDataWithOwner()
+            );
 
-            return $this->RequestService->validateResponse($Response);
-        } catch (Exception $e) {
-            throw new Exception('Inactive account');
-        }
+        return $this->RequestService->validateResponse($Response);
     }
 
     /**

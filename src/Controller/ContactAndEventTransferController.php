@@ -72,11 +72,11 @@ class ContactAndEventTransferController
         $Response = $this->service->transferBoth($Contact, $Event);
 
         //set cookies if adapter exist:
-        $this->setSmClient($Response->getField(CookieManagerAdapter::CLIENT_COOKIE));
+        $this->setSmClient($Response->getField(Response::CONTACT_ID));
 
         //set cookies if adapter exist:
         if ($Event->getContactExtEventType() == Event::EVENT_TYPE_CART) {
-            $this->setSmEvent($Response->getField(CookieManagerAdapter::EVENT_COOKIE));
+            $this->setSmEvent($Response->getField(Response::EVENT_ID));
         } elseif($Event->getContactExtEventType() == Event::EVENT_TYPE_PURCHASE) {
             $this->unsetSmEvent();
         }
@@ -95,7 +95,7 @@ class ContactAndEventTransferController
 
         //set cookies if adapter exist:
         if ($Event->getContactExtEventType() == Event::EVENT_TYPE_CART) {
-            $this->setSmEvent($Response->getField(CookieManagerAdapter::EVENT_COOKIE));
+            $this->setSmEvent($Response->getField(Response::EVENT_ID));
         } elseif($Event->getContactExtEventType() == Event::EVENT_TYPE_PURCHASE) {
             $this->unsetSmEvent();
         }
@@ -121,7 +121,7 @@ class ContactAndEventTransferController
         $Response = $this->service->transferContact($Contact);
 
         //set cookies if adapter exist:
-        $this->setSmClient($Response->getField(CookieManagerAdapter::CLIENT_COOKIE));
+        $this->setSmClient($Response->getField(Response::CONTACT_ID));
 
         return $Response->setField('conf', Configuration::getInstance());
     }

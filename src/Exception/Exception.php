@@ -2,9 +2,10 @@
 
 namespace SALESmanago\Exception;
 
-
 class Exception extends \Exception
 {
+    protected $code;
+    protected $defaultEnglishMessage;
     const
         EXCEPTION_HEADER_NAME = 'SALESmanago: ' . PHP_EOL,
         TRACE = 'Trace: ' . PHP_EOL,
@@ -37,4 +38,36 @@ class Exception extends \Exception
         $message.= $this->getLine() . PHP_EOL;
         return $message;
     }
+
+    /**
+     * @param $code
+     */
+    public function setCode($code = 0)
+    {
+        if(is_numeric($code)) {
+            $this->code = intval($code);
+        } else {
+            $this->code = 0;
+        }
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultEnglishMessage()
+    {
+        return $this->defaultEnglishMessage;
+    }
+
+    /**
+     * @param mixed $defaultEnglishMessage
+     */
+    public function setDefaultEnglishMessage($defaultEnglishMessage)
+    {
+        $this->defaultEnglishMessage = $defaultEnglishMessage;
+        return $this;
+    }
+
+
 }
