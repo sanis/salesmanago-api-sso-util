@@ -86,7 +86,7 @@ trait TemporaryStorageControllerTrait
             $this->CookieManager->setCookie(
                 CookieManagerAdapter::CLIENT_COOKIE,
                 $id,
-                time()+31556926
+                time()+315569260 //10 years
             );
         }
 

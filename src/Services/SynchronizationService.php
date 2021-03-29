@@ -17,7 +17,7 @@ class SynchronizationService
 {
     const
         REQ_SYNC = 'requiresSynchronization',
-        SYNC_TYPE_EMAIL_OPTIN = 'emailSubscribtionStatusSync';
+        SYNC_TYPE_EMAIL_OPTIN = 'emailSubscriptionStatusSync';
 
     private $conf;
     private $ConfModel;

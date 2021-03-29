@@ -414,16 +414,12 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, \J
     /**
      * @param array $ignoredDomains
      * @return $this
-     * @throws Exception
      */
     public function setIgnoredDomains($ignoredDomains)
     {
-        if(empty($ignoredDomains)) {
-            return $this;
-        } elseif (!is_array($ignoredDomains)) {
-            throw new Exception('Passed argument isn\'t array');
+        if (is_array($ignoredDomains)) {
+            $this->ignoredDomains = $ignoredDomains;
         }
-        $this->ignoredDomains = $ignoredDomains;
         return $this;
     }
 

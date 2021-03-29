@@ -12,6 +12,7 @@ use \GuzzleHttp\Exception\ConnectException;
 use \GuzzleHttp\Exception\ClientException;
 use \GuzzleHttp\Exception\GuzzleException;
 use \GuzzleHttp\Exception\ServerException;
+use SALESmanago\Exception\ExceptionCodeResolver;
 
 
 class RequestService
@@ -20,12 +21,16 @@ class RequestService
 
     public function __construct(ConfigurationInterface $conf)
     {
-        $this->guzzleAdapter = new GuzzleClientAdapter();
-        $this->guzzleAdapter->setClient($conf,
-        $headers = array(
-            'Accept'       => 'application/json',
-            'Content-Type' => 'application/json;charset=UTF-8'
-            ));
+        try {
+            $this->guzzleAdapter = new GuzzleClientAdapter();
+            $this->guzzleAdapter->setClient($conf,
+                $headers = array(
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/json;charset=UTF-8'
+                ));
+        } catch (\Exception $e) {
+            throw new Exception('Error while setting Guzzle Client Adapter: ' . $e->getMessage(), 401);
+        }
     }
 
     /**
@@ -43,13 +48,16 @@ class RequestService
 
             return $this->toResponse(json_decode($rawResponse, true));
         } catch (ConnectException $e) {
-            throw new Exception($e->getMessage());
+            $code = ExceptionCodeResolver::codeFromCurlMessage($e->getMessage(), 400);
+            throw new Exception($e->getMessage(), $code);
         } catch (ClientException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), 420);
         } catch (ServerException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), 430);
         } catch (GuzzleException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), 440);
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage(), 400);
         }
     }
 
@@ -63,7 +71,8 @@ class RequestService
         if ($Response->isSuccess()) {
             return $Response;
         } else {
-            throw new Exception($Response->getMessage());
+            $code = ExceptionCodeResolver::codeFromResponseMessage($Response->getMessage(), 110);
+            throw new Exception($Response->getMessage(), $code);
         }
     }
 
@@ -81,9 +90,10 @@ class RequestService
             return $Response;
         } else {
             $message = 'RequestService::ValidateCustomResponse - some of conditions failed; SM - ' . $Response->getMessage();
+            $code = ExceptionCodeResolver::codeFromResponseMessage($Response->getMessage(), 100);
             $Response->setMessage($message);
             $Response->setStatus(false);
-            throw new Exception($message);
+            throw new Exception($message, $code);
         }
     }
 
