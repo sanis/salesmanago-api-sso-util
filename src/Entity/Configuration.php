@@ -568,7 +568,9 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, \J
      */
     public function setCookieTtl($param)
     {
-        $this->cookieTtl = $param;
+        if(is_int($param) && $param >= 0) {
+            $this->cookieTtl = $param;
+        }
         return $this;
     }
 
