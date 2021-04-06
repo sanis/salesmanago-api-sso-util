@@ -4,6 +4,7 @@
 namespace SALESmanago\Services;
 
 
+use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
@@ -15,9 +16,10 @@ use SALESmanago\Model\ConfModel;
 class ExportService
 {
     const
-        REQUEST_METHOD_POST = 'POST',
-        API_METHOD_EXPORT_EVENTS = '/api/contact/batchAddContactExtEvent',
-        API_METHOD_EXPORT_CONTACTS = '/api/contact/batchupsert';
+        REQUEST_METHOD_POST        = 'POST',
+        API_METHOD_EXPORT_EVENTS   = '/api/contact/batchAddContactExtEvent',
+        API_METHOD_EXPORT_CONTACTS = '/api/contact/batchupsertv2',
+        INTERNAL_INTEGRATION       = 'internalIntegration';
 
     private $RequestService;
     private $conf;
@@ -55,7 +57,13 @@ class ExportService
         } catch (\Exception $e) {
             throw new Exception('Collection to array conversion failed: ' . $e->getMessage(), 302);
         }
-        $data = array_merge($settings, $collectionArray);
+
+        $internalIntegrationParams = array(
+            ApiDoubleOptIn::U_API_D_OPT_IN => false,
+            self::INTERNAL_INTEGRATION => true
+        );
+
+        $data = array_merge($settings, $collectionArray, $internalIntegrationParams);
 
         return $this->RequestService->request(
             self::REQUEST_METHOD_POST,
