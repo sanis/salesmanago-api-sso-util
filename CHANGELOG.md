@@ -1,6 +1,6 @@
 SALESmanago library for integrations
 ------------------------------------
-Version 3.0.4 07.04.2021
+Version 3.0.3 07.04.2021
 - add reporting services;
 
 Version 3.0.2 09.03.2021
