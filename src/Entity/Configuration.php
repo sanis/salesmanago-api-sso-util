@@ -8,7 +8,7 @@ use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Entity\ConfigurationInterface;
 
-class Configuration extends AbstractEntity implements ConfigurationInterface, \JsonSerializable
+class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, \JsonSerializable
 {
     const
         ACTIVE          = 'active',
@@ -133,6 +133,21 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, \J
      * @var string - version
      */
     protected $confSchemaVer = '1.0.0';
+
+    /**
+     * @var string url with ssl
+     */
+    protected $usageUrl;
+
+    /**
+     * @var string url with ssl
+     */
+    protected $healthUrl;
+
+    /**
+     * @var string url with ssl
+     */
+    protected $debugUrl;
 
     protected function __construct() {}
     protected function __clone() {}
@@ -634,5 +649,74 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, \J
     public function getLocation()
     {
         return $this->location;
+    }
+
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function setDebuggerUrl($param)
+    {
+        $this->debugUrl = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDebuggerUrl()
+    {
+        return $this->debugUrl;
+    }
+
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function setHealthUrl($param)
+    {
+        $this->healthUrl = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHealthUrl()
+    {
+        return $this->healthUrl;
+    }
+
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function setUsageUrl($param)
+    {
+        $this->usageUrl= $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsageUrl()
+    {
+        return $this->usageUrl;
+    }
+
+    public function setActiveDebugger($param)
+    {
+        $this->activeDebugger = $param;
+    }
+
+    public function setActiveHealth($param)
+    {
+        $this->activeHealth = $param;
+    }
+
+    public function setActiveUsage($param)
+    {
+        $this->activeUsage = $param;
     }
 }

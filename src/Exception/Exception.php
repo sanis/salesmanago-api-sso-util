@@ -2,6 +2,9 @@
 
 namespace SALESmanago\Exception;
 
+use SALESmanago\Entity\Configuration;
+use SALESmanago\Factories\ReportFactory;
+
 class Exception extends \Exception
 {
     protected $code;
@@ -12,6 +15,12 @@ class Exception extends \Exception
         MESSAGE = 'Message: ',
         FILE = 'File: ',
         LINE = 'Line: ';
+
+    public function __construct($message = "", $code = 0)
+    {
+        parent::__construct($message, $code);
+        ReportFactory::doHealthReport(Configuration::getInstance(), $this->getLogMessage());
+    }
 
     /**
      * @return string - massage for logs files
