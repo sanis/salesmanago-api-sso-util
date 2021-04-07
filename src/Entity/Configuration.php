@@ -149,6 +149,21 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
      */
     protected $debugUrl;
 
+    /**
+     * @var bool
+     */
+    protected $activeUsage = false;
+
+    /**
+     * @var bool
+     */
+    protected $activeDebugger = false;
+
+    /**
+     * @var bool
+     */
+    protected $activeHealth = false;
+
     protected function __construct() {}
     protected function __clone() {}
 
@@ -705,18 +720,57 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
         return $this->usageUrl;
     }
 
+    /**
+     * @param $param
+     * @return $this|mixed
+     */
     public function setActiveDebugger($param)
     {
         $this->activeDebugger = $param;
+        return $this;
     }
 
+    /**
+     * @param $param
+     * @return $this|mixed
+     */
     public function setActiveHealth($param)
     {
         $this->activeHealth = $param;
+        return $this;
     }
 
+    /**
+     * @param $param
+     * @return $this|mixed
+     */
     public function setActiveUsage($param)
     {
         $this->activeUsage = $param;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getActiveDebugger()
+    {
+        return $this->activeDebugger;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getActiveHealth()
+    {
+        return $this->activeHealth;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getActiveUsage()
+    {
+        return $this->activeUsage;
     }
 }
