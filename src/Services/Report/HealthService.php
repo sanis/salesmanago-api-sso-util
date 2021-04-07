@@ -25,7 +25,7 @@ class HealthService extends AbstractReportService
 
     public function setData($data)
     {
-        // TODO: Implement setData() method.
+        $this->model->setData($data);
         return $this;
     }
 }

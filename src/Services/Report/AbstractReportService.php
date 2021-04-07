@@ -18,7 +18,7 @@ abstract class AbstractReportService
     /**
      * @var - HealthModelInterface one of Health model
      */
-    private $model;
+    protected $model;
 
     /**
      * @var ReportConfigurationInterface
