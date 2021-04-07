@@ -1,7 +1,7 @@
 SALESmanago library for integrations
 ------------------------------------
-Version 3.0.3 07.04.2021
-- add reporting services;
+Version 3.0.3 29.03.2021
+- Changed export method
 
 Version 3.0.2 09.03.2021
  - Fix cookie setting via TSCT.php
