@@ -4,7 +4,6 @@
 namespace SALESmanago\Services\Report;
 
 
-use SALESmanago\Model\Report\HealthModel;
 use SALESmanago\Model\Report\UsageModel;
 
 /**

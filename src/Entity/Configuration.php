@@ -753,7 +753,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     /**
      * @return bool
      */
-    public function getActiveDebugger()
+    public function isActiveDebugger()
     {
         return $this->activeDebugger;
     }
@@ -761,7 +761,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     /**
      * @return bool
      */
-    public function getActiveHealth()
+    public function isActiveHealth()
     {
         return $this->activeHealth;
     }
@@ -769,7 +769,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     /**
      * @return bool
      */
-    public function getActiveUsage()
+    public function isActiveUsage()
     {
         return $this->activeUsage;
     }

@@ -4,6 +4,7 @@
 namespace SALESmanago\Services;
 
 
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
@@ -13,6 +14,7 @@ use \GuzzleHttp\Exception\ClientException;
 use \GuzzleHttp\Exception\GuzzleException;
 use \GuzzleHttp\Exception\ServerException;
 use SALESmanago\Exception\ExceptionCodeResolver;
+use SALESmanago\Factories\ReportFactory;
 
 
 class RequestService
@@ -43,7 +45,11 @@ class RequestService
     final public function request($method, $uri, $data)
     {
         try {
+            ReportFactory::doDebugReport(Configuration::getInstance(), [$method, $uri, $data]);
+
             $response = $this->guzzleAdapter->transfer($method, $uri, $data);
+
+            ReportFactory::doDebugReport(Configuration::getInstance(), ['response' => $response]);
             $rawResponse = $response->getBody()->getContents();
 
             return $this->toResponse(json_decode($rawResponse, true));

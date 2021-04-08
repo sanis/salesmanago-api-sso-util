@@ -15,7 +15,7 @@ interface ReportConfigurationInterface
     /**
      * @return bool
      */
-    public function getActiveDebugger();
+    public function isActiveDebugger();
 
     /**
      * @param $param
@@ -26,7 +26,7 @@ interface ReportConfigurationInterface
     /**
      * @return bool
      */
-    public function getActiveHealth();
+    public function isActiveHealth();
 
     /**
      * @param $param
@@ -37,7 +37,7 @@ interface ReportConfigurationInterface
     /**
      * @return bool
      */
-    public function getActiveUsage();
+    public function isActiveUsage();
 
     /**
      * @param string $param

@@ -19,7 +19,7 @@ class ReportFactory
      */
     public static function doHealthReport(ReportConfigurationInterface $conf, $data)
     {
-        if (!$conf->getActiveHealth()) {
+        if (!$conf->isActiveHealth()) {
             return true;
         }
 
@@ -36,7 +36,7 @@ class ReportFactory
      */
     public static function doUsageReport(ReportConfigurationInterface $conf, $data)
     {
-        if (!$conf->getActiveUsage()) {
+        if (!$conf->isActiveUsage()) {
             return true;
         }
 
@@ -53,7 +53,7 @@ class ReportFactory
      */
     public static function doDebugReport(ReportConfigurationInterface $conf, $data)
     {
-        if (!$conf->getActiveDebugger()) {
+        if (!$conf->isActiveDebugger()) {
             return true;
         }
 
