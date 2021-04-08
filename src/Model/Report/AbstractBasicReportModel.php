@@ -34,17 +34,22 @@ abstract class AbstractBasicReportModel implements ReportModelInterface
      */
     public function getBasicReportData()
     {
-        $date = new DateTime();
+        try {
+            $date = new DateTime();
 
-        return [
-            'createdOn' => $date->getTimestamp(),
-            'timeZone' => $date->getTimezone()->getName(),
-            'clientId' => Conf::getInstance()->getClientId(),
-            'AppEndpoint' => Conf::getInstance()->getEndpoint(),
-            'PHP' => phpversion(),
-            'httpHost' => $_SERVER['HTTP_HOST'],
-            'serverName' => $_SERVER['SERVER_NAME'],
-            'serverRequestUri' => $_SERVER['REQUEST_URI']
-        ];
+            return [
+                'createdOn' => $date->getTimestamp(),
+                'timeZone' => $date->getTimezone()->getName(),
+                'clientId' => Conf::getInstance()->getClientId(),
+                'AppEndpoint' => Conf::getInstance()->getEndpoint(),
+                'PHP' => phpversion(),
+                'httpHost' => $_SERVER['HTTP_HOST'],
+                'serverName' => $_SERVER['SERVER_NAME'],
+                'serverRequestUri' => $_SERVER['REQUEST_URI']
+            ];
+        } catch (\Exception $e) {
+            return ['reportServiceError' => 'while generates basic report data'];
+        }
+
     }
 }
