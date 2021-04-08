@@ -21,7 +21,7 @@ class SimpleRequestHelper
     /**
      * @var int
      */
-    protected $timeOut = 2;
+    protected $timeOut = 1000;
 
     /**
      * @var null - request response;
