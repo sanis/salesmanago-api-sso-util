@@ -5,11 +5,17 @@ namespace SALESmanago\Model\Report;
 
 class HealthModel extends AbstractBasicReportModel
 {
+    const TYPE_HEALTH = 'health';
+
     /**
      * @return array|mixed
      */
     public function getDataToSend()
     {
-        return array_merge($this->getBasicReportData(), ['error' => $this->rawData]);
+        return [
+            self::TYPE => self::TYPE_HEALTH,
+            self::BASIC_DATA => $this->getBasicReportData(),
+            self::DATA => $this->rawData
+        ];
     }
 }

@@ -9,6 +9,11 @@ use SALESmanago\Entity\Configuration as Conf;
 
 abstract class AbstractBasicReportModel implements ReportModelInterface
 {
+    const
+        TYPE = 'type',
+        BASIC_DATA = 'basicData',
+        DATA = 'data';
+
     /**
      * @var mixed
      */
