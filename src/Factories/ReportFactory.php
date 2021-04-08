@@ -19,14 +19,18 @@ class ReportFactory
      */
     public static function doHealthReport(ReportConfigurationInterface $conf, $data)
     {
-        if (!$conf->isActiveHealth()) {
-            return true;
-        }
+        try {
+            if (!$conf->isActiveHealth()) {
+                return true;
+            }
 
-        $healthReportService = new HealthService($conf);
-        $healthReportService
-            ->setData($data)
-            ->doReport();
+            $healthReportService = new HealthService($conf);
+            $healthReportService
+                ->setData($data)
+                ->doReport();
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 
     /**
@@ -36,14 +40,19 @@ class ReportFactory
      */
     public static function doUsageReport(ReportConfigurationInterface $conf, $data)
     {
-        if (!$conf->isActiveUsage()) {
-            return true;
-        }
+        try {
+            if (!$conf->isActiveUsage()) {
+                return true;
+            }
 
-        $healthReportService = new UsageService($conf);
-        $healthReportService
-            ->setData($data)
-            ->doReport();
+            $healthReportService = new UsageService($conf);
+            $healthReportService
+                ->setData($data)
+                ->doReport();
+
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 
     /**
@@ -53,13 +62,18 @@ class ReportFactory
      */
     public static function doDebugReport(ReportConfigurationInterface $conf, $data)
     {
-        if (!$conf->isActiveDebugger()) {
-            return true;
+        try {
+            if (!$conf->isActiveDebugger()) {
+                return true;
+            }
+
+            $healthReportService = new DebugService($conf);
+            $healthReportService
+                ->setData($data)
+                ->doReport();
+        } catch (\Exception $exception) {
+            return false;
         }
 
-        $healthReportService = new DebugService($conf);
-        $healthReportService
-            ->setData($data)
-            ->doReport();
     }
 }
