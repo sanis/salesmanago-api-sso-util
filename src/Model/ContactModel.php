@@ -91,11 +91,13 @@ class ContactModel
             ->setCreatedOn($response['createdOn'])
             ->setLastVisit($response['lastVisit']);
 
-        $this->Contact->getAddress()
-            ->setStreetAddress($response['address']['streetAddress'])
-            ->setZipCode($response['address']['zipCode'])
-            ->setCity($response['address']['city'])
-            ->setCountry($response['address']['country']);
+        if(isset($response['address']) && is_array($response['address'])) {
+            $this->Contact->getAddress()
+                ->setStreetAddress($response['address']['streetAddress'])
+                ->setZipCode($response['address']['zipCode'])
+                ->setCity($response['address']['city'])
+                ->setCountry($response['address']['country']);
+        }
 
         return $this->Contact;
     }
