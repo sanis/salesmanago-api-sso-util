@@ -773,4 +773,9 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     {
         return $this->activeUsage;
     }
+
+    protected function toArray()
+    {
+        return (array)$this;
+    }
 }

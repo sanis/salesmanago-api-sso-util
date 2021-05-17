@@ -46,20 +46,4 @@ class AbstractEntity
         }
         return $out;
     }
-
-    /**
-     * @return array
-     */
-    private function toArray()
-    {
-        $out = array();
-        foreach (get_object_vars($this) as $key=>$val) {
-            if(is_object($val) && !is_array($val)) {
-                $out[$key] = $val->toArray();
-            } else {
-                $out[$key] = $val;
-            }
-        }
-        return $out;
-    }
 }
