@@ -1,5 +1,9 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.4 17.05.2021
+ - Truncated fields in request to max length supported by API
+ - Moved toArray() from abstract to specific classes
+
 Version 3.0.3 07.04.2021
  - Changed export method
  - Add reporting services
