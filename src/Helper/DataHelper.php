@@ -3,9 +3,23 @@
 
 namespace SALESmanago\Helper;
 
+use SALESmanago\Entity\Event\Event;
 
 class DataHelper
 {
+    public static $maxFieldLengths = array(
+        Event::CONTACT_ID     => 0, //do not trim contactId so it will show up in the logs
+        Event::EVENT_ID       => 0, //do not trim eventId so it will show up in the logs
+        Event::EMAIL          => 0, //do not trim email so it will show up in the logs
+        Event::DESCRIPTION    => 2048,
+        Event::PRODUCTS       => 512,
+        Event::LOCATION       => 255,
+        Event::VALUE          => 22,
+        Event::EXT_EVENT_TYPE => 255,
+        Event::DETAIL         => 255,
+        Event::EXT_ID         => 255,
+        Event::SHOP_DOMAIN    => 255
+    );
     /**
      * Unset empty array values
      *
@@ -14,12 +28,32 @@ class DataHelper
      */
     public static function filterDataArray($data)
     {
-        $data = array_map(function ($var) {
-            return is_array($var) ? self::filterDataArray($var) : $var;
-        }, $data);
-        $data = array_filter($data, function ($value) {
-            return !empty($value) || $value === false;
-        });
-        return $data;
+        $filteredData = array();
+        if (!is_array($data)) {
+            return $data;
+        }
+        foreach ($data as $key => $value) {
+            //For arrays call recursively:
+            if (is_array($value)) {
+                $filteredData[$key] = self::filterDataArray($value);
+
+            //For strings trim, truncate and remove empty
+            } elseif (is_string($value)) {
+                if (strpos($key, Event::DETAIL) != false
+                    && (!empty($value) || $value === false)) {
+                    $filteredData[$key] = substr(trim($value), 0, self::$maxFieldLengths[Event::DETAIL]);
+                } elseif (!empty(self::$maxFieldLengths[$key])
+                    && (!empty($value) || $value === false)) {
+                    $filteredData[$key] = substr(trim($value), 0, self::$maxFieldLengths[$key]);
+                } elseif (!empty($value) || $value === false) {
+                    $filteredData[$key] = trim($value);
+                }
+
+            //For numerics and booleans remove nulls
+            } elseif ($value !== null) {
+                $filteredData[$key] = $value;
+            }
+        }
+        return $filteredData;
     }
 }

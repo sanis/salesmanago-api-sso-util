@@ -10,8 +10,8 @@ class Exception extends \Exception
     protected $code;
     protected $defaultEnglishMessage;
     const
-        EXCEPTION_HEADER_NAME = 'SALESmanago: ' . PHP_EOL,
-        TRACE = 'Trace: ' . PHP_EOL,
+        EXCEPTION_HEADER_NAME = "SALESmanago: \n",
+        TRACE = "Trace: \n",
         MESSAGE = 'Message: ',
         FILE = 'File: ',
         LINE = 'Line: ';
