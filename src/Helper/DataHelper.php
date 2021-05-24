@@ -41,13 +41,13 @@ class DataHelper
                 }
             //For strings trim, truncate and remove empty
             } elseif (is_string($value)) {
-                if (strpos($key, Event::DETAIL) != false
-                    && (!empty($value) || $value === false)) {
+                if (strpos($key, Event::DETAIL) !== false
+                    && !empty($value)) {
                     $filteredData[$key] = substr(trim($value), 0, self::$maxFieldLengths[Event::DETAIL]);
                 } elseif (!empty(self::$maxFieldLengths[$key])
-                    && (!empty($value) || $value === false)) {
+                    && !empty($value)) {
                     $filteredData[$key] = substr(trim($value), 0, self::$maxFieldLengths[$key]);
-                } elseif (!empty($value) || $value === false) {
+                } elseif (!empty($value)) {
                     $filteredData[$key] = trim($value);
                 }
 
