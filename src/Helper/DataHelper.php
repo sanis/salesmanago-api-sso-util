@@ -35,8 +35,10 @@ class DataHelper
         foreach ($data as $key => $value) {
             //For arrays call recursively:
             if (is_array($value)) {
-                $filteredData[$key] = self::filterDataArray($value);
-
+                $filteredArray = self::filterDataArray($value);
+                if(!empty($filteredArray)) {
+                    $filteredData[$key] = $filteredArray;
+                }
             //For strings trim, truncate and remove empty
             } elseif (is_string($value)) {
                 if (strpos($key, Event::DETAIL) != false
