@@ -78,4 +78,17 @@ class ApiDoubleOptIn extends AbstractEntity
     public function getSubject(){
         return $this->subject;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'enabled'    => $this->getEnabled(),
+            'templateId' => $this->getTemplateId(),
+            'accountId'  => $this->getAccountId(),
+            'subject'    => $this->getSubject()
+        );
+    }
 }
