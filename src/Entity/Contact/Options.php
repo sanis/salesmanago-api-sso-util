@@ -184,6 +184,7 @@ class Options extends AbstractEntity
 
 
     /**
+     * @TODO fix this method could be problems with arrays as in DEV-32563
      * @param string $param
      * @return $this
      */
@@ -196,6 +197,7 @@ class Options extends AbstractEntity
     }
 
     /**
+     * @TODO fix this method could be problems with arrays as in DEV-32563
      * @param array | String $param
      * @return $this
      */
@@ -224,9 +226,6 @@ class Options extends AbstractEntity
      */
     public function getTags()
     {
-        echo "Get tags: \n";
-        print_r($this->tags);
-
     	return $this->tags;
     }
 
