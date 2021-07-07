@@ -161,27 +161,22 @@ class Options extends AbstractEntity
     }
 
     /**
-     * @param string | array $param
+     * @param array | string $param
      * @return $this
      */
     public function setTags($param)
     {
-        /* if $param is array */
         if (is_array($param)) {
-            array_walk($param, function($item) {strtoupper(str_replace(' ', '_', trim($item)));});
-            $this->tags = $param;
-
-        /* if $param is string with multiple tags */
-        } elseif(is_string($param) && (strpos($param, ',') !== false)) {
-            $tagsArray = explode(',',  $param);
-            array_walk($tagsArray, function ($item) {
-                strtoupper(str_replace(' ', '_', trim($item)));
+            array_walk($param, function($item) {
+                $this->setTags($item);
             });
-            $this->tags = $tagsArray;
+        }
 
-        /* if $param is single tag */
-        } else {
-            $this->tags = [strtoupper(str_replace(' ', '_', trim($param)))];
+        if (is_string($param) && !empty($param)) {
+            $tags = strtoupper(str_replace(' ', '_', trim($param)));
+            $tags = ((strpos($tags, ',') !== false)) ? explode(',',  $tags) : $tags;
+
+            $this->tags = array_merge($this->tags, [$tags]);
         }
 
         return $this;
@@ -229,6 +224,9 @@ class Options extends AbstractEntity
      */
     public function getTags()
     {
+        echo "Get tags: \n";
+        print_r($this->tags);
+
     	return $this->tags;
     }
 
