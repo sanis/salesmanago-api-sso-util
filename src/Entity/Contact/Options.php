@@ -176,7 +176,7 @@ class Options extends AbstractEntity
             $tags = strtoupper(str_replace(' ', '_', trim($param)));
             $tags = ((strpos($tags, ',') !== false)) ? explode(',',  $tags) : $tags;
 
-            $this->tags = array_merge($this->tags, [$tags]);
+            $this->tags = is_array($tags) ? array_merge($this->tags, $tags) : array_merge($this->tags, [$tags]);
         }
 
         return $this;
