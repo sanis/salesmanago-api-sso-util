@@ -1,7 +1,10 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.6 15.07.2021
+ - fix synchronization with enabled double opt-in
+
 Version 3.0.5 07.07.2021
-- fix set tags from array parameter in Entity\Contact\Options::setTags
+ - fix set tags from array parameter in Entity\Contact\Options::setTags
 
 Version 3.0.4 17.05.2021
  - Truncated fields in request to max length supported by API
