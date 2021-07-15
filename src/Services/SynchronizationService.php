@@ -106,7 +106,6 @@ class SynchronizationService
             || $this->Contact->getOptions()->getIsSubscribes()
             || $this->Contact->getOptions()->getIsUnSubscribes()
             || $this->Contact->getOptions()->getForceOptIn() == true
-            || $this->conf->getApiDoubleOptIn()->getEnabled() == true
         ) {
             return false;
         }
