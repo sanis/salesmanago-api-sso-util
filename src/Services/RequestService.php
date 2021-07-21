@@ -15,23 +15,27 @@ use \GuzzleHttp\Exception\GuzzleException;
 use \GuzzleHttp\Exception\ServerException;
 use SALESmanago\Exception\ExceptionCodeResolver;
 use SALESmanago\Factories\ReportFactory;
+use SALESmanago\Helper\SimpleRequestHelper;
+use SALESmanago\Helper\ConnectionClients\cURLClient;
 
 
 class RequestService
 {
     private $guzzleAdapter;
+    private $connClient;
 
     public function __construct(ConfigurationInterface $conf)
     {
         try {
-            $this->guzzleAdapter = new GuzzleClientAdapter();
-            $this->guzzleAdapter->setClient($conf,
-                $headers = array(
+            $this->connClient = new cURLClient();
+            $this->connClient
+                ->setHost($conf->getEndpoint())
+                ->setHeader([
                     'Accept'       => 'application/json',
                     'Content-Type' => 'application/json;charset=UTF-8'
-                ));
+                ]);
         } catch (\Exception $e) {
-            throw new Exception('Error while setting Guzzle Client Adapter: ' . $e->getMessage(), 401);
+            throw new Exception('Error while setting Connection Client: ' . $e->getMessage(), 401);
         }
     }
 
@@ -47,23 +51,20 @@ class RequestService
         try {
             ReportFactory::doDebugReport(Configuration::getInstance(), [$method, $uri, $data]);
 
-            $response = $this->guzzleAdapter->transfer($method, $uri, $data);
+            $this->connClient
+                ->setType($method)
+                ->setEndpoint($uri);
 
-            ReportFactory::doDebugReport(Configuration::getInstance(), ['response' => $response]);
-            $rawResponse = $response->getBody()->getContents();
+            $this->connClient->request($data);
 
-            return $this->toResponse(json_decode($rawResponse, true));
-        } catch (ConnectException $e) {
+            $jsonResponse = $this->connClient->jsonDecode();
+
+            ReportFactory::doDebugReport(Configuration::getInstance(), ['response' => $jsonResponse]);
+
+            return $this->toResponse($jsonResponse);
+        } catch (\Exception $e) {
             $code = ExceptionCodeResolver::codeFromCurlMessage($e->getMessage(), 400);
             throw new Exception($e->getMessage(), $code);
-        } catch (ClientException $e) {
-            throw new Exception($e->getMessage(), 420);
-        } catch (ServerException $e) {
-            throw new Exception($e->getMessage(), 430);
-        } catch (GuzzleException $e) {
-            throw new Exception($e->getMessage(), 440);
-        } catch (\Exception $e) {
-            throw new Exception($e->getMessage(), 400);
         }
     }
 
