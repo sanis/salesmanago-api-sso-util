@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 class cURLClient
 {
+    const
+        DEFAULT_TIME_OUT = 1000;
     /**
      * @var string - request type (GET, PUT, POST, DELETE, etc.);
      */
@@ -30,7 +32,7 @@ class cURLClient
     /**
      * @var int
      */
-    protected $timeOut = 1000;
+    protected $timeOut;
 
     /**
      * @var null - request response;
@@ -145,9 +147,9 @@ class cURLClient
      */
     public function request($data, $toJson = true)
     {
-        $data               = $toJson ? json_encode($data) : $data;
-        $url                = empty($this->host) ? $this->url : $this->host.$this->endpoint;
-        $ch                 = curl_init($url);
+        $data = $toJson ? json_encode($data) : $data;
+        $url  = empty($this->host) ? $this->url : $this->host.$this->endpoint;
+        $ch   = curl_init($url);
 
         if (empty($this->headers)) {
             $this->headers = [
@@ -159,9 +161,9 @@ class cURLClient
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->type);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        if (empty($this->timeOut)
-        ) {
-            curl_setopt($ch, CURLOPT_TIMEOUT_MS, $this->timeOut);
+
+        if (!isset($this->timeOut) || empty($this->timeOut)) {
+            curl_setopt($ch, CURLOPT_TIMEOUT_MS, self::DEFAULT_TIME_OUT);
         }
         curl_setopt(
             $ch,

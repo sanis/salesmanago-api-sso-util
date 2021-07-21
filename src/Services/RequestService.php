@@ -9,19 +9,13 @@ use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
 
-use \GuzzleHttp\Exception\ConnectException;
-use \GuzzleHttp\Exception\ClientException;
-use \GuzzleHttp\Exception\GuzzleException;
-use \GuzzleHttp\Exception\ServerException;
 use SALESmanago\Exception\ExceptionCodeResolver;
 use SALESmanago\Factories\ReportFactory;
-use SALESmanago\Helper\SimpleRequestHelper;
 use SALESmanago\Helper\ConnectionClients\cURLClient;
 
 
 class RequestService
 {
-    private $guzzleAdapter;
     private $connClient;
 
     public function __construct(ConfigurationInterface $conf)
