@@ -11,6 +11,11 @@ use Faker;
 class cURLClientTest extends TestCase
 {
 
+    /**
+     * Send request body ($data) to external endpoint (*.pipedream.net)
+     * -> receive the same body form external host (endpoint)
+     * -> Compare body which was send with body which was returned - to confirm that curl method works fine;
+     */
     public function testRequestSuccess()
     {
         $cURLClient = new cURLClient();
