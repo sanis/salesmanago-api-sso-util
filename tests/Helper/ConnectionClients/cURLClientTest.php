@@ -23,6 +23,7 @@ class cURLClientTest extends TestCase
 
         $cURLClient
             ->setTimeOut(1000)
+            //url could be replaced by other, which will return the same body
             ->setUrl('https://entk8a4v9cmou60.m.pipedream.net');
 
         $data = [
