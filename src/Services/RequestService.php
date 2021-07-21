@@ -51,7 +51,7 @@ class RequestService
 
             $this->connClient->request($data);
 
-            $jsonResponse = $this->connClient->jsonDecode();
+            $jsonResponse = $this->connClient->responseJsonDecode();
 
             ReportFactory::doDebugReport(Configuration::getInstance(), ['response' => $jsonResponse]);
 

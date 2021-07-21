@@ -135,7 +135,7 @@ class cURLClient
      * Decode json response
      * @return array
      */
-    public function jsonDecode()
+    public function responseJsonDecode()
     {
         return json_decode($this->response, true);
     }

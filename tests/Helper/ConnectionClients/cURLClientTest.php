@@ -34,7 +34,7 @@ class cURLClientTest extends TestCase
 
         $cURLClient->request($data);
 
-        $this->assertTrue($this->arraysAreSimilar($data, $cURLClient->jsonDecode()));
+        $this->assertTrue($this->arraysAreSimilar($data, $cURLClient->responseJsonDecode()));
     }
 
     /**
