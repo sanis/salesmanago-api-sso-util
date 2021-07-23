@@ -145,6 +145,7 @@ class cURLClient
      * Send data with curl oneway;
      * @param $data
      * @param bool $toJson
+     * @throws Exception
      */
     public function request($data, $toJson = true)
     {
@@ -178,13 +179,24 @@ class cURLClient
 
         curl_close($ch);
 
-        if ($errno) {
-            $smErrNumber = ($errno < 10) ? '0'.$errno : $errno;
+        $this->throwErrorIfExist($error, $errno);
+    }
 
-            $message = 'SALESmanago cURL error [code:4';
-            $message.= $smErrNumber . ']: ' . $error;
+    /**
+     * @param $errMessage
+     * @param $errNumber
+     * @throws Exception
+     * @return bool
+     */
+    private function throwErrorIfExist($errMessage, $errNumber)
+    {
+        if(!empty($errNumber)){
+            $smErrNumber = ($errNumber < 10) ? '40'.$errNumber : '4'.$errNumber;
+            $message = 'SALESmanago cURL error [code:' . $smErrNumber . ']: ' . $errMessage;
 
             throw new Exception($message, $smErrNumber);
         }
+
+        return false;
     }
 }
