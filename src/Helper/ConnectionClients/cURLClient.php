@@ -4,6 +4,7 @@
 namespace SALESmanago\Helper\ConnectionClients;
 
 use PHPUnit\Framework\TestCase;
+use SALESmanago\Exception\Exception;
 
 class cURLClient
 {
@@ -171,6 +172,19 @@ class cURLClient
             $this->buildHeaders()
         );
         $this->response = curl_exec($ch);
+
+        $errno = curl_errno($ch);
+        $error = curl_error($ch);
+
         curl_close($ch);
+
+        if ($errno) {
+            $smErrNumber = ($errno < 10) ? '0'.$errno : $errno;
+
+            $message = 'SALESmanago cURL error [code:4';
+            $message.= $smErrNumber . ']: ' . $error;
+
+            throw new Exception($message, $smErrNumber);
+        }
     }
 }

@@ -32,21 +32,4 @@ class ExceptionCodeResolver
         }
         return 0;
     }
-
-
-    /**
-     * @param $message
-     * @param int $errorClass
-     * @return int
-     */
-    public static function codeFromCurlMessage($message, $errorClass = 400)
-    {
-        $code = intval(explode(':', str_replace('cURL error ', '', $message))[0]);
-        switch($code) {
-            case 6:
-                return intval($errorClass)+1;
-            default:
-                return intval($errorClass);
-        }
-    }
 }

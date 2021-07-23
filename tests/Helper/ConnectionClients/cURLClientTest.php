@@ -5,6 +5,7 @@ namespace Tests\Helper\ConnectionClients;
 
 
 use PHPUnit\Framework\TestCase;
+use SALESmanago\Exception\Exception;
 use SALESmanago\Helper\ConnectionClients\cURLClient;
 use Faker;
 
@@ -35,6 +36,26 @@ class cURLClientTest extends TestCase
         $cURLClient->request($data);
 
         $this->assertTrue($this->arraysAreSimilar($data, $cURLClient->responseJsonDecode()));
+    }
+
+    public function testRequestFail()
+    {
+        $cURLClient = new cURLClient();
+        $faker = Faker\Factory::create();
+
+        $cURLClient
+            ->setTimeOut(1000)
+            ->setUrl('https://notexistingutl.si');
+
+        $data = [
+            'name' => $faker->name,
+            'email' => $faker->email,
+            'text' => $faker->text
+        ];
+
+
+        $this->expectException(Exception::class);
+        $cURLClient->request($data);
     }
 
     /**
