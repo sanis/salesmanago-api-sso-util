@@ -194,7 +194,7 @@ class cURLClient
             $smErrNumber = ($errNumber < 10) ? '40'.$errNumber : '4'.$errNumber;
             $message = 'SALESmanago cURL error [code:' . $smErrNumber . ']: ' . $errMessage;
 
-            throw new Exception($message, $smErrNumber);
+            throw new Exception($message, intval($smErrNumber));
         }
 
         return false;
