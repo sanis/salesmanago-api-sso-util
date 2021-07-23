@@ -57,8 +57,7 @@ class RequestService
 
             return $this->toResponse($jsonResponse);
         } catch (\Exception $e) {
-            $code = ExceptionCodeResolver::codeFromCurlMessage($e->getMessage(), 400);
-            throw new Exception($e->getMessage(), $code);
+            throw new Exception($e->getMessage(), $e->getCode());
         }
     }
 

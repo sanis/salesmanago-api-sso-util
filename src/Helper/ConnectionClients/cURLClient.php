@@ -4,6 +4,7 @@
 namespace SALESmanago\Helper\ConnectionClients;
 
 use PHPUnit\Framework\TestCase;
+use SALESmanago\Exception\Exception;
 
 class cURLClient
 {
@@ -144,6 +145,7 @@ class cURLClient
      * Send data with curl oneway;
      * @param $data
      * @param bool $toJson
+     * @throws Exception
      */
     public function request($data, $toJson = true)
     {
@@ -171,6 +173,30 @@ class cURLClient
             $this->buildHeaders()
         );
         $this->response = curl_exec($ch);
+
+        $errno = curl_errno($ch);
+        $error = curl_error($ch);
+
         curl_close($ch);
+
+        $this->throwErrorIfExist($error, $errno);
+    }
+
+    /**
+     * @param $errMessage
+     * @param $errNumber
+     * @throws Exception
+     * @return bool
+     */
+    private function throwErrorIfExist($errMessage, $errNumber)
+    {
+        if(!empty($errNumber)){
+            $smErrNumber = ($errNumber < 10) ? '40'.$errNumber : '4'.$errNumber;
+            $message = 'SALESmanago cURL error [code:' . $smErrNumber . ']: ' . $errMessage;
+
+            throw new Exception($message, intval($smErrNumber));
+        }
+
+        return false;
     }
 }
