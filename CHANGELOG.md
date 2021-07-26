@@ -1,7 +1,7 @@
 SALESmanago library for integrations
 ------------------------------------
 Version 3.0.6 21.07.2021
- - fix synchronization with enabled double opt-in
+ - fixed synchronization with enabled double opt-in;
  - replace guzzlehttp with simple cUrl client;
 
 Version 3.0.5 07.07.2021
