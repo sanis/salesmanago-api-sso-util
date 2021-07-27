@@ -6,6 +6,10 @@ namespace SALESmanago\Helper;
 
 use SALESmanago\Exception\Exception;
 
+/**
+ * Class SimpleRequestHelper
+ * @package SALESmanago\Helper
+ */
 class SimpleRequestHelper
 {
     /**
