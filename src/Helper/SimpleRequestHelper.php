@@ -7,7 +7,6 @@ namespace SALESmanago\Helper;
 use SALESmanago\Exception\Exception;
 
 /**
- * @Todo all use of this class must be replaced with Services\ConnectionClients\cURLClient and this class must be removed
  * Class SimpleRequestHelper
  * @package SALESmanago\Helper
  */
