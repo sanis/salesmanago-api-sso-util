@@ -2,6 +2,8 @@ SALESmanago library for integrations
 ------------------------------------
 Version 3.0.7 01.09.2021
  - setters fixes
+ - appendTag(s) fixed
+ - endpoint can now be updated after constructing Request Service
 
 Version 3.0.6 21.07.2021
  - fixed synchronization with enabled double opt-in;
