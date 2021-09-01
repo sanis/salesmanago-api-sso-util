@@ -88,6 +88,7 @@ class cURLClient
      */
     public function setEndpoint($param){
         $this->endpoint = $param;
+        return $this;
     }
 
     /**

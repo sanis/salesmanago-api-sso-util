@@ -21,6 +21,7 @@ class UsageService extends AbstractReportService
     protected function setUpRequest()
     {
         $this->RequestHelper->setUrl($this->conf->getUsageUrl());
+        return $this;
     }
 
     public function setData($data)

@@ -21,6 +21,7 @@ class DebugService extends AbstractReportService
     protected function setUpRequest()
     {
         $this->RequestHelper->setUrl($this->conf->getDebuggerUrl());
+        return $this;
     }
 
     public function setData($data)
