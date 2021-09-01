@@ -184,20 +184,18 @@ class Options extends AbstractEntity
 
 
     /**
-     * @TODO fix this method could be problems with arrays as in DEV-32563
      * @param string $param
      * @return $this
      */
     public function appendTag($param)
     {
-        if(!empty($param) && !is_string($param)) {
+        if(!empty($param) && is_string($param)) {
             $this->tags[] = strtoupper(str_replace(' ', '_', trim($param)));
         }
         return $this;
     }
 
     /**
-     * @TODO fix this method could be problems with arrays as in DEV-32563
      * @param array | String $param
      * @return $this
      */
@@ -211,12 +209,17 @@ class Options extends AbstractEntity
             $this->tags = array_merge($this->tags, $param);
 
         /* if $param is string with multiple tags */
-        } elseif (is_string($param) && (strpos($param, ',') !== false)) {
+        } elseif (is_string($param) && strpos($param, ',') !== false) {
             $tags = explode(',',  $param);
             array_walk($tags, function ($item) {
                 strtoupper(str_replace(' ', '_', trim($item)));
             });
             $this->tags = array_merge($this->tags, $tags);
+
+        /* if $param is a single tag */
+        } elseif (is_string($param)) {
+            $param = strtoupper(str_replace(' ', '_', trim($param)));
+            $this->tags[] = $param;
         }
         return $this;
     }
