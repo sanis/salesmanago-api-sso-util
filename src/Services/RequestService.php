@@ -120,4 +120,14 @@ class RequestService
 
         return $Response;
     }
+
+    /**
+     * Update Configuration e.g. Endpoint after Request service has been constructed
+     */
+    public function updateConfiguration()
+    {
+        $Configuration = Configuration::getInstance();
+        $this->connClient
+            ->setHost($Configuration->getEndpoint());
+    }
 }

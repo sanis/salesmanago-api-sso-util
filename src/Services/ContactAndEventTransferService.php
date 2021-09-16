@@ -135,4 +135,12 @@ class ContactAndEventTransferService
                 )
             );
     }
+
+    /**
+     * Update Configuration e.g. Endpoint after Request service has been constructed
+     */
+    public function updateConfiguration()
+    {
+        $this->RequestService->updateConfiguration();
+    }
 }

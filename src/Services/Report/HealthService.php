@@ -21,6 +21,7 @@ class HealthService extends AbstractReportService
     protected function setUpRequest()
     {
         $this->RequestHelper->setUrl($this->conf->getHealthUrl());
+        return $this;
     }
 
     public function setData($data)

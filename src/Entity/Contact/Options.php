@@ -166,58 +166,44 @@ class Options extends AbstractEntity
      */
     public function setTags($param)
     {
-        if (is_array($param)) {
-            array_walk($param, function($item) {
-                $this->setTags($item);
-            });
-        }
-
-        if (is_string($param) && !empty($param)) {
-            $tags = strtoupper(str_replace(' ', '_', trim($param)));
-            $tags = ((strpos($tags, ',') !== false)) ? explode(',',  $tags) : $tags;
-
-            $this->tags = is_array($tags) ? array_merge($this->tags, $tags) : array_merge($this->tags, [$tags]);
-        }
-
+        $this->tags = array();
+        $this->appendTags($param);
         return $this;
     }
 
 
     /**
-     * @TODO fix this method could be problems with arrays as in DEV-32563
      * @param string $param
      * @return $this
      */
     public function appendTag($param)
     {
-        if(!empty($param) && !is_string($param)) {
+        if(!empty($param) && is_string($param)) {
             $this->tags[] = strtoupper(str_replace(' ', '_', trim($param)));
         }
         return $this;
     }
 
     /**
-     * @TODO fix this method could be problems with arrays as in DEV-32563
      * @param array | String $param
      * @return $this
      */
     public function appendTags($param)
     {
-        /* if $param is array */
-        if (is_array($param)) {
+        if (is_string($param)) {
+            $param = explode(',', $param);
+        }
+
+        try {
             array_walk($param, function ($item) {
                 strtoupper(str_replace(' ', '_', trim($item)));
             });
-            $this->tags = array_merge($this->tags, $param);
-
-        /* if $param is string with multiple tags */
-        } elseif (is_string($param) && (strpos($param, ',') !== false)) {
-            $tags = explode(',',  $param);
-            array_walk($tags, function ($item) {
-                strtoupper(str_replace(' ', '_', trim($item)));
-            });
-            $this->tags = array_merge($this->tags, $tags);
+        } catch (\Exception $e) {
+            return $this;
         }
+
+        $this->tags = array_merge($this->tags, $param);
+
         return $this;
     }
 
