@@ -29,8 +29,8 @@ trait TemporaryStorageControllerTrait
         if($this->checkIfCookieAdapterSet()) {
            $this->CookieManager->setCookie(
                CookieManagerAdapter::EVENT_COOKIE,
-                    $id,
-               time()+$this->conf->getCookieTTL()
+               $id,
+               time()+$this->conf->getEventCookieTtl()
            );
         }
 
@@ -86,7 +86,7 @@ trait TemporaryStorageControllerTrait
             $this->CookieManager->setCookie(
                 CookieManagerAdapter::CLIENT_COOKIE,
                 $id,
-                time()+315569260 //10 years
+                time()+$this->conf->getContactCookieTtl()
             );
         }
 

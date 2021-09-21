@@ -11,17 +11,18 @@ use SALESmanago\Entity\ConfigurationInterface;
 class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, \JsonSerializable
 {
     const
-        ACTIVE          = 'active',
-        ENDPOINT        = 'endpoint',
-        CLIENT_ID       = 'clientId',
-        API_KEY         = 'apiKey',
-        API_SECRET      = 'apiSecret',
-        OWNER           = 'owner',
-        EMAIL           = 'email',
-        SHA             = 'sha',
-        TOKEN           = 'token',
-        IGNORED_DOMAINS = 'ignoredDomains',
-        COOKIE_TTL      = 'cookieTtl';
+        ACTIVE              = 'active',
+        ENDPOINT            = 'endpoint',
+        CLIENT_ID           = 'clientId',
+        API_KEY             = 'apiKey',
+        API_SECRET          = 'apiSecret',
+        OWNER               = 'owner',
+        EMAIL               = 'email',
+        SHA                 = 'sha',
+        TOKEN               = 'token',
+        IGNORED_DOMAINS     = 'ignoredDomains',
+        CONTACT_COOKIE_TTL  = 'contactCookieTtl',
+        EVENT_COOKIE_TTL    = 'eventCookieTtl';
 
     private static $instances = [];
 
@@ -112,9 +113,14 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     protected $requireSynchronization = false;
 
     /**
-     * @var int Time in seconds for Cookie expire Time
+     * @var int Time in seconds for Contact Cookie expire Time
      */
-    protected $cookieTtl = 43200;
+    protected $contactCookieTtl = self::DEFAULT_CONTACT_COOKIE_TTL; //10 yrs
+
+    /**
+     * @var int Time in seconds for Event Cookie expire Time
+     */
+    protected $eventCookieTtl = self::DEFAULT_EVENT_COOKIE_TTL; //12 h
 
     /**
      * @var array|null - owners list for SM account
@@ -129,10 +135,11 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     /**
      * Configuration schema version used to specify
      * which settings version is used by client;
-     *
+     * 1.0.0: initial version
+     * 1.1.0: cookieTtl changed to eventCookieTtl, added contactCookieTtl
      * @var string - version
      */
-    protected $confSchemaVer = '1.0.0';
+    protected $confSchemaVer = '1.1.0';
 
     /**
      * @var string url with ssl
@@ -593,23 +600,63 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
-     * @param int $param
-     * @return $this;
+     * @return int
      */
-    public function setCookieTtl($param)
+    public function getContactCookieTtl()
     {
-        if(is_int($param) && $param >= 0) {
-            $this->cookieTtl = $param;
-        }
+        return $this->contactCookieTtl;
+    }
+
+    /**
+     * @param int $contactCookieTtl
+     * @return $this
+     */
+    public function setContactCookieTtl($contactCookieTtl)
+    {
+        $this->contactCookieTtl = intval($contactCookieTtl);
         return $this;
     }
 
     /**
      * @return int
      */
+    public function getEventCookieTtl()
+    {
+        return $this->eventCookieTtl;
+    }
+
+    /**
+     * @param int $eventCookieTtl
+     * @return $this
+     */
+    public function setEventCookieTtl($eventCookieTtl)
+    {
+        $this->eventCookieTtl = intval($eventCookieTtl);
+        return $this;
+    }
+
+    /**
+     * @deprecated
+     * @param int $param
+     * @return $this;
+     * Use setEventCookieTtl instead
+     */
+    public function setCookieTtl($param)
+    {
+        if(is_int($param) && $param >= 0) {
+            $this->eventCookieTtl = $param;
+        }
+        return $this;
+    }
+
+    /**
+     * @deprecated
+     * @return int
+     * Use getEventCookieTtl instead
+     */
     public function getCookieTtl()
     {
-        return $this->cookieTtl;
+        return $this->eventCookieTtl;
     }
 
     /**
