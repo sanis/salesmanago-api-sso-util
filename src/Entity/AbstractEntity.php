@@ -8,6 +8,10 @@ use SALESmanago\Exception\Exception;
 
 class AbstractEntity
 {
+    const
+        DEFAULT_CONTACT_COOKIE_TTL = 315532800,
+        DEFAULT_EVENT_COOKIE_TTL   = 43200;
+
     /**
      * @param array $data
      * @throws Exception

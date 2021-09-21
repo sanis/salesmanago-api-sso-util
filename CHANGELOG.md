@@ -1,5 +1,8 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.8 16.09.2021
+ - support for custom cookie TTL (smclient)
+
 Version 3.0.7 01.09.2021
  - setters fixes
  - appendTag(s) fixed
