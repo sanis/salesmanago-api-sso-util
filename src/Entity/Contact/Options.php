@@ -81,22 +81,50 @@ class Options extends AbstractEntity
      * Set this flag if contact subscribes at the current moment
      * @var bool
      */
-    private $isSubscribes     = false;
+    private $isSubscribes           = false;
 
     /**
-     * Flag fir contact subscription state
+     * Flag for contact newsletter subscriptions
+     * Set this flag if contact subscribes newsletter at the current moment
+     * @var bool
+     */
+    private $isSubscribesNewsletter = false;
+
+    /**
+     * Flag for contact mobile subscriptions
+     * Set this flag if contact subscribes mobile at the current moment
+     * @var bool
+     */
+    private $isSubscribesMobile     = false;
+
+    /**
+     * Flag for contact subscription state
      * Shows if contact already subscribed
      *
      * @var bool
      */
-    private $isSubscribed = false;
+    private $isSubscribed     = false;
 
     /**
      * Flag for contact unsubscribe
      * Set this flag if contact unsubscribes
      * @var bool
      */
-    private $isUnSubscribes   = false;
+    private $isUnSubscribes           = false;
+
+    /**
+     * Flag for contact unsubscribe newsletter
+     * Set this flag if contact unsubscribes newsletter
+     * @var bool
+     */
+    private $isUnSubscribesNewsletter = false;
+
+    /**
+     * Flag for contact unsubscribe mobile
+     * Set this flag if contact unsubscribes mobile
+     * @var bool
+     */
+    private $isUnsubscribesMobile     = false;
 
     /**
      * Flag for contact subscription status no change;
@@ -263,6 +291,81 @@ class Options extends AbstractEntity
     }
 
     /**
+     * Get current newsletter subscription flag
+     * @return bool
+     */
+    public function getIsSubscribesNewsletter()
+    {
+        return $this->isSubscribesNewsletter;
+    }
+
+    /**
+     *
+     *
+     * @param bool $isSubscribesNewsletter
+     * @return $this
+     */
+    public function setIsSubscribesNewsletter($isSubscribesNewsletter)
+    {
+        $this->isSubscribesNewsletter = $isSubscribesNewsletter;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsSubscribesMobile()
+    {
+        return $this->isSubscribesMobile;
+    }
+
+    /**
+     * @param bool $isSubscribesMobile
+     * @return $this
+     */
+    public function setIsSubscribesMobile($isSubscribesMobile)
+    {
+        $this->isSubscribesMobile = $isSubscribesMobile;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsUnSubscribesNewsletter()
+    {
+        return $this->isUnSubscribesNewsletter;
+    }
+
+    /**
+     * @param bool $isUnSubscribeNewsletter
+     * @return $this
+     */
+    public function setIsUnSubscribesNewsletter($isUnSubscribeNewsletter)
+    {
+        $this->isUnSubscribesNewsletter = $isUnSubscribeNewsletter;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsUnsubscribesMobile()
+    {
+        return $this->isUnsubscribesMobile;
+    }
+
+    /**
+     * @param bool $isUnsubscribesMobile
+     * @return $this
+     */
+    public function setIsUnsubscribesMobile($isUnsubscribesMobile)
+    {
+        $this->isUnsubscribesMobile = $isUnsubscribesMobile;
+        return $this;
+    }
+
+    /**
      * Sets boolean $this->isSubscribed sate of contact subscribed at platform
      * !Use Only for exports
      * @param boolean $param
@@ -326,6 +429,7 @@ class Options extends AbstractEntity
     /**
      * @param bool $param
      * @return $this
+     * @deprecated use setIsSubscribesNewsletter instead
      */
     public function setForceOptIn($param)
     {
@@ -346,6 +450,7 @@ class Options extends AbstractEntity
     /**
      * @param bool $param
      * @return $this
+     * @deprecated use setIsUnSubscribesNewsletter instead
      */
     public function setForceOptOut($param)
     {
@@ -363,6 +468,7 @@ class Options extends AbstractEntity
     /**
      * @param bool $param
      * @return $this
+     * @deprecated use setIsSubscribesMobile() instead
      */
     public function setForcePhoneOptIn($param)
     {
@@ -382,6 +488,7 @@ class Options extends AbstractEntity
     /**
      * @param bool $param
      * @return $this
+     * @deprecated use setIsUnSubscribesMobile() instead
      */
     public function setForcePhoneOptOut($param)
     {
