@@ -103,7 +103,7 @@ class Options extends AbstractEntity
      *
      * @var bool
      */
-    private $isSubscribed     = false;
+    private $isSubscribed             = false;
 
     /**
      * Flag for contact unsubscribe
@@ -300,8 +300,7 @@ class Options extends AbstractEntity
     }
 
     /**
-     *
-     *
+     * Set current newsletter subscription flag
      * @param bool $isSubscribesNewsletter
      * @return $this
      */
