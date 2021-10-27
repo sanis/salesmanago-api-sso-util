@@ -241,8 +241,8 @@ class ContactModel
         }
 
         if ($Contact->getOptions()->getIsUnSubscribesMobile()) {
-            $contactRequestArray[Options::F_P_OPT_IN]    = false;
-            $contactRequestArray[Options::F_P_OPT_OUT]   = true;
+            $contactRequestArray[Options::F_P_OPT_IN]   = false;
+            $contactRequestArray[Options::F_P_OPT_OUT]  = true;
         }
 
         if (self::apiDoubleOptInChecker($Contact, $conf)) {
