@@ -225,6 +225,26 @@ class ContactModel
             $contactRequestArray[Options::F_P_OPT_OUT] = false;
         }
 
+        if ($Contact->getOptions()->getIsSubscribesNewsletter()) {
+            $contactRequestArray[Options::F_OPT_IN]    = true;
+            $contactRequestArray[Options::F_OPT_OUT]   = false;
+        }
+
+        if ($Contact->getOptions()->getIsSubscribesMobile()) {
+            $contactRequestArray[Options::F_P_OPT_IN]  = true;
+            $contactRequestArray[Options::F_P_OPT_OUT] = false;
+        }
+
+        if ($Contact->getOptions()->getIsUnSubscribesNewsletter()) {
+            $contactRequestArray[Options::F_OPT_IN]    = false;
+            $contactRequestArray[Options::F_OPT_OUT]   = true;
+        }
+
+        if ($Contact->getOptions()->getIsUnSubscribesMobile()) {
+            $contactRequestArray[Options::F_P_OPT_IN]   = false;
+            $contactRequestArray[Options::F_P_OPT_OUT]  = true;
+        }
+
         if (self::apiDoubleOptInChecker($Contact, $conf)) {
             $ApiDoubleOptIn = $conf->getApiDoubleOptIn();
 
@@ -262,7 +282,8 @@ class ContactModel
     {
         $isApiDoubleOptInEnabled = $conf->getApiDoubleOptIn()->getEnabled();
 
-        if ($isApiDoubleOptInEnabled && $Contact->getOptions()->getIsSubscribes()) {
+        if ($isApiDoubleOptInEnabled
+            && ($Contact->getOptions()->getIsSubscribes() || $Contact->getOptions()->getIsSubscribesNewsletter())) {
            return true;
         }
         return false;

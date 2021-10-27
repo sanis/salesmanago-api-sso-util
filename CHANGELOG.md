@@ -1,5 +1,8 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.9 22.10.2021
+ - Added separated flags for newsletter and mobile consent status
+
 Version 3.0.8 16.09.2021
  - support for custom cookie TTL (smclient)
 
