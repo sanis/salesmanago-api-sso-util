@@ -203,7 +203,7 @@ class ContactModel
             Address::PROVINCE                   => $Address->getProvince(),// attention
             Options::LANG                       => $Options->getLang(),
             Properties::PROPERTIES              => $Properties->get(),
-            ConsentsCollection::CONSENT_DETAILS => $Consents->toArray(),
+            ConsentsCollection::CONSENT_DETAILS => $Consents ? $Consents->toArray() : '', //@todo secure other assignments against errors
         ];
 
         if (self::isSubscriptionStatusNoChangeChecker($Contact)) {

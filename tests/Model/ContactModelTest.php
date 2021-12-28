@@ -143,11 +143,11 @@ class ContactModelTest extends TestCase
         for ($i=0;$i<$faker->numberBetween(1,10);$i++) {
             $dummyData['consentFromPlatform'][] =
                 [
-                    "consentName" => $faker->sentence(1),
-                    "consentAccept" => $faker->boolean,
-                    "agreementDate" => $faker->unixTime,
-                    "ip" => $faker->ipv4,
-                    "optOut" => $faker->boolean,
+                    "consentName"          => $faker->sentence(1),
+                    "consentAccept"        => $faker->boolean,
+                    "agreementDate"        => $faker->unixTime,
+                    "ip"                   => $faker->ipv4,
+                    "optOut"               => $faker->boolean,
                     "consentDescriptionId" => $faker->randomNumber(),
                 ];
         }
