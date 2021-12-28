@@ -4,11 +4,13 @@ namespace Tests\Model;
 
 
 use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\Consent;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Contact\Address;
 use SALESmanago\Entity\Contact\Options;
 
 use SALESmanago\Exception\Exception;
+use SALESmanago\Model\Collections\ConsentsCollection;
 use SALESmanago\Model\ContactModel;
 
 use PHPUnit\Framework\TestCase;
@@ -64,9 +66,10 @@ class ContactModelTest extends TestCase
         $Contact = new Contact();
 
         $dummyData = self::prepareDummyDataForContactEntity();
-        $contactFromPlatform = $dummyData['contactFromPlatform'];
-        $addressFromPlatform = $dummyData['addressFromPlatform'];
-        $optionsFromPlatform = $dummyData['optionsFromPlatform'];
+        $contactFromPlatform  = $dummyData['contactFromPlatform'];
+        $addressFromPlatform  = $dummyData['addressFromPlatform'];
+        $optionsFromPlatform  = $dummyData['optionsFromPlatform'];
+        $consentsFromPlatform = $dummyData['consentFromPlatform'];
 
         $expectedArrayStructure = self::prepareDummyExpectedContactStructure($dummyData);
 
@@ -82,6 +85,13 @@ class ContactModelTest extends TestCase
             $Options->set($optionsFromPlatform)
         );
 
+        $Consents = new ConsentsCollection();
+        foreach ($consentsFromPlatform as $consent) {
+            $Consent = new Consent($consent);
+            $Consents ->addItem($Consent);
+        }
+        $Contact->setConsents($Consents);
+
         yield [$Contact, $expectedArrayStructure];
     }
 
@@ -91,7 +101,8 @@ class ContactModelTest extends TestCase
         $dummyData = [
             'contactFromPlatform' => [],
             'addressFromPlatform' => [],
-            'optionsFromPlatform' => []
+            'optionsFromPlatform' => [],
+            'consentFromPlatform' => []
         ];
 
         $dummyData['contactFromPlatform'] = [
@@ -129,6 +140,18 @@ class ContactModelTest extends TestCase
             /*'isSubscribes' => $faker->boolean*/
         ];
 
+        for ($i=0;$i<$faker->numberBetween(1,10);$i++) {
+            $dummyData['consentFromPlatform'][] =
+                [
+                    "consentName" => $faker->sentence(1),
+                    "consentAccept" => $faker->boolean,
+                    "agreementDate" => $faker->unixTime,
+                    "ip" => $faker->ipv4,
+                    "optOut" => $faker->boolean,
+                    "consentDescriptionId" => $faker->randomNumber(),
+                ];
+        }
+
         return $dummyData;
     }
 
@@ -138,9 +161,10 @@ class ContactModelTest extends TestCase
             ? self::prepareDummyDataForContactEntity()
             : $dummyData;
 
-        $contactFromPlatform = $dummyData['contactFromPlatform'];
-        $addressFromPlatform = $dummyData['addressFromPlatform'];
-        $optionsFromPlatform = $dummyData['optionsFromPlatform'];
+        $contactFromPlatform  = $dummyData['contactFromPlatform'];
+        $addressFromPlatform  = $dummyData['addressFromPlatform'];
+        $optionsFromPlatform  = $dummyData['optionsFromPlatform'];
+        $consentsFromPlatform = $dummyData['consentFromPlatform'];
 
         return [
             Options::ASYNC   => $optionsFromPlatform['async'],
@@ -159,18 +183,19 @@ class ContactModelTest extends TestCase
                     Address::COUNTRY   => $addressFromPlatform['country'],
                 ],
             ],
-            Options::N_EMAIL      => $optionsFromPlatform['newEmail'],
-            Options::F_OPT_IN     => $optionsFromPlatform['forceOptIn'],
-            Options::F_OPT_OUT    => $optionsFromPlatform['forceOptOut'],
-            Options::F_P_OPT_IN   => $optionsFromPlatform['forcePhoneOptIn'],
-            Options::F_P_OPT_OUT  => $optionsFromPlatform['forcePhoneOptOut'],
-            Options::CREATED_ON   => $optionsFromPlatform['createdOn'],
-            Contact::BIRTHDAY     => $contactFromPlatform['birthday'],
-            Address::PROVINCE     => $addressFromPlatform['province'],
-            Options::LANG         => $optionsFromPlatform['lang'],
-            Options::TAGS         => $optionsFromPlatform['removeTags'],
-            Options::R_TAGS       => $optionsFromPlatform['removeTags'],
-            Options::TAGS_SCORING => $optionsFromPlatform['tagScoring']
+            Options::N_EMAIL                    => $optionsFromPlatform['newEmail'],
+            Options::F_OPT_IN                   => $optionsFromPlatform['forceOptIn'],
+            Options::F_OPT_OUT                  => $optionsFromPlatform['forceOptOut'],
+            Options::F_P_OPT_IN                 => $optionsFromPlatform['forcePhoneOptIn'],
+            Options::F_P_OPT_OUT                => $optionsFromPlatform['forcePhoneOptOut'],
+            Options::CREATED_ON                 => $optionsFromPlatform['createdOn'],
+            Contact::BIRTHDAY                   => $contactFromPlatform['birthday'],
+            Address::PROVINCE                   => $addressFromPlatform['province'],
+            Options::LANG                       => $optionsFromPlatform['lang'],
+            Options::TAGS                       => $optionsFromPlatform['removeTags'],
+            Options::R_TAGS                     => $optionsFromPlatform['removeTags'],
+            Options::TAGS_SCORING               => $optionsFromPlatform['tagScoring'],
+            ConsentsCollection::CONSENT_DETAILS => $consentsFromPlatform
         ];
     }
 }

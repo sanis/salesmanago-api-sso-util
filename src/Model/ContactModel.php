@@ -13,6 +13,7 @@ use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Entity\Configuration;
 
 use SALESmanago\Helper\DataHelper;
+use SALESmanago\Model\Collections\ConsentsCollection;
 
 
 class ContactModel
@@ -169,6 +170,7 @@ class ContactModel
         $Address    = $Contact->getAddress();
         $Options    = $Contact->getOptions();
         $Properties = $Contact->getProperties();
+        $Consents   = $Contact->getConsents();
 
         $contactRequestArray = [
             Configuration::CLIENT_ID => $conf->getClientId(),
@@ -188,19 +190,20 @@ class ContactModel
                     Address::COUNTRY   => $Address->getCountry()
                 ],
             ],
-            Configuration::OWNER   => $conf->getOwner(),
-            Options::N_EMAIL       => $Options->getNewEmail(),
-            Options::F_OPT_IN      => $Options->getForceOptIn(),
-            Options::F_OPT_OUT     => $Options->getForceOptOut(),
-            Options::F_P_OPT_IN    => $Options->getForcePhoneOptIn(),
-            Options::F_P_OPT_OUT   => $Options->getForcePhoneOptOut(),
-            Options::TAGS_SCORING  => $Options->getTagScoring(),
-            Options::TAGS          => $Options->getTags(),
-            Options::R_TAGS        => $Options->getRemoveTags(),
-            Contact::BIRTHDAY      => $Contact->getBirthday(),// attention
-            Address::PROVINCE      => $Address->getProvince(),// attention
-            Options::LANG          => $Options->getLang(),
-            Properties::PROPERTIES => $Properties->get()
+            Configuration::OWNER                => $conf->getOwner(),
+            Options::N_EMAIL                    => $Options->getNewEmail(),
+            Options::F_OPT_IN                   => $Options->getForceOptIn(),
+            Options::F_OPT_OUT                  => $Options->getForceOptOut(),
+            Options::F_P_OPT_IN                 => $Options->getForcePhoneOptIn(),
+            Options::F_P_OPT_OUT                => $Options->getForcePhoneOptOut(),
+            Options::TAGS_SCORING               => $Options->getTagScoring(),
+            Options::TAGS                       => $Options->getTags(),
+            Options::R_TAGS                     => $Options->getRemoveTags(),
+            Contact::BIRTHDAY                   => $Contact->getBirthday(),// attention
+            Address::PROVINCE                   => $Address->getProvince(),// attention
+            Options::LANG                       => $Options->getLang(),
+            Properties::PROPERTIES              => $Properties->get(),
+            ConsentsCollection::CONSENT_DETAILS => $Consents->toArray(),
         ];
 
         if (self::isSubscriptionStatusNoChangeChecker($Contact)) {

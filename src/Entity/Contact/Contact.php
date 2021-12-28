@@ -6,6 +6,7 @@ use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
 
 use SALESmanago\Helper\EntityDataHelper;
+use SALESmanago\Model\Collections\ConsentsCollection;
 
 class Contact extends AbstractEntity
 {
@@ -52,6 +53,11 @@ class Contact extends AbstractEntity
      * @var Options|null
      */
     private $Options       = null;
+
+    /**
+     * @var ConsentsCollection|null
+     */
+    private $Consents      = null;
 
     /**
      * @param array $contactData;
@@ -359,5 +365,25 @@ class Contact extends AbstractEntity
     public function getBirthdayDay($param)
     {
         return $this->birthdayDay;
+    }
+
+    /**
+     * @return ConsentsCollection|null
+     */
+    public function getConsents()
+    {
+        return $this->Consents;
+    }
+
+    /**
+     * @param  ConsentsCollection $param
+     *
+     * @return Contact
+     */
+    public function setConsents($param)
+    {
+        $this->Consents = $param;
+
+        return $this;
     }
 }

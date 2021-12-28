@@ -1,5 +1,8 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.10 xx.xx.xxxx
+ - Added ConsentsCollection to Contact entity
+
 Version 3.0.9 22.10.2021
  - Added separated flags for newsletter and mobile consent status
 
