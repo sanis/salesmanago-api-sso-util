@@ -13,9 +13,7 @@ class Consent extends AbstractEntity
 
     public function __construct($data = [])
     {
-        if (!empty($data)) {
-            $this->setDataWithSetters($data);
-        }
+        $this->setDataWithSetters($data);
     }
 
     /**
