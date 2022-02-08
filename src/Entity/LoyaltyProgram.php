@@ -7,12 +7,39 @@ use SALESmanago\Model\LoyaltyProgramModel;
 
 class LoyaltyProgram extends AbstractEntity
 {
+    /**
+     * @var array
+     */
     private $modificationTypes = ['SUBTRACT', 'ADD'];
+
+    /**
+     * @var string
+     */
     protected $loyaltyProgramName = '';
+
+    /**
+     * @var string
+     */
     protected $modificationType = '';
+
+    /**
+     * @var string
+     */
     protected $addresseeType = '';
+
+    /**
+     * @var string
+     */
     protected $comment = '';
+
+    /**
+     * @var int
+     */
     protected $points = 0;
+
+    /**
+     * @var mixed
+     */
     protected $value;
 
     /**

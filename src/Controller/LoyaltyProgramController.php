@@ -35,7 +35,6 @@ class LoyaltyProgramController
     public function add(LoyaltyProgram $LoyaltyProgram)
     {
         $Response = $this->service->add($LoyaltyProgram);
-        // @todo with Response
         return $Response;
     }
 
@@ -47,7 +46,6 @@ class LoyaltyProgramController
     public function remove(LoyaltyProgram $LoyaltyProgram)
     {
         $Response = $this->service->remove($LoyaltyProgram);
-        // @todo with Response
         return $Response;
     }
 
@@ -59,7 +57,6 @@ class LoyaltyProgramController
     public function modifyPoints(LoyaltyProgram $LoyaltyProgram)
     {
         $Response = $this->service->modifyPoints($LoyaltyProgram);
-        // @todo with Response
         return $Response;
     }
 }
