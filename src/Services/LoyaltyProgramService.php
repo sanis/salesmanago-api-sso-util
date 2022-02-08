@@ -42,7 +42,7 @@ class LoyaltyProgramService
      */
     public function add(LoyaltyProgram $LoyaltyProgram)
     {
-        $LoyaltyProgramModel = new LoyaltyProgramModel($LoyaltyProgram, $this->conf);
+        $LoyaltyProgramModel = new LoyaltyProgramModel($LoyaltyProgram);
 
         $settings = $this->ConfModel->getAuthorizationApiDataWithOwner();
         $dataForRequest = $LoyaltyProgramModel->getDataForRequest();
@@ -68,7 +68,7 @@ class LoyaltyProgramService
      */
     public function remove(LoyaltyProgram $LoyaltyProgram)
     {
-        $LoyaltyProgramModel = new LoyaltyProgramModel($LoyaltyProgram, $this->conf);
+        $LoyaltyProgramModel = new LoyaltyProgramModel($LoyaltyProgram);
 
         $settings = $this->ConfModel->getAuthorizationApiDataWithOwner();
         $dataForRequest = $LoyaltyProgramModel->getDataForRequest();
@@ -94,7 +94,7 @@ class LoyaltyProgramService
      */
     public function modifyPoints(LoyaltyProgram $LoyaltyProgram)
     {
-        $LoyaltyProgramModel = new LoyaltyProgramModel($LoyaltyProgram, $this->conf);
+        $LoyaltyProgramModel = new LoyaltyProgramModel($LoyaltyProgram);
 
         $settings = $this->ConfModel->getAuthorizationApiDataWithOwner();
         $dataForRequest = $LoyaltyProgramModel->getDataForRequest();

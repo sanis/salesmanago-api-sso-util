@@ -88,6 +88,7 @@ class LoyaltyProgram extends AbstractEntity
     /**
      * Used only for /modifyPoints method.
      *
+     * TYPES:
      * SUBTRACT - subtract points
      * ADD      - add points
      *
