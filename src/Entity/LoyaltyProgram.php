@@ -7,6 +7,7 @@ use SALESmanago\Model\LoyaltyProgramModel;
 
 class LoyaltyProgram extends AbstractEntity
 {
+    private $modificationTypes = ['SUBTRACT', 'ADD'];
     protected $loyaltyProgramName = '';
     protected $modificationType = '';
     protected $addresseeType = '';
@@ -94,9 +95,13 @@ class LoyaltyProgram extends AbstractEntity
      *
      * @param string $type
      * @return $this
+     * @throws Exception
      */
     public function setModificationType($type)
     {
+        if (!in_array($type, $this->modificationTypes)) {
+            throw new Exception('Type must be ADD or SUBTRACT.');
+        }
         $this->modificationType = $type;
         return $this;
     }
