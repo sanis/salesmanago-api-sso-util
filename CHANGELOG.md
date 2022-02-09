@@ -1,5 +1,9 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.10 09.02.2022
+ - Added ConsentsCollection to Contact entity
+ - New service LoyaltyProgram
+
 Version 3.0.9 22.10.2021
  - Added separated flags for newsletter and mobile consent status
 
