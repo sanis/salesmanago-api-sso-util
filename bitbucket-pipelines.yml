@@ -1,0 +1,12 @@
+image: webdevops/php-apache-dev:7.4
+
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          name: Unit Test
+          script:
+            - echo "Start to preparing environment:"
+            - composer install
+            - echo "Run tests:"
+            - ./vendor/bin/phpunit --configuration phpunit.xml tests/Unit/Controller/ExportControllerTest.php --no-coverage --filter testCheckAndFilterContactsCollectionSuccess
