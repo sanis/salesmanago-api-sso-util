@@ -18,6 +18,14 @@ abstract class AbstractCollection implements Collection
     abstract function addItem($object);
 
     /**
+     * @return array of objects
+     */
+    public function getItems()
+    {
+        return $this->collection;
+    }
+
+    /**
      * @return bool
      */
     public function isEmpty()
