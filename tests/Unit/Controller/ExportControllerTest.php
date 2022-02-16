@@ -4,7 +4,7 @@
 namespace Tests\Unit\Controller;
 
 use Faker;
-use PHPUnit\Framework\TestCase;
+use Tests\Unit\TestCaseUnit;
 use SALESmanago\Controller\LoginController;
 use SALESmanago\Entity\User;
 use SALESmanago\Controller\ExportController;
@@ -19,7 +19,7 @@ use \ReflectionClass;
 use \ReflectionMethod;
 use \ReflectionException;
 
-class ExportControllerTest extends TestCase
+class ExportControllerTest extends TestCaseUnit
 {
     /**
      * @throws Exception
@@ -202,38 +202,5 @@ class ExportControllerTest extends TestCase
             );
 
         return $Contact;
-    }
-
-    /**
-     * @param $name
-     * @param mixed $classObj
-     * @return ReflectionMethod
-     * @throws ReflectionException
-     */
-    protected function getMethod($name, $classObj)
-    {
-        $class = new ReflectionClass($classObj);
-        $method = $class->getMethod($name);
-        $method->setAccessible(true);
-        return $method;
-    }
-
-    /**
-     * @return mixed|Configuration
-     * @throws Exception
-     */
-    protected function initConf()
-    {
-        $conf = Configuration::getInstance();
-        $user = new User();
-
-        $user
-            ->setEmail('integrations+test_unit_account@salesmanago.com')
-            ->setPass('#Salesmanago123');
-
-        $loginController = new LoginController($conf);
-        $loginController->login($user);//this one for property configuration create
-
-        return $conf;
     }
 }
