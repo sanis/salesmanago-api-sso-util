@@ -4,6 +4,11 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+
+use \ReflectionClass;
+use \ReflectionMethod;
+use \ReflectionException;
+
 use SALESmanago\Controller\LoginController;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\User;
@@ -20,10 +25,6 @@ class TestCaseUnit extends TestCase
     {
         $userEmail = getenv('userEmail');
         $userPass = getenv('userPass');
-
-        var_dump($userEmail);
-        var_dump($userPass);
-        die('test 321');
 
         $conf = Configuration::getInstance();
         $user = new User();

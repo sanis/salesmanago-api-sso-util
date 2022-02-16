@@ -5,19 +5,15 @@ namespace Tests\Unit\Controller;
 
 use Faker;
 use Tests\Unit\TestCaseUnit;
-use SALESmanago\Controller\LoginController;
-use SALESmanago\Entity\User;
+use \ReflectionException;
+
 use SALESmanago\Controller\ExportController;
 use SALESmanago\Entity\Event\Event;
-use SALESmanago\Entity\Configuration;
 use SALESmanago\Model\Collections\ContactsCollection;
 use SALESmanago\Model\Collections\EventsCollection;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Exception\Exception;
 
-use \ReflectionClass;
-use \ReflectionMethod;
-use \ReflectionException;
 
 class ExportControllerTest extends TestCaseUnit
 {
