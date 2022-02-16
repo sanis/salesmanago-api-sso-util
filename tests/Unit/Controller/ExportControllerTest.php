@@ -228,8 +228,8 @@ class ExportControllerTest extends TestCase
         $user = new User();
 
         $user
-            ->setEmail('ruslan.barlozhetskyi@salesmanago.pl')
-            ->setPass('04ru06sl94an');
+            ->setEmail('integrations+test_unit_account@salesmanago.com')
+            ->setPass('#Salesmanago123');
 
         $loginController = new LoginController($conf);
         $loginController->login($user);//this one for property configuration create
