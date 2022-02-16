@@ -26,11 +26,6 @@ class TestCaseUnit extends TestCase
         $userEmail = getenv('userEmail');
         $userPass = getenv('userPass');
 
-        var_dump($userEmail);
-        var_dump($userPass);
-
-        die('test 1');
-
         $conf = Configuration::getInstance();
         $user = new User();
 
