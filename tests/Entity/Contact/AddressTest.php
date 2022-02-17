@@ -112,7 +112,7 @@ class AddressTest extends TestCase
         yield [$city, $city];
 
         $city = $faker->citySuffix.'-'.$faker->city;
-        yield[$city, $city];
+        yield [$city, $city];
     }
 
     /**

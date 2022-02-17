@@ -1,5 +1,8 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.0.11 16.02.2022
+- Added ignoring contacts in export by email domains;
+
 Version 3.0.10 09.02.2022
  - Added ConsentsCollection to Contact entity
  - New service LoyaltyProgram
