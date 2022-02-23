@@ -45,7 +45,8 @@ class CheckIfIgnoredService
             ->setStatus(false)
             ->setMessage(array(CheckIfIgnoredService::IGNORED_MESSAGE))
             ->setField('contactId', null)
-            ->setField('eventId', null);
+            ->setField('eventId', null)
+            ->setField('conf', $this->conf);
     }
 
     /**
