@@ -171,7 +171,8 @@ class RequestService
      *
      * @return bool
      */
-    protected function checkExceedingOfRequestAttempts() {
+    protected function checkExceedingOfRequestAttempts()
+    {
         return $this->actualAttempts >= $this->maxAttempts;
     }
 }
