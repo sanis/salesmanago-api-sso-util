@@ -18,6 +18,27 @@ class RequestService
 {
     private $connClient;
 
+    /**
+     * @var int max attempts to send requests
+     */
+    protected $maxAttempts = 2;
+
+    /**
+     * @var \Exception
+     */
+    protected $lastError;
+
+    /**
+     * @var int quantity of actual attempts
+     */
+    private $actualAttempts = 0;
+
+    /**
+     * RequestService constructor.
+     *
+     * @param ConfigurationInterface $conf
+     * @throws Exception
+     */
     public function __construct(ConfigurationInterface $conf)
     {
         try {
@@ -42,6 +63,13 @@ class RequestService
      */
     final public function request($method, $uri, $data)
     {
+        if ($this->checkExceedingOfRequestAttempts()) {
+            throw new Exception(
+                $this->lastError->getMessage(),
+                $this->lastError->getCode()
+            );
+        }
+
         try {
             ReportFactory::doDebugReport(Configuration::getInstance(), [$method, $uri, $data]);
 
@@ -49,15 +77,22 @@ class RequestService
                 ->setType($method)
                 ->setEndpoint($uri);
 
+            $this->actualAttempts++;//the first attempt
             $this->connClient->request($data);
 
             $jsonResponse = $this->connClient->responseJsonDecode();
 
             ReportFactory::doDebugReport(Configuration::getInstance(), ['response' => $jsonResponse]);
-
             return $this->toResponse($jsonResponse);
         } catch (\Exception $e) {
-            throw new Exception($e->getMessage(), $e->getCode());
+            if ($e->getCode() === 428) {
+                $this->actualAttempts++;
+                $this->lastError = $e;
+
+                $this->request($method, $uri, $data);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode());
+            }
         }
     }
 
@@ -129,5 +164,14 @@ class RequestService
         $Configuration = Configuration::getInstance();
         $this->connClient
             ->setHost($Configuration->getEndpoint());
+    }
+
+    /**
+     * Checking of max Requests attempts returns true id max attempts reached
+     *
+     * @return bool
+     */
+    protected function checkExceedingOfRequestAttempts() {
+        return $this->actualAttempts >= $this->maxAttempts;
     }
 }
