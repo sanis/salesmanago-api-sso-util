@@ -56,7 +56,8 @@ class Exception extends \Exception
     }
 
     /**
-     * @param $code
+     * @param int $code
+     * @return Exception
      */
     public function setCode($code = 0)
     {
@@ -84,6 +85,4 @@ class Exception extends \Exception
         $this->defaultEnglishMessage = $defaultEnglishMessage;
         return $this;
     }
-
-
 }

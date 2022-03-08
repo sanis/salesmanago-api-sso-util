@@ -109,7 +109,7 @@ class ReportModel
                         $this->platform->getName(),
                         $this->platform->getVersion(),
                         $this->platform->getVersionOfIntegration(),
-                        'PHP:' . $this->platform->getPhpVersion(),
+                        'PHP_' . $this->platform->getPhpVersion(),
                         $this->actionToEventType[$actionType]
                     ]
                 )

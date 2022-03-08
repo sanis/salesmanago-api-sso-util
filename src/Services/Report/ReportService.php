@@ -76,7 +76,7 @@ class ReportService
         if (!isset(self::$instances[$cls])) {
 
             if ($conf === null || $platform === null) {
-                throw new \Exception("Cannot instantiate an ReportService.");
+                return null;
             }
 
             self::$instances[$cls] = new static($conf, $platform);
