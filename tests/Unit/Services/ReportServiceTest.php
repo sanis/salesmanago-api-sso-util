@@ -3,8 +3,6 @@
 
 namespace Tests\Unit\Services;
 
-
-use SALESmanago\Entity\Reporting\Platform;
 use Tests\Unit\TestCaseUnit;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Services\Report\ReportService;
@@ -21,13 +19,11 @@ class ReportServiceTest extends TestCaseUnit
      */
     public function testReportActionSuccess()
     {
-        $faker    = Faker\Factory::create();
-        $conf     = $this->createConfigurationForReportService();
-        $platform = $this->createPlatform();
+        $faker = Faker\Factory::create();
+        $conf  = $this->createConfigurationForReportService();
 
-        ReportService::getInstance($conf, $platform);
-
-        $response = ReportService::getInstance()->reportAction(ReportModel::ACT_TEST, [$faker->text(2000)]);
+        $response = ReportService::getInstance($conf)
+            ->reportAction(ReportModel::ACT_TEST, [$faker->text(2000)]);
         $this->assertTrue($response);
     }
 
@@ -41,25 +37,12 @@ class ReportServiceTest extends TestCaseUnit
         return Configuration::getInstance()
             ->setOwner($faker->email)
             ->setClientId($faker->uuid)
-            ->setActiveReporting(true);
-    }
-
-    /**
-     * @return Platform
-     */
-    protected function createPlatform()
-    {
-        $faker    = Faker\Factory::create();
-        $platform = new Platform();
-
-        $platform
-            ->setName($faker->word)
-            ->setVersion($this->generateVersion())
+            ->setActiveReporting(true)
+            ->setPlatformName($faker->word)
+            ->setPlatformVersion($this->generateVersion())
             ->setVersionOfIntegration($this->generateVersion())
-            ->setLang($faker->languageCode)
+            ->setPlatformDomain($faker->languageCode)
             ->setPlatformDomain($faker->url);
-
-        return $platform;
     }
 
     /**

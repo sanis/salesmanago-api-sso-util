@@ -4,10 +4,7 @@
 namespace SALESmanago\Model\Report;
 
 use SALESmanago\Entity\ConfigurationInterface;
-use SALESmanago\Entity\Reporting\Platform;
 use SALESmanago\Entity\Contact\Contact;
-use SALESmanago\Entity\Contact\Address;
-use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\Event\Event;
 
 class ReportModel
@@ -49,20 +46,13 @@ class ReportModel
     private $conf;
 
     /**
-     * @var Platform
-     */
-    private $platform;
-
-    /**
      * ReportModel constructor.
      *
      * @param ConfigurationInterface $conf
-     * @param Platform $platform
      */
-    public function __construct(ConfigurationInterface $conf, Platform $platform)
+    public function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
-        $this->platform = $platform;
     }
 
     /**
@@ -91,25 +81,25 @@ class ReportModel
     {
         $Contact = $this->getContact()
             ->setEmail($this->conf->getOwner())
-            ->setName($this->platform->getPlatformDomain())
+            ->setName($this->conf->getPlatformDomain())
             ->setExternalId($this->conf->getClientId())
-            ->setCompany($this->platform->getName());
+            ->setCompany($this->conf->getPlatformName());
 
         $Contact->setAddress(
             $Contact->getAddress()
-                ->setStreetAddress($this->platform->getVersionOfIntegration())
-                ->setCountry($this->platform->getLang())
+                ->setStreetAddress($this->conf->getVersionOfIntegration())
+                ->setCountry($this->conf->getPlatformLang())
         );
 
         $Contact->setOptions(
             $Contact->getOptions()
-                ->setLang($this->platform->getLang())
+                ->setLang($this->conf->getPlatformLang())
                 ->appendTags(
                     [
-                        $this->platform->getName(),
-                        $this->platform->getVersion(),
-                        $this->platform->getVersionOfIntegration(),
-                        'PHP_' . $this->platform->getPhpVersion(),
+                        $this->conf->getPlatformName(),
+                        $this->conf->getPlatformVersion(),
+                        $this->conf->getVersionOfIntegration(),
+                        'PHP_' . $this->conf->getPhpVersion(),
                         $this->actionToEventType[$actionType]
                     ]
                 )
@@ -129,9 +119,9 @@ class ReportModel
     {
         $Event = $this->getEvent()
             ->setEmail($this->conf->getOwner())
-            ->setProducts($this->platform->getVersion())
-            ->setLocation($this->platform->getVersionOfIntegration())
-            ->setDetail('PHP:' . $this->platform->getPhpVersion(), 1)
+            ->setProducts($this->conf->getPlatformVersion())
+            ->setLocation($this->conf->getVersionOfIntegration())
+            ->setDetail('PHP:' . $this->conf->getPhpVersion(), 1)
             ->setDetail('Date:' . time())
             ->setContactExtEventType($this->actionToEventType[$actionType]);
 

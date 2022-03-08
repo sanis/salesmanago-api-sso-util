@@ -23,7 +23,11 @@ class Exception extends \Exception
         parent::__construct($message, $code);
 
         try {
-            ReportService::getInstance()->reportException($this->getViewMessage());
+            $ReportService = ReportService::getInstance();
+
+            if($ReportService != null){
+                $ReportService->reportException($this->getViewMessage());
+            }
         } catch (\Exception $e) {
             //do nothing
         }

@@ -4,6 +4,7 @@
 namespace SALESmanago\Services\Report;
 
 
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\Report\ReportModel;
@@ -44,12 +45,12 @@ class ReportService
      * @param ConfigurationInterface $conf
      * @param Platform $platform
      */
-    private function __construct(ConfigurationInterface $conf, Platform $platform)
+    private function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
         $this->conf->setEndpoint('https://survey.salesmanago.com/');
 
-        $this->reportModel = new ReportModel($this->conf, $platform);
+        $this->reportModel = new ReportModel($this->conf);
         $this->transferService = new ContactAndEventTransferService($this->conf);
     }
 
@@ -69,17 +70,17 @@ class ReportService
      * @return mixed|static
      * @throws \Exception
      */
-    public static function getInstance($conf = null, $platform = null)
+    public static function getInstance($conf = null)
     {
         $cls = static::class;
 
         if (!isset(self::$instances[$cls])) {
 
-            if ($conf === null || $platform === null) {
+            if ($conf === null) {
                 return null;
             }
 
-            self::$instances[$cls] = new static($conf, $platform);
+            self::$instances[$cls] = new static($conf);
         }
 
         return self::$instances[$cls];
