@@ -47,7 +47,7 @@ class LoginController
         $loginResponse = $this->service->login($User);
 
         try {
-            ReportService::getInstance()->reportAction($this->conf, ReportModel::ACT_LOGIN);
+            ReportService::getInstance()->reportAction(ReportModel::ACT_LOGIN);
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
