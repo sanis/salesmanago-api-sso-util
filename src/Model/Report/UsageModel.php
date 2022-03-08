@@ -3,7 +3,11 @@
 
 namespace SALESmanago\Model\Report;
 
-
+/**
+ * Class UsageModel
+ * @package SALESmanago\Model\Report
+ * @deprecated since 3.0.11
+ */
 class UsageModel extends AbstractBasicReportModel
 {
     const TYPE_USAGE = 'usage';

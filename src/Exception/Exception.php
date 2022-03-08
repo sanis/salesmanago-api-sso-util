@@ -4,6 +4,8 @@ namespace SALESmanago\Exception;
 
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Factories\ReportFactory;
+use SALESmanago\Services\Report\ReportService;
+use SALESmanago\Services\RequestService;
 
 class Exception extends \Exception
 {
@@ -19,7 +21,12 @@ class Exception extends \Exception
     public function __construct($message = "", $code = 0)
     {
         parent::__construct($message, $code);
-        ReportFactory::doHealthReport(Configuration::getInstance(), $this->getLogMessage());
+
+        try {
+            ReportService::getInstance()->reportException($this->getViewMessage());
+        } catch (\Exception $e) {
+            //do nothing
+        }
     }
 
     /**

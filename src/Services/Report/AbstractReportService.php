@@ -8,6 +8,11 @@ use SALESmanago\Entity\ReportConfigurationInterface;
 use SALESmanago\Helper\SimpleRequestHelper;
 use SALESmanago\Model\Report\ReportModelInterface;
 
+/**
+ * Class AbstractReportService
+ * @package SALESmanago\Services\Report
+ * @deprecated since 3.0.11
+ */
 abstract class AbstractReportService
 {
     /**

@@ -171,6 +171,11 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
      */
     protected $activeHealth = false;
 
+    /**
+     * @var bool
+     */
+    protected $activeReporting = false;
+
     protected function __construct() {}
     protected function __clone() {}
 
@@ -713,6 +718,17 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
         return $this->location;
     }
 
+    public function setActiveReporting($active)
+    {
+        $this->activeReporting = $active;
+        return $this;
+    }
+
+    public function getActiveReporting()
+    {
+        return $this->activeReporting;
+    }
+
     /**
      * @param string $param
      * @return $this
@@ -821,6 +837,9 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
         return $this->activeUsage;
     }
 
+    /**
+     * @return array
+     */
     protected function toArray()
     {
         return (array)$this;

@@ -10,6 +10,7 @@ use SALESmanago\Model\Report\DebugModel;
  *
  * Class DebugService
  * @package SALESmanago\Services\Health
+ * @deprecated since 3.0.11
  */
 class DebugService extends AbstractReportService
 {
