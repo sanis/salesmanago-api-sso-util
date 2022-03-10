@@ -16,7 +16,6 @@ use SALESmanago\Exception\Exception;
 
 class TestCaseUnit extends TestCase
 {
-
     /**
      * @return mixed|Configuration
      * @throws Exception

@@ -10,6 +10,7 @@ use SALESmanago\Model\Report\HealthModel;
  *
  * Class HealthService
  * @package SALESmanago\Services\Health
+ * @deprecated since 3.0.11
  */
 class HealthService extends AbstractReportService
 {

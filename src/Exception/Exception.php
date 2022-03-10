@@ -4,6 +4,8 @@ namespace SALESmanago\Exception;
 
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Factories\ReportFactory;
+use SALESmanago\Services\Report\ReportService;
+use SALESmanago\Services\RequestService;
 
 class Exception extends \Exception
 {
@@ -19,7 +21,16 @@ class Exception extends \Exception
     public function __construct($message = "", $code = 0)
     {
         parent::__construct($message, $code);
-        ReportFactory::doHealthReport(Configuration::getInstance(), $this->getLogMessage());
+
+        try {
+            $ReportService = ReportService::getInstance();
+
+            if($ReportService != null){
+                $ReportService->reportException($this->getViewMessage());
+            }
+        } catch (\Exception $e) {
+            //do nothing
+        }
     }
 
     /**
@@ -49,7 +60,8 @@ class Exception extends \Exception
     }
 
     /**
-     * @param $code
+     * @param int $code
+     * @return Exception
      */
     public function setCode($code = 0)
     {
@@ -77,6 +89,4 @@ class Exception extends \Exception
         $this->defaultEnglishMessage = $defaultEnglishMessage;
         return $this;
     }
-
-
 }

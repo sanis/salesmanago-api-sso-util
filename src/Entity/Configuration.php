@@ -5,6 +5,7 @@ namespace SALESmanago\Entity;
 
 
 use SALESmanago\Entity\ApiDoubleOptIn;
+use SALESmanago\Entity\Reporting\Platform;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Entity\ConfigurationInterface;
 
@@ -170,6 +171,36 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
      * @var bool
      */
     protected $activeHealth = false;
+
+    /**
+     * @var bool
+     */
+    protected $activeReporting = false;
+
+    /**
+     * @var string platform name
+     */
+    private $platformName = 'unavailable';
+
+    /**
+     * @var string exact platform version
+     */
+    private $platformVersion = 'unavailable';
+
+    /**
+     * @var string exact version od integration (plugin version or app version)
+     */
+    private $versionOfIntegration = 'unavailable';
+
+    /**
+     * @var string url of platform where plugin or integration is installed
+     */
+    private $platformDomain = 'unavailable';
+
+    /**
+     * @var string platform admin panel lang;
+     */
+    private $platformLang = 'unavailable';
 
     protected function __construct() {}
     protected function __clone() {}
@@ -713,7 +744,118 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
         return $this->location;
     }
 
+    public function setActiveReporting($active)
+    {
+        $this->activeReporting = $active;
+        return $this;
+    }
+
+    public function getActiveReporting()
+    {
+        return $this->activeReporting;
+    }
+
     /**
+     * @param string $param
+     * @return $this
+     */
+    public function setPlatformName($param)
+    {
+        $this->platformName = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlatformName()
+    {
+        return $this->platformName;
+    }
+
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function setPlatformVersion($param)
+    {
+        $this->platformVersion = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlatformVersion()
+    {
+        return $this->platformVersion;
+    }
+
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function setVersionOfIntegration($param)
+    {
+        $this->versionOfIntegration = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersionOfIntegration()
+    {
+        return $this->versionOfIntegration;
+    }
+
+    /**
+     * @param string $param
+     * @return $this
+     */
+    public function setPlatformDomain($param)
+    {
+        $this->platformDomain = $param;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlatformDomain()
+    {
+        return $this->platformDomain;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhpVersion()
+    {
+        return phpversion();
+    }
+
+    /**
+     * Set platform admin panel lang
+     *
+     * @param string $param
+     */
+    public function setPlatformLang($param)
+    {
+        $this->platformLang = $param;
+        return $this;
+    }
+
+    /**
+     * Return platform admin panel lang
+     */
+    public function getPlatformLang()
+    {
+        return $this->platformLang;
+    }
+
+    /**
+     * @deprecated since 3.0.11
      * @param string $param
      * @return $this
      */
@@ -724,6 +866,8 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
+     * @deprecated
      * @return string
      */
     public function getDebuggerUrl()
@@ -732,6 +876,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @param string $param
      * @return $this
      */
@@ -742,6 +887,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @return string
      */
     public function getHealthUrl()
@@ -750,6 +896,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @param string $param
      * @return $this
      */
@@ -760,6 +907,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @return string
      */
     public function getUsageUrl()
@@ -768,6 +916,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @param $param
      * @return $this|mixed
      */
@@ -778,6 +927,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @param $param
      * @return $this|mixed
      */
@@ -788,6 +938,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @param $param
      * @return $this|mixed
      */
@@ -798,6 +949,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @return bool
      */
     public function isActiveDebugger()
@@ -806,6 +958,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @return bool
      */
     public function isActiveHealth()
@@ -814,6 +967,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @deprecated since 3.0.11
      * @return bool
      */
     public function isActiveUsage()
@@ -821,6 +975,9 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
         return $this->activeUsage;
     }
 
+    /**
+     * @return array
+     */
     protected function toArray()
     {
         return (array)$this;
