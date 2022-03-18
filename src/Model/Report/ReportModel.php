@@ -97,12 +97,14 @@ class ReportModel
                 ->appendTags(
                     [
                         $this->conf->getPlatformName(),
-                        $this->conf->getPlatformVersion(),
-                        $this->conf->getVersionOfIntegration(),
+                        'PLATFORM_VER_'.$this->conf->getPlatformVersion(),
+                        'INTEGRATION_VER_'.$this->conf->getVersionOfIntegration(),
                         'PHP_' . $this->conf->getPhpVersion(),
                         $this->actionToEventType[$actionType]
                     ]
                 )
+                ->setIsSubscriptionStatusNoChange(false)
+                ->setIsSubscribes(true)
         );
 
         return $Contact;
