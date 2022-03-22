@@ -40,15 +40,20 @@ class ReportService
     private static $instances = [];
 
     /**
+     * @var string
+     */
+    private $customerEndpoint;
+
+    /**
      * ReportService constructor.
      *
      * @param ConfigurationInterface $conf
-     * @param Platform $platform
      */
     private function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
-        $this->conf->setEndpoint('https://survey.salesmanago.com/');
+        $this->customerEndpoint = $this->conf->getEndpoint();
+        $this->conf->setEndpoint('https://survey.salesmanago.com/2.0/');
 
         $this->reportModel = new ReportModel($this->conf);
         $this->transferService = new ContactAndEventTransferService($this->conf);
@@ -66,7 +71,6 @@ class ReportService
 
     /**
      * @param ConfigurationInterface|null $conf
-     * @param Platform|null $platform
      * @return mixed|static
      * @throws \Exception
      */
@@ -103,8 +107,10 @@ class ReportService
                 $this->reportModel->getClientAsContact($actType),
                 $this->reportModel->getActionAsEvent($actType, $additionalInformation)
             );
+            $this->conf->setEndpoint($this->customerEndpoint);
             return true;
         } catch (Exception $e) {
+            $this->conf->setEndpoint($this->customerEndpoint);
             return false;
         }
     }
@@ -117,6 +123,8 @@ class ReportService
      */
     public function reportException($exceptionViewMessage)
     {
-        return $this->reportAction(ReportModel::ACT_EXCEPTION, [$exceptionViewMessage]);
+        $report = $this->reportAction(ReportModel::ACT_EXCEPTION, [$exceptionViewMessage]);
+        $this->conf->setEndpoint($this->customerEndpoint);
+        return $report;
     }
 }
