@@ -18,21 +18,6 @@ class Exception extends \Exception
         FILE = 'File: ',
         LINE = 'Line: ';
 
-    public function __construct($message = "", $code = 0)
-    {
-        parent::__construct($message, $code);
-
-        try {
-            $ReportService = ReportService::getInstance();
-
-            if($ReportService != null){
-                $ReportService->reportException($this->getViewMessage());
-            }
-        } catch (\Exception $e) {
-            //do nothing
-        }
-    }
-
     /**
      * @return string - massage for logs files
      */
@@ -45,6 +30,9 @@ class Exception extends \Exception
         $message.= self::LINE . $this->getLine() . PHP_EOL;
         $message.= self::TRACE;
         $message.= $this->getTraceAsString() . PHP_EOL;
+
+        $this->reportException($message);
+
         return $message;
     }
 
@@ -56,6 +44,9 @@ class Exception extends \Exception
         $message = $this->getMessage() . ': ';
         $message.= $this->getFile() . ': ';
         $message.= $this->getLine() . PHP_EOL;
+
+        $this->reportException($message);
+
         return $message;
     }
 
@@ -88,5 +79,22 @@ class Exception extends \Exception
     {
         $this->defaultEnglishMessage = $defaultEnglishMessage;
         return $this;
+    }
+
+    /**
+     * @param string $message
+     * @return void
+     */
+    protected function reportException($message)
+    {
+        try {
+            $ReportService = ReportService::getInstance();
+
+            if($ReportService != null){
+                $ReportService->reportException($message);
+            }
+        } catch (\Exception $e) {
+            //do nothing
+        }
     }
 }
