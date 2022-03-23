@@ -199,6 +199,7 @@ class RequestService
     }
 
     /**
+     * @param array $dataToSend
      * @return void
      */
     protected function increaseAttemptsCounterAfterTimeOut($dataToSend) {
