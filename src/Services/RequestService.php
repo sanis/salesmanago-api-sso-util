@@ -34,6 +34,11 @@ class RequestService
     private $actualAttempts = 0;
 
     /**
+     * @var string - hash of send data;
+     */
+    private $hashData = null;
+
+    /**
      * RequestService constructor.
      *
      * @param ConfigurationInterface $conf
@@ -63,13 +68,6 @@ class RequestService
      */
     final public function request($method, $uri, $data)
     {
-        if ($this->checkExceedingOfRequestAttempts()) {
-            throw new Exception(
-                $this->lastError->getMessage(),
-                $this->lastError->getCode()
-            );
-        }
-
         try {
             ReportFactory::doDebugReport(Configuration::getInstance(), [$method, $uri, $data]);
 
@@ -77,7 +75,6 @@ class RequestService
                 ->setType($method)
                 ->setEndpoint($uri);
 
-            $this->actualAttempts++;//the first attempt
             $this->connClient->request($data);
 
             $jsonResponse = $this->connClient->responseJsonDecode();
@@ -85,9 +82,16 @@ class RequestService
             ReportFactory::doDebugReport(Configuration::getInstance(), ['response' => $jsonResponse]);
             return $this->toResponse($jsonResponse);
         } catch (\Exception $e) {
-            if ($e->getCode() === 428) {
-                $this->actualAttempts++;
-                $this->lastError = $e;
+            if ($e->getCode() === 428) { //timeout on SM api
+                $this->hashData = $this->makeDataHash($data);
+                $this->increaseAttemptsCounterAfterTimeOut($data);
+
+                if ($this->checkExceedingOfRequestAttempts()) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        $e->getCode()
+                    );
+                }
 
                 $this->request($method, $uri, $data);
             } else {
@@ -174,5 +178,35 @@ class RequestService
     protected function checkExceedingOfRequestAttempts()
     {
         return $this->actualAttempts >= $this->maxAttempts;
+    }
+
+    /**
+     * @param array $data
+     * @return string
+     */
+    protected function makeDataHash($data)
+    {
+        return md5(serialize($data));
+    }
+
+    /**
+     * @param array $data - data to send
+     * @return bool
+     */
+    protected function compareDataHash($data)
+    {
+        return ($this->hashData == $this->makeDataHash($data));
+    }
+
+    /**
+     * @param array $dataToSend
+     * @return void
+     */
+    protected function increaseAttemptsCounterAfterTimeOut($dataToSend) {
+        if ($this->compareDataHash($dataToSend)) {
+            $this->actualAttempts++;
+        } else {
+            $this->actualAttempts = 1;
+        }
     }
 }
