@@ -53,7 +53,7 @@ class ReportService
     {
         $this->conf = $conf;
         $this->customerEndpoint = $this->conf->getEndpoint();
-        $this->conf->setEndpoint('https://survey.salesmanago.com/2.0/');
+        $this->conf->setEndpoint('https://survey.salesmanago.com/2.0');
 
         $this->reportModel = new ReportModel($this->conf);
         $this->transferService = new ContactAndEventTransferService($this->conf);

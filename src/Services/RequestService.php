@@ -92,7 +92,7 @@ class RequestService
                         $e->getCode()
                     );
                 }
-
+                $this->connClient->setTimeOut($this->connClient->getTimeOut() + 500);
                 $this->request($method, $uri, $data);
             } else {
                 throw new Exception($e->getMessage(), $e->getCode());
