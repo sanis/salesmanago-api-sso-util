@@ -18,6 +18,32 @@ class RequestService
 {
     private $connClient;
 
+    /**
+     * @var int max attempts to send requests
+     */
+    protected $maxAttempts = 2;
+
+    /**
+     * @var \Exception
+     */
+    protected $lastError;
+
+    /**
+     * @var int quantity of actual attempts
+     */
+    private $actualAttempts = 0;
+
+    /**
+     * @var string - hash of send data;
+     */
+    private $hashData = null;
+
+    /**
+     * RequestService constructor.
+     *
+     * @param ConfigurationInterface $conf
+     * @throws Exception
+     */
     public function __construct(ConfigurationInterface $conf)
     {
         try {
@@ -54,10 +80,23 @@ class RequestService
             $jsonResponse = $this->connClient->responseJsonDecode();
 
             ReportFactory::doDebugReport(Configuration::getInstance(), ['response' => $jsonResponse]);
-
             return $this->toResponse($jsonResponse);
         } catch (\Exception $e) {
-            throw new Exception($e->getMessage(), $e->getCode());
+            if ($e->getCode() === 428) { //timeout on SM api
+                $this->hashData = $this->makeDataHash($data);
+                $this->increaseAttemptsCounterAfterTimeOut($data);
+
+                if ($this->checkExceedingOfRequestAttempts()) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        $e->getCode()
+                    );
+                }
+                $this->connClient->setTimeOut($this->connClient->getTimeOut() + 500);
+                $this->request($method, $uri, $data);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode());
+            }
         }
     }
 
@@ -129,5 +168,45 @@ class RequestService
         $Configuration = Configuration::getInstance();
         $this->connClient
             ->setHost($Configuration->getEndpoint());
+    }
+
+    /**
+     * Checking of max Requests attempts returns true id max attempts reached
+     *
+     * @return bool
+     */
+    protected function checkExceedingOfRequestAttempts()
+    {
+        return $this->actualAttempts >= $this->maxAttempts;
+    }
+
+    /**
+     * @param array $data
+     * @return string
+     */
+    protected function makeDataHash($data)
+    {
+        return md5(serialize($data));
+    }
+
+    /**
+     * @param array $data - data to send
+     * @return bool
+     */
+    protected function compareDataHash($data)
+    {
+        return ($this->hashData == $this->makeDataHash($data));
+    }
+
+    /**
+     * @param array $dataToSend
+     * @return void
+     */
+    protected function increaseAttemptsCounterAfterTimeOut($dataToSend) {
+        if ($this->compareDataHash($dataToSend)) {
+            $this->actualAttempts++;
+        } else {
+            $this->actualAttempts = 1;
+        }
     }
 }

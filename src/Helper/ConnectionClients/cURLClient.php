@@ -33,7 +33,7 @@ class cURLClient
     /**
      * @var int
      */
-    protected $timeOut;
+    protected $timeOut = 1000;
 
     /**
      * @var null - request response;
@@ -63,6 +63,14 @@ class cURLClient
     {
         $this->timeOut = $param;
         return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTimeOut()
+    {
+        return $this->timeOut;
     }
 
     /**
@@ -167,7 +175,10 @@ class cURLClient
 
         if (!isset($this->timeOut) || empty($this->timeOut)) {
             curl_setopt($ch, CURLOPT_TIMEOUT_MS, self::DEFAULT_TIME_OUT);
+        } else {
+            curl_setopt($ch, CURLOPT_TIMEOUT_MS, $this->timeOut);
         }
+
         curl_setopt(
             $ch,
             CURLOPT_HTTPHEADER,

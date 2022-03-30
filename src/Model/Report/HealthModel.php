@@ -3,6 +3,11 @@
 
 namespace SALESmanago\Model\Report;
 
+/**
+ * Class HealthModel
+ * @package SALESmanago\Model\Report
+ * @deprecated since 3.0.11
+ */
 class HealthModel extends AbstractBasicReportModel
 {
     const TYPE_HEALTH = 'health';

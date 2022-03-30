@@ -3,7 +3,11 @@
 
 namespace SALESmanago\Model\Report;
 
-
+/**
+ * Class DebugModel
+ * @package SALESmanago\Model\Report
+ * @deprecated since 3.0.11
+ */
 class DebugModel extends AbstractBasicReportModel
 {
     const TYPE_DEBUG = 'debug';

@@ -222,4 +222,19 @@ interface ConfigurationInterface
      * @return string
      */
     function getLocation();
+
+    /**
+     * Set reporting service to active state
+     *
+     * @return $this
+     */
+    function setActiveReporting($active);
+
+
+    /**
+     * Return active state for reporting
+     *
+     * @return bool
+     */
+    function getActiveReporting();
 }

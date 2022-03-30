@@ -6,7 +6,11 @@ namespace SALESmanago\Model\Report;
 use \DateTime;
 use SALESmanago\Entity\Configuration as Conf;
 
-
+/**
+ * Class AbstractBasicReportModel
+ * @package SALESmanago\Model\Report
+ * @deprecated since 3.0.11
+ */
 abstract class AbstractBasicReportModel implements ReportModelInterface
 {
     const

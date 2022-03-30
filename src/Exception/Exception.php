@@ -4,6 +4,8 @@ namespace SALESmanago\Exception;
 
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Factories\ReportFactory;
+use SALESmanago\Services\Report\ReportService;
+use SALESmanago\Services\RequestService;
 
 class Exception extends \Exception
 {
@@ -15,12 +17,6 @@ class Exception extends \Exception
         MESSAGE = 'Message: ',
         FILE = 'File: ',
         LINE = 'Line: ';
-
-    public function __construct($message = "", $code = 0)
-    {
-        parent::__construct($message, $code);
-        ReportFactory::doHealthReport(Configuration::getInstance(), $this->getLogMessage());
-    }
 
     /**
      * @return string - massage for logs files
@@ -34,6 +30,9 @@ class Exception extends \Exception
         $message.= self::LINE . $this->getLine() . PHP_EOL;
         $message.= self::TRACE;
         $message.= $this->getTraceAsString() . PHP_EOL;
+
+        $this->reportException($message);
+
         return $message;
     }
 
@@ -45,11 +44,15 @@ class Exception extends \Exception
         $message = $this->getMessage() . ': ';
         $message.= $this->getFile() . ': ';
         $message.= $this->getLine() . PHP_EOL;
+
+        $this->reportException($message);
+
         return $message;
     }
 
     /**
-     * @param $code
+     * @param int $code
+     * @return Exception
      */
     public function setCode($code = 0)
     {
@@ -78,5 +81,20 @@ class Exception extends \Exception
         return $this;
     }
 
+    /**
+     * @param string $message
+     * @return void
+     */
+    protected function reportException($message)
+    {
+        try {
+            $ReportService = ReportService::getInstance();
 
+            if($ReportService != null){
+                $ReportService->reportException($message);
+            }
+        } catch (\Exception $e) {
+            //do nothing
+        }
+    }
 }

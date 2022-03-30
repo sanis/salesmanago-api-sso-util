@@ -6,7 +6,7 @@ pipelines:
       - step:
           name: Unit Test
           script:
-            - echo "Start to preparing environment:"
+            - echo "Start to preparing environment"
             - composer install
-            - echo "Run tests:"
-            - ./vendor/bin/phpunit --configuration phpunit.xml tests/Unit/Controller/ExportControllerTest.php --no-coverage --filter testCheckAndFilterContactsCollectionSuccess
+            - echo "Run tests"
+            - userEmail=$userEmail userPass=$userPass ./vendor/bin/phpunit --configuration phpunit.xml tests/Unit/Controller/ExportControllerTest.php --no-coverage --filter testCheckAndFilterContactsCollectionSuccess
