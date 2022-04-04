@@ -54,7 +54,6 @@ class ReportService
         $this->conf = $conf;
         $this->customerEndpoint = $this->conf->getEndpoint();
         $this->reportModel = new ReportModel($this->conf);
-
     }
 
     protected function __clone() {}
