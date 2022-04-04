@@ -53,10 +53,8 @@ class ReportService
     {
         $this->conf = $conf;
         $this->customerEndpoint = $this->conf->getEndpoint();
-        $this->conf->setEndpoint('https://survey.salesmanago.com/2.0');
-
         $this->reportModel = new ReportModel($this->conf);
-        $this->transferService = new ContactAndEventTransferService($this->conf);
+
     }
 
     protected function __clone() {}
@@ -103,6 +101,9 @@ class ReportService
         }
 
         try {
+            $this->conf->setEndpoint('https://survey.salesmanago.com/2.0');
+
+            $this->transferService = new ContactAndEventTransferService($this->conf);
             $this->transferService->transferBoth(
                 $this->reportModel->getClientAsContact($actType),
                 $this->reportModel->getActionAsEvent($actType, $additionalInformation)
@@ -123,8 +124,6 @@ class ReportService
      */
     public function reportException($exceptionViewMessage)
     {
-        $report = $this->reportAction(ReportModel::ACT_EXCEPTION, [$exceptionViewMessage]);
-        $this->conf->setEndpoint($this->customerEndpoint);
-        return $report;
+        return $this->reportAction(ReportModel::ACT_EXCEPTION, [$exceptionViewMessage]);
     }
 }
