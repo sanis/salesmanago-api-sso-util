@@ -9,17 +9,18 @@ use SALESmanago\Helper\EntityDataHelper;
 class Options extends AbstractEntity
 {
     const
-        ASYNC        = 'async',
-        TAGS         = 'tags',
-        R_TAGS       = 'removeTags',
-        TAGS_SCORING = 'tagScoring',
-        F_OPT_IN     = 'forceOptIn',
-        F_OPT_OUT    = 'forceOptOut',
-        F_P_OPT_IN   = 'forcePhoneOptIn',
-        F_P_OPT_OUT  = 'forcePhoneOptOut',
-        N_EMAIL      = 'newEmail',
-        CREATED_ON   = 'createdOn',
-        LANG         = 'lang';
+        ASYNC           = 'async',
+        TAGS            = 'tags',
+        R_TAGS          = 'removeTags',
+        TAGS_SCORING    = 'tagScoring',
+        F_OPT_IN        = 'forceOptIn',
+        F_OPT_OUT       = 'forceOptOut',
+        F_P_OPT_IN      = 'forcePhoneOptIn',
+        F_P_OPT_OUT     = 'forcePhoneOptOut',
+        N_EMAIL         = 'newEmail',
+        CREATED_ON      = 'createdOn',
+        LANG            = 'lang',
+        LOYALTY_PROGRAM = 'loyaltyProgram';
 
     /**
      * @var bool - flag to send contact asynchronously (true) or not (false)
@@ -134,6 +135,17 @@ class Options extends AbstractEntity
      * @var bool
      */
     private $isSubscriptionStatusNoChange = true;
+
+    /**
+     * Flag for loyalty program
+     * During upsert contact might be register to loyalty program
+     * Default value null
+     * if empty string is set ( $loyaltyProgram = '' )  -> response - Specified loyalty program does not exist
+     * if ( $loyaltyProgram = 'Inactive' )              -> response - Specified loyalty program is inactive
+     * if ( $loyaltyProgram = 'Active' )                -> response - Success = true
+     * @var null|string
+     */
+    private $loyaltyProgram = null;
 
     private $optedOut      = null;
     private $optedOutPhone = null;
@@ -654,5 +666,23 @@ class Options extends AbstractEntity
     public function getLastVisit()
     {
         return $this->lastVisit;
+    }
+
+    /**
+     * @param $param
+     * @return $this
+     */
+    public function setLoyaltyProgram($param)
+    {
+        $this->loyaltyProgram = $param;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLoyaltyProgram()
+    {
+        return $this->loyaltyProgram;
     }
 }
