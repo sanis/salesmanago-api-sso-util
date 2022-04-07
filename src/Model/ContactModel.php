@@ -199,6 +199,7 @@ class ContactModel
             Options::TAGS_SCORING               => $Options->getTagScoring(),
             Options::TAGS                       => $Options->getTags(),
             Options::R_TAGS                     => $Options->getRemoveTags(),
+            Options::LOYALTY_PROGRAM            => $Options->getLoyaltyProgram(),
             Contact::BIRTHDAY                   => $Contact->getBirthday(),// attention
             Address::PROVINCE                   => $Address->getProvince(),// attention
             Options::LANG                       => $Options->getLang(),
