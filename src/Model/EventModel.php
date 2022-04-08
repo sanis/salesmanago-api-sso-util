@@ -45,7 +45,7 @@ class EventModel
             $eventRequestArray[Event::CONTACT_EVENT],
             self::getEventDetailsRequestArray($this->Event)
         );
-        return DataHelper::filterDataArray($eventRequestArray);
+        return $this->doubleIdentifierRemove(DataHelper::filterDataArray($eventRequestArray));
     }
 
     /**
@@ -54,7 +54,7 @@ class EventModel
      */
     public static function toArray(Event $Event)
     {
-        return DataHelper::filterDataArray([
+            return self::doubleIdentifierRemove(DataHelper::filterDataArray([
             Event::EMAIL         => $Event->getEmail(),
             Event::CONTACT_ID    => $Event->getContactId(),
             Event::CONTACT_EVENT => array_merge([
@@ -68,7 +68,7 @@ class EventModel
                 Event::EXT_ID         => $Event->getExternalId(),
                 Event::SHOP_DOMAIN    => $Event->getShopDomain()
             ], self::getEventDetailsRequestArray($Event)
-            )]);
+            )]));
     }
 
     /**
@@ -94,5 +94,20 @@ class EventModel
         }
 
         return $eventDetails;
+    }
+
+    /**
+     * Removes email id client_id exist
+     *
+     * @param array $event - basically Entity\Event translate to array;
+     * @return array $event
+     */
+    protected static function doubleIdentifierRemove($event)
+    {
+        if (isset($event[Event::EMAIL]) && isset($event[Event::CONTACT_ID])) {
+            unset($event[Event::EMAIL]);
+        }
+
+        return $event;
     }
 }
