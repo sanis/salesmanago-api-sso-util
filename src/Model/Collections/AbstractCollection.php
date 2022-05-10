@@ -71,9 +71,10 @@ abstract class AbstractCollection implements Collection
     /**
      * Return the current element
      * @link https://php.net/manual/en/iterator.current.php
-     * @return mixed Can return any type.
+     * @return mixed Can return any type. Using annotation
      */
-    public function current(): mixed
+    #[\ReturnTypeWillChange]
+    public function current()
     {
         return current($this->collection);
     }
@@ -83,7 +84,8 @@ abstract class AbstractCollection implements Collection
      * @link https://php.net/manual/en/iterator.next.php
      * @return void Any returned value is ignored.
      */
-    public function next(): mixed
+    #[\ReturnTypeWillChange]
+    public function next()
     {
         return next($this->collection);
     }
@@ -93,7 +95,8 @@ abstract class AbstractCollection implements Collection
      * @link https://php.net/manual/en/iterator.key.php
      * @return string|float|int|bool|null scalar on success, or null on failure.
      */
-    public function key(): mixed
+    #[\ReturnTypeWillChange]
+    public function key()
     {
         return key($this->collection);
     }
@@ -104,10 +107,8 @@ abstract class AbstractCollection implements Collection
      * @return bool The return value will be casted to boolean and then evaluated.
      * Returns true on success or false on failure.
      */
-    public function valid(): mixed
-    {
-        // TODO: Implement valid() method.
-    }
+    #[\ReturnTypeWillChange]
+    public abstract function valid();
 
     /**
      * Rewind the Iterator to the first element
@@ -139,8 +140,6 @@ abstract class AbstractCollection implements Collection
      * which is a value of any type other than a resource.
      * @since 5.4
      */
-    public function jsonSerialize(): mixed
-    {
-        // TODO: Implement jsonSerialize() method.
-    }
+    #[\ReturnTypeWillChange]
+    public abstract function jsonSerialize();
 }

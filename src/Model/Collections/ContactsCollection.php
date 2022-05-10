@@ -9,7 +9,7 @@ use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;
 
-class ContactsCollection extends AbstractCollection
+abstract class ContactsCollection extends AbstractCollection
 {
     /**
      * @throws Exception
