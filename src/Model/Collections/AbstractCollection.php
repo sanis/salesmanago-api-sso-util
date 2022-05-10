@@ -108,7 +108,10 @@ abstract class AbstractCollection implements Collection
      * Returns true on success or false on failure.
      */
     #[\ReturnTypeWillChange]
-    public abstract function valid();
+    public function valid()
+    {
+        return false;
+    }
 
     /**
      * Rewind the Iterator to the first element
@@ -141,5 +144,8 @@ abstract class AbstractCollection implements Collection
      * @since 5.4
      */
     #[\ReturnTypeWillChange]
-    public abstract function jsonSerialize();
+    public function jsonSerialize()
+    {
+        return '';
+    }
 }

@@ -7,7 +7,7 @@ use SALESmanago\Entity\Event\Event;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\EventModel;
 
-abstract class EventsCollection extends AbstractCollection
+class EventsCollection extends AbstractCollection
 {
     /**
      * @throws Exception
