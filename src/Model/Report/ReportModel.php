@@ -6,6 +6,7 @@ namespace SALESmanago\Model\Report;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Event\Event;
+use SALESmanago\Exception\Exception;
 
 class ReportModel
 {
@@ -116,11 +117,13 @@ class ReportModel
      * @param string $actionType one of const
      * @param array $arr
      * @return Event
+     * @throws Exception
      */
     public function getActionAsEvent($actionType = self::ACT_UNKNOWN, $arr = [])
     {
         $Event = $this->getEvent()
             ->setEmail($this->conf->getOwner())
+            ->setDate(time())
             ->setProducts($this->conf->getPlatformVersion())
             ->setLocation($this->conf->getVersionOfIntegration())
             ->setDetail('PHP:' . $this->conf->getPhpVersion(), 1)
