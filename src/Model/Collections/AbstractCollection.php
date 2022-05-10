@@ -107,8 +107,7 @@ abstract class AbstractCollection implements Collection
      * @return bool The return value will be casted to boolean and then evaluated.
      * Returns true on success or false on failure.
      */
-    #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return false;
     }
