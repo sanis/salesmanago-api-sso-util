@@ -30,7 +30,7 @@ class ContactsCollection extends AbstractCollection
      * Parse Collection to array
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $contacts = [];
 
