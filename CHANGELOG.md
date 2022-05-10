@@ -1,6 +1,9 @@
 SALESmanago library for integrations
 ------------------------------------
 Version 3.0.12 30.03.2022
+- up required minimum PHP version to 7.0;
+
+Version 3.0.12 30.03.2022
 - Add loyaltyProgram field to request contact/UPSERT structure;
 - add new reporting logic;
 
