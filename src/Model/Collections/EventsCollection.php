@@ -28,7 +28,7 @@ class EventsCollection extends AbstractCollection
      * Parse Collection to array
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $events = [];
         if (!$this->isEmpty()) {
