@@ -15,7 +15,7 @@ abstract class AbstractCollection implements Collection
      * @param mixed $object
      * @return AbstractCollection
      */
-    abstract function addItem($object);
+    public abstract function addItem($object);
 
     /**
      * @return array of objects
@@ -55,7 +55,7 @@ abstract class AbstractCollection implements Collection
      * Parse Collection to array
      * @return array
      */
-    abstract function toArray(): array;
+    public abstract function toArray(): array;
 
     /**
      * Remove Item;

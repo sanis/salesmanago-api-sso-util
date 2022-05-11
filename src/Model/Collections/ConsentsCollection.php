@@ -38,7 +38,7 @@ class ConsentsCollection extends AbstractCollection
     /**
      * @return array
      */
-    function toArray()
+   public function toArray(): array
     {
         $consents = [];
 
