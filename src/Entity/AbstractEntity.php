@@ -16,7 +16,7 @@ class AbstractEntity
      * @param array $data
      * @throws Exception
      */
-    protected function setDataWithSetters($data)
+    protected function setDataWithSetters($data): void
     {
         if (empty($data)) {
             throw new Exception('Empty passed data');
@@ -38,7 +38,7 @@ class AbstractEntity
     /**
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $out = array();
         foreach (get_object_vars($this) as $key=>$val) {
