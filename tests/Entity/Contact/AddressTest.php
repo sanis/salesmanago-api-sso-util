@@ -3,6 +3,7 @@
 
 namespace Tests\Contact\Entity;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Entity\Contact\Address;
 use Faker;
@@ -103,7 +104,7 @@ class AddressTest extends TestCase
 
     /**
      * DataProvider for testSetCitySuccess
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestSetCitySuccess() {
         $faker = Faker\Factory::create();
@@ -118,7 +119,7 @@ class AddressTest extends TestCase
     /**
      * DataProvider - for testSetItemsAsArraySuccess()
      *
-     * @return \string[][]
+     * @return string[][]
      */
     public function provideTestSetItemsAsArray()
     {

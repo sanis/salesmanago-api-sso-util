@@ -3,6 +3,7 @@
 
 namespace Tests\Unit\Services;
 
+use Exception;
 use Tests\Unit\TestCaseUnit;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Services\Report\ReportService;
@@ -15,7 +16,7 @@ class ReportServiceTest extends TestCaseUnit
     /**
      * Test Report test Action
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function testReportActionSuccess()
     {

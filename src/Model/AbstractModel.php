@@ -2,6 +2,9 @@
 
 namespace SALESmanago\Model;
 
+use Exception;
+use PDO;
+
 /**
  * @abstract
  */
@@ -19,13 +22,13 @@ abstract class AbstractModel
     public function __construct($config)
     {
         try {
-            $this->pdo = new \PDO(
+            $this->pdo = new PDO(
                 $config['connection'],
                 $config['user'],
                 $config['pass']
             );
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } catch (\Exception $e) {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (Exception $e) {
             echo 'The connect can not create: ' . $e->getMessage();
         }
     }
@@ -48,7 +51,7 @@ abstract class AbstractModel
         if ($limit != NULL)
             $query = $query . ' LIMIT ' . $limit;
 
-        $select = $this->pdo->query($query, \PDO::FETCH_ASSOC);
+        $select = $this->pdo->query($query, PDO::FETCH_ASSOC);
 
         $data = [];
         foreach ($select as $row) {

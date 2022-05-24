@@ -3,6 +3,7 @@
 
 namespace Tests\Contact\Entity;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 use SALESmanago\Exception\Exception;
@@ -52,7 +53,7 @@ final class ContactTest extends TestCase
     /**
      * DataProvider
      *
-     * @return \string[][]
+     * @return string[][]
      */
     public function provideTestSetItemsAsArray()
     {
@@ -99,7 +100,7 @@ final class ContactTest extends TestCase
 
     /**
      * DataProvider for testSetItemsAsArrayThrowExceptionSuccess()
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestSetItemsAsArrayThrowExceptionSuccess(){
         yield['string'];
