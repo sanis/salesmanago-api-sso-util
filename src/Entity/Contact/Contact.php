@@ -2,6 +2,7 @@
 
 namespace SALESmanago\Entity\Contact;
 
+use DateTime;
 use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
 
@@ -229,11 +230,11 @@ class Contact extends AbstractEntity
         }
         if (is_bool($param) || empty($param)) {
             throw new Exception('Passed argument isn\'t timestamp');
-        } elseif ($param instanceof \DateTime) {
+        } elseif ($param instanceof DateTime) {
             $this->birthday = $param->format('Ymd');
         } elseif (EntityDataHelper::isTimestamp($param)) {
             try {
-                $birthday = new \DateTime($param);
+                $birthday = new DateTime($param);
             } catch (\Exception $e) {
                 throw new Exception($e->getMessage());
             }
@@ -255,7 +256,7 @@ class Contact extends AbstractEntity
     }
 
     /**
-     * @param \SALESmanago\Entity\Contact\Address $ContactAddress
+     * @param Address $ContactAddress
      * @return $this
      */
     public function setAddress(Address $ContactAddress)
@@ -265,7 +266,7 @@ class Contact extends AbstractEntity
     }
 
     /**
-     * @return \SALESmanago\Entity\Contact\Address
+     * @return Address
      */
     public function getAddress()
     {
@@ -275,7 +276,7 @@ class Contact extends AbstractEntity
     }
 
     /**
-     * @param \SALESmanago\Entity\Contact\Options $Options
+     * @param Options $Options
      * @return $this
      */
     public function setOptions(Options $Options)
@@ -286,7 +287,7 @@ class Contact extends AbstractEntity
 
     /**
      * @param array $options
-     * @return \SALESmanago\Entity\Contact\Options
+     * @return Options
      */
     public function getOptions($options = [])
     {
@@ -296,7 +297,7 @@ class Contact extends AbstractEntity
     }
 
     /**
-     * @param \SALESmanago\Entity\Contact\Properties $Properties
+     * @param Properties $Properties
      * @return $this
      */
     public function setProperties(Properties $Properties)
@@ -307,7 +308,7 @@ class Contact extends AbstractEntity
 
     /**
      * @param array $properties
-     * @return \SALESmanago\Entity\Contact\Properties
+     * @return Properties
      */
     public function getProperties($properties = [])
     {

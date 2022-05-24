@@ -4,12 +4,13 @@
 namespace SALESmanago\Entity;
 
 
+use JsonSerializable;
 use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Entity\Reporting\Platform;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Entity\ConfigurationInterface;
 
-class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, \JsonSerializable
+class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, JsonSerializable
 {
     const
         ACTIVE              = 'active',
@@ -202,8 +203,8 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
      */
     private $platformLang = 'unavailable';
 
-    protected function __construct() {}
-    protected function __clone() {}
+    final protected function __construct() {}
+    final protected function __clone() {}
 
     /**
      * @throws Exception

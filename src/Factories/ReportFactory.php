@@ -4,6 +4,7 @@
 namespace SALESmanago\Factories;
 
 
+use Exception;
 use SALESmanago\Entity\ReportConfigurationInterface;
 
 use SALESmanago\Services\Report\DebugService;
@@ -28,7 +29,8 @@ class ReportFactory
             $healthReportService
                 ->setData($data)
                 ->doReport();
-        } catch (\Exception $exception) {
+            return true;
+        } catch (Exception $exception) {
             return false;
         }
     }
@@ -49,8 +51,8 @@ class ReportFactory
             $healthReportService
                 ->setData($data)
                 ->doReport();
-
-        } catch (\Exception $exception) {
+            return true;
+        } catch (Exception $exception) {
             return false;
         }
     }
@@ -71,7 +73,8 @@ class ReportFactory
             $healthReportService
                 ->setData($data)
                 ->doReport();
-        } catch (\Exception $exception) {
+            return true;
+        } catch (Exception $exception) {
             return false;
         }
 

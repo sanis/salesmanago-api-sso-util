@@ -3,9 +3,12 @@
 namespace Tests\Model\Collections;
 
 use Faker;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Entity\Consent;
+use SALESmanago\Exception\Exception;
 use SALESmanago\Model\Collections\ConsentsCollection;
+use stdClass;
 
 class ConsentsCollectionTest extends TestCase
 {
@@ -15,7 +18,7 @@ class ConsentsCollectionTest extends TestCase
      * @param $expectedOutput
      *
      * @return void
-     * @throws \SALESmanago\Exception\Exception
+     * @throws Exception
      */
     public function testAddItemSuccess($input, $expectedOutput)
     {
@@ -26,7 +29,7 @@ class ConsentsCollectionTest extends TestCase
 
     /**
      * @return void
-     * @throws \SALESmanago\Exception\Exception
+     * @throws Exception
      */
     public function testAddItemFail()
     {
@@ -34,7 +37,7 @@ class ConsentsCollectionTest extends TestCase
         $this->expectExceptionMessage('Not right entity type');
 
         $ConsentCollection = new ConsentsCollection();
-        $ConsentCollection->addItem(new \stdClass());
+        $ConsentCollection->addItem(new stdClass());
     }
 
     /**
@@ -51,7 +54,7 @@ class ConsentsCollectionTest extends TestCase
 
     /**
      * DataProvider for testAddItemSuccess()
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestAddItemSuccess()
     {
@@ -69,8 +72,8 @@ class ConsentsCollectionTest extends TestCase
 
     /**
      * DataProvider for testToArray()
-     * @return \Generator
-     * @throws \SALESmanago\Exception\Exception
+     * @return Generator
+     * @throws Exception
      */
     public function provideTestToArray()
     {

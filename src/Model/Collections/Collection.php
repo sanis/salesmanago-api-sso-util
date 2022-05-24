@@ -3,11 +3,15 @@
 
 namespace SALESmanago\Model\Collections;
 
+use Countable;
+use Iterator;
+use JsonSerializable;
+
 /**
  * Interface Collection
  * @package SALESmanago\Model\Collections
  */
-interface Collection extends \Iterator, \Countable, \JsonSerializable
+interface Collection extends Iterator, Countable, JsonSerializable
 {
     /**
      * Clear current collection

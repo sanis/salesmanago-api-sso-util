@@ -2,6 +2,7 @@
 
 namespace Tests\Entity;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Faker;
 use SALESmanago\Entity\Consent;
@@ -101,7 +102,7 @@ class ConsentTest extends TestCase
 
     /**
      * DataProvider for testSetConsentName()
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestSetConsentName()
     {
@@ -118,7 +119,7 @@ class ConsentTest extends TestCase
 
     /**
      * DataProvider for testSetConsentAccept()
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestSetConsentAccept()
     {
@@ -129,7 +130,7 @@ class ConsentTest extends TestCase
 
     /**
      * DataProvider for testSetAgreementDate()
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestSetAgreementDate()
     {
@@ -140,7 +141,7 @@ class ConsentTest extends TestCase
 
     /**
      * DataProvider for testSetIp()
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestSetIp()
     {
@@ -154,7 +155,7 @@ class ConsentTest extends TestCase
 
     /**
      * DataProvider for testSetOptOut()
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestSetOptOut()
     {
@@ -165,7 +166,7 @@ class ConsentTest extends TestCase
 
     /**
      * DataProvider for testSetConsentDescriptionId()
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestSetConsentDescriptionId()
     {

@@ -49,7 +49,7 @@ class ReportService
      *
      * @param ConfigurationInterface $conf
      */
-    private function __construct(ConfigurationInterface $conf)
+    final private function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
         $this->customerEndpoint = $this->conf->getEndpoint();

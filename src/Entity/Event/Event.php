@@ -4,6 +4,7 @@
 namespace SALESmanago\Entity\Event;
 
 
+use DateTime;
 use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Helper\EntityDataHelper;
@@ -202,11 +203,11 @@ class Event extends AbstractEntity
             throw new Exception('Passed argument isn\'t timestamp');
         } elseif (EntityDataHelper::isUnixTime($param)) {
             $this->date = $param*1000;
-        } elseif ($param instanceof \DateTime) {
+        } elseif ($param instanceof DateTime) {
             $this->date = strtotime($param->format('Y-m-d H:i:sP'))*1000;
         } elseif (EntityDataHelper::isTimestamp($param)) {
             try {
-                $date = new \DateTime($param);
+                $date = new DateTime($param);
             } catch (\Exception $e) {
                 throw new Exception($e->getMessage());
             }

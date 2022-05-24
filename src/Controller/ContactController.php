@@ -9,7 +9,7 @@ use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Model\ContactModel;
 use SALESmanago\Services\ContactService;
-use \SALESmanago\Exception\Exception;
+use SALESmanago\Exception\Exception;
 
 class ContactController
 {

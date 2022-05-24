@@ -5,7 +5,7 @@ namespace Tests\Unit\Controller;
 
 use Faker;
 use Tests\Unit\TestCaseUnit;
-use \ReflectionException;
+use ReflectionException;
 
 use SALESmanago\Controller\ExportController;
 use SALESmanago\Entity\Event\Event;

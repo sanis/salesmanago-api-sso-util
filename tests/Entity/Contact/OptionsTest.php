@@ -2,6 +2,8 @@
 
 namespace Tests\Contact\Entity;
 
+use DateTime;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Entity\Contact\Options;
@@ -55,7 +57,7 @@ final class OptionsTest extends TestCase
 
     /**
      * DataProvider for testSetTagsSuccess()
-     * @return \Generator
+     * @return Generator
      */
     public function provideTestSetTagsSuccess()
     {
@@ -95,16 +97,16 @@ final class OptionsTest extends TestCase
         $string2 = $faker->dayOfMonth($max = 'now').'-'.$faker->monthName($max = 'now').'-'.$faker->year($max = 'now');
         $string3 = $faker->dateTime($max = 'now', $timezone = null)->format('Ymd');
 
-        $isoExpected = new \DateTime($iso);
+        $isoExpected = new DateTime($iso);
         $isoExpected = $isoExpected->format('Ymd');
 
-        $dateExpected = new \DateTime($date);
+        $dateExpected = new DateTime($date);
         $dateExpected = $dateExpected->format('Ymd');
 
-        $string1Expected = new \DateTime($string1);
+        $string1Expected = new DateTime($string1);
         $string1Expected = $string1Expected->format('Ymd');
 
-        $string2Expected = new \DateTime($string2);
+        $string2Expected = new DateTime($string2);
         $string2Expected = $string2Expected->format('Ymd');
 
         return [
@@ -246,16 +248,16 @@ final class OptionsTest extends TestCase
         $string2 = $faker->dayOfMonth($max = 'now').'-'.$faker->monthName($max = 'now').'-'.$faker->year($max = 'now');
         $string3 = $faker->dateTime($max = 'now', $timezone = null)->format('Ymd');
 
-        $isoExpected = new \DateTime($iso);
+        $isoExpected = new DateTime($iso);
         $isoExpected = $isoExpected->format('Ymd');
 
-        $dateExpected = new \DateTime($date);
+        $dateExpected = new DateTime($date);
         $dateExpected = $dateExpected->format('Ymd');
 
-        $string1Expected = new \DateTime($string1);
+        $string1Expected = new DateTime($string1);
         $string1Expected = $string1Expected->format('Ymd');
 
-        $string2Expected = new \DateTime($string2);
+        $string2Expected = new DateTime($string2);
         $string2Expected = $string2Expected->format('Ymd');
 
         return [

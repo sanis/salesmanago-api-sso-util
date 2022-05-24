@@ -5,9 +5,9 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
-use \ReflectionClass;
-use \ReflectionMethod;
-use \ReflectionException;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionException;
 
 use SALESmanago\Controller\LoginController;
 use SALESmanago\Entity\Configuration;
