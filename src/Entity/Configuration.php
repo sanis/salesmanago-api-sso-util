@@ -990,7 +990,9 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     {
         $this->RequestClientConf = $RequestClientConf;
 
-        if (empty($RequestClientConf->getEndpoint())) {
+        if (empty($RequestClientConf->getUrl())
+            && empty($RequestClientConf->getHost())
+        ) {
             $this->RequestClientConf->setUrl($this->getEndpoint());
         }
 
