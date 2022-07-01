@@ -78,7 +78,7 @@ class cURLClient
 
     /**
      * @deprecated since v3.1.1
-     * @see cURLClient::setConfiguration()
+     * @see cURLClient->setConfiguration()
      *
      * @param string $param
      */
@@ -90,7 +90,7 @@ class cURLClient
 
     /**
      * @deprecated since v3.1.1
-     * @see cURLClient::setConfiguration()
+     * @see cURLClient->setConfiguration()
      *
      * @param string $param
      */
@@ -102,7 +102,7 @@ class cURLClient
 
     /**
      * @deprecated since v3.1.1
-     * @see cURLClient::setConfiguration()
+     * @see cURLClient->setConfiguration()
      *
      * @param int $param
      * @return $this
@@ -115,7 +115,7 @@ class cURLClient
 
     /**
      * @deprecated since v3.1.1
-     * @see cURLClient::setConfiguration()
+     * @see cURLClient->setConfiguration()
      * @see RequestClientConfigurationInterface
      *
      * @param string $param
@@ -137,7 +137,7 @@ class cURLClient
 
     /**
      * @deprecated since v3.1.1
-     * @see cURLClient::setConfiguration()
+     * @see cURLClient->setConfiguration()
      * @see RequestClientConfigurationInterface
      *
      * @param array $param
