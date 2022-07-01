@@ -230,11 +230,20 @@ interface ConfigurationInterface
      */
     function setActiveReporting($active);
 
-
     /**
      * Return active state for reporting
      *
      * @return bool
      */
     function getActiveReporting();
+
+    /**
+     * @return mixed
+     */
+    function setRequestClientConf(RequestClientConfigurationInterface $RequestClientConf);
+
+    /**
+     * @return RequestClientConfigurationInterface|null
+     */
+    function getRequestClientConf();
 }

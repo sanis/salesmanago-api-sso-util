@@ -9,6 +9,7 @@ use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Entity\Reporting\Platform;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Entity\ConfigurationInterface;
+use SALESmanago\Entity\RequestClientConfigurationInterface;
 
 class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, JsonSerializable
 {
@@ -203,6 +204,11 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
      */
     private $platformLang = 'unavailable';
 
+    /**
+     * @var RequestClientConfigurationInterface;
+     */
+    private $RequestClientConf;
+
     final protected function __construct() {}
     final protected function __clone() {}
 
@@ -243,7 +249,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
 
     /**
      * Sets data from array
-     * @param $data
+     * @param array $data
      * @return $this;
      * @throws Exception
      */
@@ -974,6 +980,29 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     public function isActiveUsage()
     {
         return $this->activeUsage;
+    }
+
+    /**
+     * @param RequestClientConfigurationInterface $RequestClientConf
+     * @return self
+     */
+    public function setRequestClientConf(RequestClientConfigurationInterface $RequestClientConf)
+    {
+        $this->RequestClientConf = $RequestClientConf;
+
+        if (empty($RequestClientConf->getEndpoint())) {
+            $this->RequestClientConf->setUrl($this->getEndpoint());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return RequestClientConfigurationInterface|null
+     */
+    public function getRequestClientConf()
+    {
+        return (isset($this->RequestClientConf)) ? $this->RequestClientConf : null;
     }
 
     /**
