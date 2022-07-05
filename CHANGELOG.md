@@ -1,5 +1,8 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.1.1 10.05.2022
+- add configurable timeOuts for SALESmanago\Helper\ConnectionClients\cURLClient though Entity\Configuration;
+
 Version 3.1.0 10.05.2022
 - upgrade required minimum PHP version to 7.0;
 
