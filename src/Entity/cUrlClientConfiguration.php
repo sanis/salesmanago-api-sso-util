@@ -7,6 +7,11 @@ use SALESmanago\Exception\Exception;
 class cUrlClientConfiguration extends AbstractEntity implements RequestClientConfigurationInterface
 {
 
+    const
+        TIMEOUT            = 'timeout',
+        TIMEOUT_MS         = 'timeoutms',
+        CONNECT_TIMEOUT_MS = 'connectimeoutms';
+
     /**
      * @var int - The maximum number of seconds to allow cURL functions to execute.
      */
