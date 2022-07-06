@@ -243,7 +243,7 @@ interface ConfigurationInterface
     function setRequestClientConf(RequestClientConfigurationInterface $RequestClientConf);
 
     /**
-     * @return RequestClientConfigurationInterface|null
+     * @return RequestClientConfigurationInterface
      */
     function getRequestClientConf();
 }

@@ -49,7 +49,9 @@ class RequestService
         try {
             $this->connClient = new cURLClient();
 
-            if ($conf->getRequestClientConf() != null) {
+            if (!empty($conf->getRequestClientConf()->getHeaders())
+                || empty($conf->getRequestClientConf()->getHost())
+            ) {
                 $this->connClient->setConfiguration($conf->getRequestClientConf());
             } else {
                 $this->connClient
@@ -88,7 +90,7 @@ class RequestService
             ReportFactory::doDebugReport(Configuration::getInstance(), ['response' => $jsonResponse]);
             return $this->toResponse($jsonResponse);
         } catch (\Exception $e) {
-            if ($e->getCode() === 428) { //timeout on SM api
+            if ($e->getCode() === 428 && Configuration::getInstance()->getRetryRequestIfTimeout()) {//timeout on SM api
                 $this->hashData = $this->makeDataHash($data);
                 $this->increaseAttemptsCounterAfterTimeOut($data);
 

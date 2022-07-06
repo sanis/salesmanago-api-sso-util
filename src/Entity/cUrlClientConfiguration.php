@@ -9,8 +9,10 @@ class cUrlClientConfiguration extends AbstractEntity implements RequestClientCon
 
     const
         TIMEOUT            = 'timeout',
-        TIMEOUT_MS         = 'timeoutms',
-        CONNECT_TIMEOUT_MS = 'connectimeoutms';
+        TIMEOUT_MS         = 'timeOutMs',
+        CONNECT_TIMEOUT_MS = 'connectTimeOutMs',
+        HOST               = 'host',
+        URL                = 'url';
 
     /**
      * @var int - The maximum number of seconds to allow cURL functions to execute.
