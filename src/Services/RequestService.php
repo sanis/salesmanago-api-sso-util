@@ -50,7 +50,7 @@ class RequestService
             $this->connClient = new cURLClient();
 
             if (!empty($conf->getRequestClientConf()->getHeaders())
-                || empty($conf->getRequestClientConf()->getHost())
+                && !empty($conf->getRequestClientConf()->getHost())
             ) {
                 $this->connClient->setConfiguration($conf->getRequestClientConf());
             } else {
@@ -61,6 +61,8 @@ class RequestService
                         'Content-Type' => 'application/json;charset=UTF-8'
                     ]);
             }
+
+
 
         } catch (\Exception $e) {
             throw new Exception('Error while setting Connection Client: ' . $e->getMessage(), 401);

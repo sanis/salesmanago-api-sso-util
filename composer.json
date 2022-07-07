@@ -32,5 +32,8 @@
         "psr-4": {
             "Tests\\": ["tests/"]
         }
+    },
+    "scripts": {
+        "test-unit": "./vendor/bin/phpunit --configuration phpunit.xml tests/Feature"
     }
 }

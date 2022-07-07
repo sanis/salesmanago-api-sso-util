@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Tests\Unit\Controller;
+namespace Tests\Feature\Controller;
 
 use Faker;
-use Tests\Unit\TestCaseUnit;
+use Tests\Feature\TestCaseUnit;
 use ReflectionException;
 
 use SALESmanago\Controller\ExportController;
@@ -13,6 +13,7 @@ use SALESmanago\Model\Collections\ContactsCollection;
 use SALESmanago\Model\Collections\EventsCollection;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Exception\Exception;
+use SALESmanago\Entity\cUrlClientConfiguration;
 
 
 class ExportControllerTest extends TestCaseUnit
@@ -23,6 +24,13 @@ class ExportControllerTest extends TestCaseUnit
     public function testExportEventsSuccess()
     {
         $conf = $this->initConf();
+        $conf->setRequestClientConf(
+            new cUrlClientConfiguration(
+                [
+                    cUrlClientConfiguration::HOST => $conf->getEndpoint()
+                ]
+            )
+        );
 
         $faker = Faker\Factory::create();
         $eventCollection = new EventsCollection();
@@ -34,8 +42,9 @@ class ExportControllerTest extends TestCaseUnit
                     ->setEmail($faker->email)
                     ->setContactExtEventType(Event::EVENT_TYPE_PURCHASE)
                     ->setProducts($faker->uuid)
-                    ->setDescription($faker->text(200))
-                    ->setDate($faker->time())
+                    //@todo
+                    ->setDescription('$faker->words(3)')
+                    ->setDate(time())
                     ->setExternalId($faker->uuid)
                     ->setLocation($faker->sha1)
                     ->setValue($faker->randomNumber())
@@ -44,6 +53,8 @@ class ExportControllerTest extends TestCaseUnit
 
         $exportController = new ExportController($conf);
         $Response = $exportController->export($eventCollection);
+//        var_dump($Response->getStatus());
+//        die;
         $this->assertEquals(true, $Response->getStatus());
     }
 
