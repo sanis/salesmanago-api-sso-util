@@ -52,8 +52,6 @@ class ExportControllerTest extends TestCaseUnit
 
         $exportController = new ExportController($conf);
         $Response = $exportController->export($eventCollection);
-//        var_dump($Response->getStatus());
-//        die;
         $this->assertEquals(true, $Response->getStatus());
     }
 

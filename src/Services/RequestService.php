@@ -61,9 +61,6 @@ class RequestService
                         'Content-Type' => 'application/json;charset=UTF-8'
                     ]);
             }
-
-
-
         } catch (\Exception $e) {
             throw new Exception('Error while setting Connection Client: ' . $e->getMessage(), 401);
         }

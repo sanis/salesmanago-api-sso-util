@@ -91,7 +91,7 @@ class ReportService
      * @param $actType - one of ReportModel const ACT_...
      * @param array $additionalInformation
      *
-     * @return false
+     * @return bool
      */
     public function reportAction($actType, $additionalInformation = [])
     {
@@ -110,9 +110,6 @@ class ReportService
             $this->conf->setEndpoint($this->customerEndpoint);
             return true;
         } catch (Exception $e) {
-            var_dump($e->getMessage());
-            var_dump($e->getTraceAsString());
-            die;
             $this->conf->setEndpoint($this->customerEndpoint);
             return false;
         }
