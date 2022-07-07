@@ -3,3 +3,4 @@ vendor/
 composer.lock
 docker-compose.yml
 .phpunit.result.cache
+dev.phpunit.xml

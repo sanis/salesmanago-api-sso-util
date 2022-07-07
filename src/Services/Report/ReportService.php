@@ -91,7 +91,7 @@ class ReportService
      * @param $actType - one of ReportModel const ACT_...
      * @param array $additionalInformation
      *
-     * @return false
+     * @return bool
      */
     public function reportAction($actType, $additionalInformation = [])
     {

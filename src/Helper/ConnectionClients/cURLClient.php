@@ -116,6 +116,17 @@ class cURLClient
     /**
      * @deprecated since v3.1.1
      * @see cURLClient->setConfiguration()
+     *
+     * @return int
+     */
+    public function getTimeOut()
+    {
+        return $this->timeOutMs;
+    }
+
+    /**
+     * @deprecated since v3.1.1
+     * @see cURLClient->setConfiguration()
      * @see RequestClientConfigurationInterface
      *
      * @param string $param
@@ -251,9 +262,12 @@ class cURLClient
         $this->timeOutMs        = $Conf->getTimeOutMs();
         $this->connectTimeOutMs = $Conf->getConnectTimeOutMs();
         $this->endpoint         = $Conf->getEndpoint();
-        $this->url              = $Conf->getUrl();
         $this->host             = $Conf->getHost();
         $this->headers          = $Conf->getHeaders();
+
+        if (!empty($Conf->getUrl())) {
+            $this->url = $Conf->getUrl();
+        }
 
         return $this;
     }

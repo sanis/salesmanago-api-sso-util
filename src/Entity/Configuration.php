@@ -14,18 +14,19 @@ use SALESmanago\Entity\RequestClientConfigurationInterface;
 class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, JsonSerializable
 {
     const
-        ACTIVE              = 'active',
-        ENDPOINT            = 'endpoint',
-        CLIENT_ID           = 'clientId',
-        API_KEY             = 'apiKey',
-        API_SECRET          = 'apiSecret',
-        OWNER               = 'owner',
-        EMAIL               = 'email',
-        SHA                 = 'sha',
-        TOKEN               = 'token',
-        IGNORED_DOMAINS     = 'ignoredDomains',
-        CONTACT_COOKIE_TTL  = 'contactCookieTtl',
-        EVENT_COOKIE_TTL    = 'eventCookieTtl';
+        ACTIVE                   = 'active',
+        ENDPOINT                 = 'endpoint',
+        CLIENT_ID                = 'clientId',
+        API_KEY                  = 'apiKey',
+        API_SECRET               = 'apiSecret',
+        OWNER                    = 'owner',
+        EMAIL                    = 'email',
+        SHA                      = 'sha',
+        TOKEN                    = 'token',
+        IGNORED_DOMAINS          = 'ignoredDomains',
+        CONTACT_COOKIE_TTL       = 'contactCookieTtl',
+        EVENT_COOKIE_TTL         = 'eventCookieTtl',
+        RETRY_REQUEST_IF_TIMEOUT = 'retryRequestIfTimeout';
 
     private static $instances = [];
 
@@ -208,6 +209,11 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
      * @var RequestClientConfigurationInterface;
      */
     private $RequestClientConf;
+
+    /**
+     * @var bool enables retry feature for request which are get timeout
+     */
+    private $retryRequestIfTimeout = false;
 
     final protected function __construct() {}
     final protected function __clone() {}
@@ -1000,11 +1006,41 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     }
 
     /**
+     * @param array|null $data
      * @return RequestClientConfigurationInterface|null
+     * @throws Exception
      */
-    public function getRequestClientConf()
+    public function getRequestClientConf($data = null)
     {
-        return (isset($this->RequestClientConf)) ? $this->RequestClientConf : null;
+        if ($data != null) {
+            if (isset($this->RequestClientConf)) {
+                $this->RequestClientConf->setDataWithSetters($data);
+                return $this->RequestClientConf;
+            }
+            return new cUrlClientConfiguration($data);
+        } elseif (isset($this->RequestClientConf)) {
+            return $this->RequestClientConf;
+        }
+
+        return new cUrlClientConfiguration();
+    }
+
+    /**
+     * @param $bool
+     * @return $this
+     */
+    public function setRetryRequestIfTimeout($bool)
+    {
+        $this->retryRequestIfTimeout = $bool;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getRetryRequestIfTimeout()
+    {
+        return $this->retryRequestIfTimeout;
     }
 
     /**
