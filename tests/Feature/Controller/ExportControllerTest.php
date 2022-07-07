@@ -42,8 +42,7 @@ class ExportControllerTest extends TestCaseUnit
                     ->setEmail($faker->email)
                     ->setContactExtEventType(Event::EVENT_TYPE_PURCHASE)
                     ->setProducts($faker->uuid)
-                    //@todo
-                    ->setDescription('$faker->words(3)')
+                    ->setDescription($faker->text)
                     ->setDate(time())
                     ->setExternalId($faker->uuid)
                     ->setLocation($faker->sha1)
