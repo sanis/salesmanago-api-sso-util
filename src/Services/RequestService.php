@@ -48,12 +48,19 @@ class RequestService
     {
         try {
             $this->connClient = new cURLClient();
-            $this->connClient
-                ->setHost($conf->getEndpoint())
-                ->setHeader([
-                    'Accept'       => 'application/json',
-                    'Content-Type' => 'application/json;charset=UTF-8'
-                ]);
+
+            if (!empty($conf->getRequestClientConf()->getHeaders())
+                && !empty($conf->getRequestClientConf()->getHost())
+            ) {
+                $this->connClient->setConfiguration($conf->getRequestClientConf());
+            } else {
+                $this->connClient
+                    ->setHost($conf->getEndpoint())
+                    ->setHeader([
+                        'Accept'       => 'application/json',
+                        'Content-Type' => 'application/json;charset=UTF-8'
+                    ]);
+            }
         } catch (\Exception $e) {
             throw new Exception('Error while setting Connection Client: ' . $e->getMessage(), 401);
         }
@@ -82,7 +89,7 @@ class RequestService
             ReportFactory::doDebugReport(Configuration::getInstance(), ['response' => $jsonResponse]);
             return $this->toResponse($jsonResponse);
         } catch (\Exception $e) {
-            if ($e->getCode() === 428) { //timeout on SM api
+            if ($e->getCode() === 428 && Configuration::getInstance()->getRetryRequestIfTimeout()) {//timeout on SM api
                 $this->hashData = $this->makeDataHash($data);
                 $this->increaseAttemptsCounterAfterTimeOut($data);
 

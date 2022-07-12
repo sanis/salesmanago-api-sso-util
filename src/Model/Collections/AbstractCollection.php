@@ -4,6 +4,8 @@
 namespace SALESmanago\Model\Collections;
 
 
+use ReturnTypeWillChange;
+
 abstract class AbstractCollection implements Collection
 {
     /**
@@ -73,7 +75,7 @@ abstract class AbstractCollection implements Collection
      * @link https://php.net/manual/en/iterator.current.php
      * @return mixed Can return any type. Using annotation
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         return current($this->collection);
@@ -84,7 +86,7 @@ abstract class AbstractCollection implements Collection
      * @link https://php.net/manual/en/iterator.next.php
      * @return void Any returned value is ignored.
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function next()
     {
         return next($this->collection);
@@ -95,7 +97,7 @@ abstract class AbstractCollection implements Collection
      * @link https://php.net/manual/en/iterator.key.php
      * @return string|float|int|bool|null scalar on success, or null on failure.
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         return key($this->collection);
@@ -142,7 +144,7 @@ abstract class AbstractCollection implements Collection
      * which is a value of any type other than a resource.
      * @since 5.4
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return '';

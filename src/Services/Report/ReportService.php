@@ -49,7 +49,7 @@ class ReportService
      *
      * @param ConfigurationInterface $conf
      */
-    private function __construct(ConfigurationInterface $conf)
+    final private function __construct(ConfigurationInterface $conf)
     {
         $this->conf = $conf;
         $this->customerEndpoint = $this->conf->getEndpoint();
@@ -91,7 +91,7 @@ class ReportService
      * @param $actType - one of ReportModel const ACT_...
      * @param array $additionalInformation
      *
-     * @return false
+     * @return bool
      */
     public function reportAction($actType, $additionalInformation = [])
     {

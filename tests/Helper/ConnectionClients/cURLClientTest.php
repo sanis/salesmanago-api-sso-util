@@ -8,10 +8,10 @@ use PHPUnit\Framework\TestCase;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Helper\ConnectionClients\cURLClient;
 use Faker;
+use SALESmanago\Entity\cUrlClientConfiguration;
 
 class cURLClientTest extends TestCase
 {
-
     /**
      * Send request body ($data) to external endpoint (*.pipedream.net)
      * -> receive the same body form external host (endpoint)
@@ -34,7 +34,6 @@ class cURLClientTest extends TestCase
         ];
 
         $cURLClient->request($data);
-
         $this->assertTrue($this->arraysAreSimilar($data, $cURLClient->responseJsonDecode()));
     }
 
@@ -80,5 +79,87 @@ class cURLClientTest extends TestCase
         }
 
         return true;
+    }
+
+    /**
+     * Checks if exception is thrown when cURLClient::timeOutMs is reached
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testcURLClientTimeOutMsExpectExceptionSucceed() {
+        $this->expectException(Exception::class);
+
+        $faker      = Faker\Factory::create();
+        $cURLClient = new cURLClient();
+        $arrConf    = [
+            'url' => 'https://sm.requestcatcher.com',
+            'timeOutMs' => 1
+        ];
+
+        $RequestClientConf = new cUrlClientConfiguration($arrConf);
+        $cURLClient->setConfiguration($RequestClientConf);
+
+        $data = [
+            'name'  => $faker->name,
+            'email' => $faker->email
+        ];
+
+        $cURLClient->request($data);
+    }
+
+    /**
+     * Checks if exception is thrown when cURLClient::connectTimeOutMs is reached
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testcURLClientConnectTimeOutMsExpectExceptionSucceed() {
+        $this->expectException(Exception::class);
+
+        $faker      = Faker\Factory::create();
+        $cURLClient = new cURLClient();
+        $arrConf    = [
+            'url' => 'https://sm.requestcatcher.com',
+            'connectTimeOutMs' => 1
+        ];
+
+        $RequestClientConf = new cUrlClientConfiguration($arrConf);
+        $cURLClient->setConfiguration($RequestClientConf);
+
+        $data = [
+            'name' => $faker->name,
+            'email' => $faker->email
+        ];
+
+        $cURLClient->request($data);
+    }
+
+    /**
+     * Checks if request is succeeded with standard timeOutMs and connectTimeOutMs
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testcURLClientStandardTimeOutMsAndConnectTimeOutMsSucceed() {
+        $faker      = Faker\Factory::create();
+        $cURLClient = new cURLClient();
+        $arrConf    = [
+            'url' => 'https://sm.requestcatcher.com'
+        ];
+
+        $RequestClientConf = new cUrlClientConfiguration($arrConf);
+
+        $cURLClient->setConfiguration($RequestClientConf);
+
+        $data = [
+            'name' => $faker->name,
+            'email' => $faker->email
+        ];
+
+        $cURLClient->request($data);
+
+        $this->assertTrue($cURLClient->getResponse() != null);
+        $this->assertTrue(strlen($cURLClient->getResponse()) > 1);
     }
 }

@@ -4,6 +4,9 @@
 namespace SALESmanago\Helper;
 
 
+use DateTime;
+use Exception;
+
 class EntityDataHelper extends DataHelper
 {
     public static function setStrFromArr($param, $glue = ' ')
@@ -41,9 +44,9 @@ class EntityDataHelper extends DataHelper
         }
 
         try {
-            new \DateTime($string);
+            new DateTime($string);
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

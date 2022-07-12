@@ -1,9 +1,12 @@
 <?php
 
 
-namespace Tests\Unit\Services;
+namespace Tests\Feature\Services;
 
-use Tests\Unit\TestCaseUnit;
+use Exception;
+use SALESmanago\Controller\LoginController;
+use SALESmanago\Entity\User;
+use Tests\Feature\TestCaseUnit;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Services\Report\ReportService;
 use SALESmanago\Entity\Configuration;
@@ -15,34 +18,24 @@ class ReportServiceTest extends TestCaseUnit
     /**
      * Test Report test Action
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function testReportActionSuccess()
     {
         $faker = Faker\Factory::create();
-        $conf  = $this->createConfigurationForReportService();
+        $conf = $this->initConf();
 
-        $response = ReportService::getInstance($conf)
-            ->reportAction(ReportModel::ACT_TEST, [$faker->text(2000)]);
-        $this->assertTrue($response);
-    }
-
-    /**
-     * @return ConfigurationInterface
-     */
-    protected function createConfigurationForReportService()
-    {
-        $faker = Faker\Factory::create();
-
-        return Configuration::getInstance()
-            ->setOwner($faker->email)
-            ->setClientId($faker->uuid)
-            ->setActiveReporting(true)
+        $conf->setActiveReporting(true)
             ->setPlatformName($faker->word)
             ->setPlatformVersion($this->generateVersion())
             ->setVersionOfIntegration($this->generateVersion())
             ->setPlatformDomain($faker->languageCode)
             ->setPlatformDomain($faker->url);
+
+        $response = ReportService::getInstance($conf)
+            ->reportAction(ReportModel::ACT_TEST, [$faker->text(2000)]);
+
+        $this->assertTrue($response);
     }
 
     /**

@@ -1,18 +1,19 @@
 <?php
 
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use PHPUnit\Framework\TestCase;
 
-use \ReflectionClass;
-use \ReflectionMethod;
-use \ReflectionException;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionException;
 
 use SALESmanago\Controller\LoginController;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\User;
 use SALESmanago\Exception\Exception;
+
 
 class TestCaseUnit extends TestCase
 {

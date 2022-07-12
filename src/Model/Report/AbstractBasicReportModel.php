@@ -3,7 +3,8 @@
 
 namespace SALESmanago\Model\Report;
 
-use \DateTime;
+use DateTime;
+use Exception;
 use SALESmanago\Entity\Configuration as Conf;
 
 /**
@@ -56,7 +57,7 @@ abstract class AbstractBasicReportModel implements ReportModelInterface
                 'serverName' => $_SERVER['SERVER_NAME'],
                 'serverRequestUri' => $_SERVER['REQUEST_URI']
             ];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return ['reportServiceError' => 'while generates basic report data'];
         }
 

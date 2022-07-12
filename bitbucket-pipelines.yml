@@ -9,4 +9,11 @@ pipelines:
             - echo "Start to preparing environment"
             - composer install
             - echo "Run tests"
-            - userEmail=$userEmail userPass=$userPass ./vendor/bin/phpunit --configuration phpunit.xml tests/Unit/Controller/ExportControllerTest.php --no-coverage --filter testCheckAndFilterContactsCollectionSuccess
+            - userEmail=$userEmail userPass=$userPass ./vendor/bin/phpunit --configuration phpunit.xml tests/Feature --no-coverage
+      - step:
+          name: PHPStan analyse
+          script:
+            - echo "Start to preparing environment"
+            - composer install
+            - echo "Run PhpStan analyse with level 0 (basic)"
+            - vendor/bin/phpstan analyse -l 0 src/ tests/

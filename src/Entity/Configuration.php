@@ -4,26 +4,29 @@
 namespace SALESmanago\Entity;
 
 
+use JsonSerializable;
 use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Entity\Reporting\Platform;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Entity\ConfigurationInterface;
+use SALESmanago\Entity\RequestClientConfigurationInterface;
 
-class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, \JsonSerializable
+class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, JsonSerializable
 {
     const
-        ACTIVE              = 'active',
-        ENDPOINT            = 'endpoint',
-        CLIENT_ID           = 'clientId',
-        API_KEY             = 'apiKey',
-        API_SECRET          = 'apiSecret',
-        OWNER               = 'owner',
-        EMAIL               = 'email',
-        SHA                 = 'sha',
-        TOKEN               = 'token',
-        IGNORED_DOMAINS     = 'ignoredDomains',
-        CONTACT_COOKIE_TTL  = 'contactCookieTtl',
-        EVENT_COOKIE_TTL    = 'eventCookieTtl';
+        ACTIVE                   = 'active',
+        ENDPOINT                 = 'endpoint',
+        CLIENT_ID                = 'clientId',
+        API_KEY                  = 'apiKey',
+        API_SECRET               = 'apiSecret',
+        OWNER                    = 'owner',
+        EMAIL                    = 'email',
+        SHA                      = 'sha',
+        TOKEN                    = 'token',
+        IGNORED_DOMAINS          = 'ignoredDomains',
+        CONTACT_COOKIE_TTL       = 'contactCookieTtl',
+        EVENT_COOKIE_TTL         = 'eventCookieTtl',
+        RETRY_REQUEST_IF_TIMEOUT = 'retryRequestIfTimeout';
 
     private static $instances = [];
 
@@ -202,8 +205,18 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
      */
     private $platformLang = 'unavailable';
 
-    protected function __construct() {}
-    protected function __clone() {}
+    /**
+     * @var RequestClientConfigurationInterface;
+     */
+    private $RequestClientConf;
+
+    /**
+     * @var bool enables retry feature for request which are get timeout
+     */
+    private $retryRequestIfTimeout = false;
+
+    final protected function __construct() {}
+    final protected function __clone() {}
 
     /**
      * @throws Exception
@@ -242,7 +255,7 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
 
     /**
      * Sets data from array
-     * @param $data
+     * @param array $data
      * @return $this;
      * @throws Exception
      */
@@ -973,6 +986,61 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     public function isActiveUsage()
     {
         return $this->activeUsage;
+    }
+
+    /**
+     * @param RequestClientConfigurationInterface $RequestClientConf
+     * @return self
+     */
+    public function setRequestClientConf(RequestClientConfigurationInterface $RequestClientConf)
+    {
+        $this->RequestClientConf = $RequestClientConf;
+
+        if (empty($RequestClientConf->getUrl())
+            && empty($RequestClientConf->getHost())
+        ) {
+            $this->RequestClientConf->setUrl($this->getEndpoint());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array|null $data
+     * @return RequestClientConfigurationInterface|null
+     * @throws Exception
+     */
+    public function getRequestClientConf($data = null)
+    {
+        if ($data != null) {
+            if (isset($this->RequestClientConf)) {
+                $this->RequestClientConf->setDataWithSetters($data);
+                return $this->RequestClientConf;
+            }
+            return new cUrlClientConfiguration($data);
+        } elseif (isset($this->RequestClientConf)) {
+            return $this->RequestClientConf;
+        }
+
+        return new cUrlClientConfiguration();
+    }
+
+    /**
+     * @param $bool
+     * @return $this
+     */
+    public function setRetryRequestIfTimeout($bool)
+    {
+        $this->retryRequestIfTimeout = $bool;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getRetryRequestIfTimeout()
+    {
+        return $this->retryRequestIfTimeout;
     }
 
     /**

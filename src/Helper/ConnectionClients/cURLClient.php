@@ -4,12 +4,17 @@
 namespace SALESmanago\Helper\ConnectionClients;
 
 use PHPUnit\Framework\TestCase;
+use SALESmanago\Entity\RequestClientConfigurationInterface;
 use SALESmanago\Exception\Exception;
 
 class cURLClient
 {
     const
-        DEFAULT_TIME_OUT = 1000;
+        DEFAULT_TIME_OUT  = 1000,//@deprecated
+        TIMEOUT           = 2,
+        TIMEOUT_MS        = 2000,
+        CONNECTTIMEOUT_MS = 2000;
+
     /**
      * @var string - request type (GET, PUT, POST, DELETE, etc.);
      */
@@ -31,12 +36,20 @@ class cURLClient
     protected $endpoint = '';
 
     /**
-     * @var int
+     * @var int - The maximum number of seconds to allow cURL functions to execute.
      */
-    protected $timeOut = 1000;
+    protected $timeOut = 2;
 
     /**
-     * @var null - request response;
+     * @var int - The maximum number of milliseconds to allow cURL functions to execute.
+     *            If libcurl is built to use the standard system name resolver, that portion
+     *            of the connect will still use full-second resolution for timeouts with a minimum
+     *            timeout allowed of one second.
+     */
+    protected $timeOutMs = 2000;
+
+    /**
+     * @var null|bool|string - request response;
      */
     protected $response = null;
 
@@ -44,6 +57,14 @@ class cURLClient
      * @var array - array of header => value
      */
     protected $headers = [];
+
+    /**
+     * @var int - The number of milliseconds to wait while trying to connect.
+     *            Use 0 to wait indefinitely. If libcurl is built to use the standard system
+     *            name resolver, that portion of the connect will still use full-second resolution
+     *            for timeouts with a minimum timeout allowed of one second.
+     */
+    protected $connectTimeOutMs = 2000;
 
     /**
      * @param string $param - request type (GET, PUT, POST, DELETE, etc.)
@@ -56,24 +77,9 @@ class cURLClient
     }
 
     /**
-     * @param $param
-     * @return $this
-     */
-    public function setTimeOut($param)
-    {
-        $this->timeOut = $param;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getTimeOut()
-    {
-        return $this->timeOut;
-    }
-
-    /**
+     * @deprecated since v3.1.1
+     * @see cURLClient->setConfiguration()
+     *
      * @param string $param
      */
     public function setUrl($param)
@@ -83,6 +89,9 @@ class cURLClient
     }
 
     /**
+     * @deprecated since v3.1.1
+     * @see cURLClient->setConfiguration()
+     *
      * @param string $param
      */
     public function setHost($param)
@@ -92,9 +101,39 @@ class cURLClient
     }
 
     /**
-     * @param $param
+     * @deprecated since v3.1.1
+     * @see cURLClient->setConfiguration()
+     *
+     * @param int $param
+     * @return $this
      */
-    public function setEndpoint($param){
+    public function setTimeOut($param)
+    {
+        $this->timeOutMs = $param;
+        return $this;
+    }
+
+    /**
+     * @deprecated since v3.1.1
+     * @see cURLClient->setConfiguration()
+     *
+     * @return int
+     */
+    public function getTimeOut()
+    {
+        return $this->timeOutMs;
+    }
+
+    /**
+     * @deprecated since v3.1.1
+     * @see cURLClient->setConfiguration()
+     * @see RequestClientConfigurationInterface
+     *
+     * @param string $param
+     * @return cURLClient
+     */
+    public function setEndpoint($param)
+    {
         $this->endpoint = $param;
         return $this;
     }
@@ -108,6 +147,10 @@ class cURLClient
     }
 
     /**
+     * @deprecated since v3.1.1
+     * @see cURLClient->setConfiguration()
+     * @see RequestClientConfigurationInterface
+     *
      * @param array $param
      */
     public function setHeader($param)
@@ -152,14 +195,14 @@ class cURLClient
 
     /**
      * Send data with curl oneway;
-     * @param $data
+     * @param array $data
      * @param bool $toJson
      * @throws Exception
      */
     public function request($data, $toJson = true)
     {
         $data = $toJson ? json_encode($data) : $data;
-        $url  = empty($this->host) ? $this->url : $this->host.$this->endpoint;
+        $url  = empty($this->host) ? $this->url : $this->host . $this->endpoint;
         $ch   = curl_init($url);
 
         if (empty($this->headers)) {
@@ -169,21 +212,18 @@ class cURLClient
             ];
         }
 
+        $this->timeOut = (empty($this->timeOut)) ? self::TIMEOUT : $this->timeOut;
+        $this->timeOutMs = (empty($this->timeOutMs)) ? self::TIMEOUT_MS : $this->timeOutMs;
+        $this->connectTimeOutMs = (empty($this->connectTimeOutMs)) ? self::CONNECTTIMEOUT_MS : $this->connectTimeOutMs;
+
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->type);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->buildHeaders());
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeOut);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, $this->timeOutMs);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->connectTimeOutMs);
 
-        if (!isset($this->timeOut) || empty($this->timeOut)) {
-            curl_setopt($ch, CURLOPT_TIMEOUT_MS, self::DEFAULT_TIME_OUT);
-        } else {
-            curl_setopt($ch, CURLOPT_TIMEOUT_MS, $this->timeOut);
-        }
-
-        curl_setopt(
-            $ch,
-            CURLOPT_HTTPHEADER,
-            $this->buildHeaders()
-        );
         $this->response = curl_exec($ch);
 
         $errno = curl_errno($ch);
@@ -210,5 +250,25 @@ class cURLClient
         }
 
         return false;
+    }
+
+    /**
+     * @param RequestClientConfigurationInterface $Conf
+     * @return self
+     */
+    public function setConfiguration(RequestClientConfigurationInterface $Conf)
+    {
+        $this->timeOut          = $Conf->getTimeOut();
+        $this->timeOutMs        = $Conf->getTimeOutMs();
+        $this->connectTimeOutMs = $Conf->getConnectTimeOutMs();
+        $this->endpoint         = $Conf->getEndpoint();
+        $this->host             = $Conf->getHost();
+        $this->headers          = $Conf->getHeaders();
+
+        if (!empty($Conf->getUrl())) {
+            $this->url = $Conf->getUrl();
+        }
+
+        return $this;
     }
 }
