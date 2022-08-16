@@ -1,7 +1,7 @@
 {
     "name": "salesmanago/api-sso-util",
     "description": "core api code",
-    "version": "3.1.1",
+    "version": "3.1.2-beta1",
     "license": [
         "OSL-3.0",
         "AFL-3.0"
