@@ -15,6 +15,12 @@ use SALESmanago\Entity\Response;
 
 class CouponTransferServiceTest extends TestCaseUnit
 {
+    /**
+     * Test transfer coupon success
+     *
+     * @return void
+     * @throws Exception
+     */
     public function testTransferSuccess()
     {
         $Conf = $this->initConf();
