@@ -14,7 +14,6 @@ use SALESmanago\Model\CouponModel;
 use SALESmanago\Model\EventModel;
 use SALESmanago\Model\ConfModel;
 
-
 class CouponTransferService
 {
     const

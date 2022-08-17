@@ -33,11 +33,19 @@ class Coupon extends AbstractEntity
      */
     private $coupon;
 
-    public function __construct()
+    /**
+     * @param array|null $data
+     * @throws Exception
+     */
+    public function __construct($data = null)
     {
         $this
             ->setName('DEFAULT_COUPON')
             ->setValid(time()+(60*60*24*360));
+
+        if ($data != null && is_array($data)) {
+            $this->set($data);
+        }
     }
 
     /**
