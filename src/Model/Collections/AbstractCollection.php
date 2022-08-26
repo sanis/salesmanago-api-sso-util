@@ -119,7 +119,7 @@ abstract class AbstractCollection implements Collection
      * @link https://php.net/manual/en/iterator.rewind.php
      * @return void Any returned value is ignored.
      */
-    public function rewind(): void
+    public function rewind()
     {
         // TODO: Implement rewind() method.
     }
