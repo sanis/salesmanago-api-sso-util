@@ -68,7 +68,7 @@ class CouponTransferService
             $Response,
             array(
                 function () use ($Response, $Coupon)  {
-                    return $Response->getField('couponVal') == $Coupon->getCoupon();
+                    return $Response->getField('coupon') == $Coupon->getCoupon();
                 }
             )
         );
