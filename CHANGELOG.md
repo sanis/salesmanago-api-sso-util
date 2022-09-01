@@ -1,6 +1,6 @@
 SALESmanago library for integrations
 ------------------------------------
-Version 3.1.2 16.08.2022
+Version 3.1.2 01.09.2022
 - add coupons feature support for SALESmanago API;
 
 Version 3.1.1 06.07.2022
