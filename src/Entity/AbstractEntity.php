@@ -16,7 +16,7 @@ class AbstractEntity
      * @param array $data
      * @throws Exception
      */
-    protected function setDataWithSetters($data): void
+    protected function setDataWithSetters($data)
     {
         if (empty($data)) {
             throw new Exception('Empty passed data');
