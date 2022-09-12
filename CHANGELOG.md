@@ -1,5 +1,8 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.1.2-beta2 26.08.2022
+- patch version for minimum required PHP version 7.0
+
 Version 3.1.2 16.08.2022
 - add coupons feature support for SALESmanago API;
 
@@ -8,7 +11,7 @@ Version 3.1.1 06.07.2022
 - add configurable repeat request in case of timeout;
 
 Version 3.1.0 10.05.2022
-- upgrade required minimum PHP version to 7.0;
+- upgrade required minimum PHP version to 7.1;
 
 Version 3.0.12 30.03.2022
 - Add loyaltyProgram field to request contact/UPSERT structure;
