@@ -1,6 +1,6 @@
 SALESmanago library for integrations
 ------------------------------------
-Version 3.1.2-beta4 15.09.2022
+Version 3.1.2-p1 22.09.2022
 - patch version for minimum required PHP version 7.0
 
 Version 3.1.2 16.08.2022
