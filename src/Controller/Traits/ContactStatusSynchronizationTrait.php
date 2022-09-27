@@ -5,7 +5,7 @@ namespace SALESmanago\Controller\Traits;
 
 
 use SALESmanago\Adapter\ContactStatusSynchronizationManagerAdapter as ContactSyncAdapter;
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Services\SynchronizationService;
 

@@ -70,7 +70,7 @@ class RequestService
      * @throws Exception
      * @param string $method
      * @param string $uri
-     * @param array $data
+     * @param array|null $data
      * @return Response
      */
     final public function request($method, $uri, $data)
@@ -82,7 +82,12 @@ class RequestService
                 ->setType($method)
                 ->setEndpoint($uri);
 
+            var_dump($this->connClient);
+            die;
+
             $this->connClient->request($data);
+
+
 
             $jsonResponse = $this->connClient->responseJsonDecode();
 

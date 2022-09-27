@@ -4,7 +4,7 @@
 namespace SALESmanago\Controller;
 
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Model\ContactModel;
@@ -18,7 +18,7 @@ class ContactController
 
     public function __construct(ConfigurationInterface $conf)
     {
-        Configuration::setInstance($conf);
+        ConfigurationInterface::setInstance($conf);
         $this->conf = $conf;
         $this->service  = new ContactService($conf);
     }

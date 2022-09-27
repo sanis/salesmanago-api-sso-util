@@ -7,7 +7,7 @@ namespace Tests\Controller;
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Controller\LoginController;
 use SALESmanago\Controller\UserController;
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\User;
 use SALESmanago\Exception\Exception;
 

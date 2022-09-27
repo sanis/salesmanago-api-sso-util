@@ -6,7 +6,7 @@ namespace SALESmanago\Controller;
 
 use SALESmanago\Controller\Traits\ContactStatusSynchronizationTrait;
 use SALESmanago\Controller\Traits\TemporaryStorageControllerTrait;
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Exception\Exception;
@@ -45,7 +45,7 @@ class ContactAndEventTransferController
      */
     public function __construct(ConfigurationInterface $conf)
     {
-        Configuration::setInstance($conf);
+        ConfigurationInterface::setInstance($conf);
         $this->conf          = $conf;
         $this->service       = new ContactAndEventTransferService($this->conf);
         $this->syncService   = new SyncService($this->conf);

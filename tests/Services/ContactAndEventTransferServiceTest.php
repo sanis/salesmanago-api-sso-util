@@ -5,7 +5,7 @@ namespace Tests\Services;
 
 use PHPUnit\Framework\TestCase;
 use SALESmanago\Controller\LoginController;
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Contact\Address;
 use SALESmanago\Entity\Contact\Options;

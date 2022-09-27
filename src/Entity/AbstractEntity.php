@@ -5,8 +5,9 @@ namespace SALESmanago\Entity;
 
 
 use SALESmanago\Exception\Exception;
+use JsonSerializable;
 
-class AbstractEntity
+class AbstractEntity implements JsonSerializable
 {
     const
         DEFAULT_CONTACT_COOKIE_TTL = 315532800,

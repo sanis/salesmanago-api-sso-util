@@ -3,7 +3,7 @@
 
 namespace SALESmanago\Controller;
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Services\UserAccountService;
@@ -13,7 +13,7 @@ use SALESmanago\Exception\Exception;
 class UserController
 {
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     protected $conf;
 
@@ -28,7 +28,7 @@ class UserController
      */
     public function __construct(ConfigurationInterface $conf)
     {
-        Configuration::setInstance($conf);
+        ConfigurationInterface::setInstance($conf);
         $this->conf = $conf;
         $this->service = new UserAccountService($conf);
     }

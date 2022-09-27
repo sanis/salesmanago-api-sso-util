@@ -4,7 +4,7 @@
 namespace SALESmanago\Services\Report;
 
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\Report\ReportModel;

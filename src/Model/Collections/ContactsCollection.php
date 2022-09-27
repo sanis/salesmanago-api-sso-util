@@ -4,7 +4,7 @@
 namespace SALESmanago\Model\Collections;
 
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Model\ContactModel;

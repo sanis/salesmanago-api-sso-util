@@ -2,7 +2,7 @@
 
 namespace SALESmanago\Controller;
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\LoyaltyProgram;
 use SALESmanago\Entity\Response;
@@ -22,7 +22,7 @@ class LoyaltyProgramController
      */
     public function __construct(ConfigurationInterface $conf)
     {
-        Configuration::setInstance($conf);
+        ConfigurationInterface::setInstance($conf);
         $this->conf    = $conf;
         $this->service = new LoyaltyProgramService($this->conf);
     }

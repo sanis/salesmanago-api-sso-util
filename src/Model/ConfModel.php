@@ -3,7 +3,7 @@
 
 namespace SALESmanago\Model;
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Response;
 use SALESmanago\Entity\User;
@@ -29,9 +29,9 @@ class ConfModel
     public function getAuthorizationApiData()
     {
         return [
-            Configuration::CLIENT_ID => $this->conf->getClientId(),
-            Configuration::API_KEY   => $this->conf->getApiKey(),
-            Configuration::SHA       => $this->conf->getSha(),
+            ConfigurationInterface::CLIENT_ID => $this->conf->getClientId(),
+            ConfigurationInterface::API_KEY   => $this->conf->getApiKey(),
+            ConfigurationInterface::SHA       => $this->conf->getSha(),
             self::REQUEST_TIME  => time()
         ];
     }
@@ -43,21 +43,21 @@ class ConfModel
     {
         return array_merge(
             $this->getAuthorizationApiData(),
-            [Configuration::OWNER => $this->conf->getOwner()]
+            [ConfigurationInterface::OWNER => $this->conf->getOwner()]
         );
     }
 
     /**
      * @param Response $ResponseAccountAuthorize
      * @param User $User
-     * @return Configuration
+     * @return ConfigurationInterface
      */
     public function setConfAfterAccountAuthorization(Response $ResponseAccountAuthorize, User $User)
     {
         $this->conf
             ->setOwner($User->getEmail())
-            ->setToken($ResponseAccountAuthorize->getField(Configuration::TOKEN))
-            ->setEndpoint($ResponseAccountAuthorize->getField(Configuration::ENDPOINT));
+            ->setToken($ResponseAccountAuthorize->getField(ConfigurationInterface::TOKEN))
+            ->setEndpoint($ResponseAccountAuthorize->getField(ConfigurationInterface::ENDPOINT));
 
         return $this->conf;
     }

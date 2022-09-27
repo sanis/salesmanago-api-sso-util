@@ -5,7 +5,7 @@ namespace SALESmanago\Model\Report;
 
 use DateTime;
 use Exception;
-use SALESmanago\Entity\Configuration as Conf;
+use SALESmanago\Entity\ConfigurationInterface as Conf;
 
 /**
  * Class AbstractBasicReportModel

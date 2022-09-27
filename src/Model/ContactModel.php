@@ -10,7 +10,7 @@ use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\Contact\Properties;
 use SALESmanago\Entity\ApiDoubleOptIn;
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 
 use SALESmanago\Helper\DataHelper;
 use SALESmanago\Model\Collections\ConsentsCollection;
@@ -53,12 +53,12 @@ class ContactModel
     public function getContactForBasicRequest()
     {
         return DataHelper::filterDataArray([
-            Configuration::CLIENT_ID => $this->conf->getClientId(),
+            ConfigurationInterface::CLIENT_ID => $this->conf->getClientId(),
             Options::ASYNC => $this->Contact->getOptions()->getAsync(),
             Contact::EMAIL => [
                 $this->Contact->getEmail()
             ],
-            Configuration::OWNER => $this->conf->getOwner(),
+            ConfigurationInterface::OWNER => $this->conf->getOwner(),
         ]);
     }
 
@@ -129,7 +129,7 @@ class ContactModel
                     Address::COUNTRY   => $Address->getCountry()
                 ],
             ],
-            Configuration::OWNER   => $conf->getOwner(),
+            ConfigurationInterface::OWNER   => $conf->getOwner(),
             Options::N_EMAIL       => $Options->getNewEmail(),
             Options::F_OPT_IN      => $Options->getForceOptIn(),
             Options::F_OPT_OUT     => $Options->getForceOptOut(),
@@ -173,7 +173,7 @@ class ContactModel
         $Consents   = $Contact->getConsents();
 
         $contactRequestArray = [
-            Configuration::CLIENT_ID => $conf->getClientId(),
+            ConfigurationInterface::CLIENT_ID => $conf->getClientId(),
             Options::ASYNC      => $Options->getAsync(),
             Contact::CONTACT    => [
                 Contact::EMAIL   => $Contact->getEmail(),
@@ -190,7 +190,7 @@ class ContactModel
                     Address::COUNTRY   => $Address->getCountry()
                 ],
             ],
-            Configuration::OWNER                => $conf->getOwner(),
+            ConfigurationInterface::OWNER                => $conf->getOwner(),
             Options::N_EMAIL                    => $Options->getNewEmail(),
             Options::F_OPT_IN                   => $Options->getForceOptIn(),
             Options::F_OPT_OUT                  => $Options->getForceOptOut(),

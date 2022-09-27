@@ -195,13 +195,12 @@ class cURLClient
 
     /**
      * Send data with curl oneway;
-     * @param array $data
+     * @param array|null $data
      * @param bool $toJson
      * @throws Exception
      */
-    public function request($data, $toJson = true)
+    public function request($data = null, $toJson = true)
     {
-        $data = $toJson ? json_encode($data) : $data;
         $url  = empty($this->host) ? $this->url : $this->host . $this->endpoint;
         $ch   = curl_init($url);
 
@@ -217,7 +216,12 @@ class cURLClient
         $this->connectTimeOutMs = (empty($this->connectTimeOutMs)) ? self::CONNECTTIMEOUT_MS : $this->connectTimeOutMs;
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->type);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+        if ($data !== null) {
+            $data = $toJson ? json_encode($data) : $data;
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        }
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->buildHeaders());
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeOut);

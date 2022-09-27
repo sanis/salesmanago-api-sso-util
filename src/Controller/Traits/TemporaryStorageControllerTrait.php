@@ -4,7 +4,7 @@
 namespace SALESmanago\Controller\Traits;
 
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Controller\Traits\CookieControllerTrait;
 use SALESmanago\Controller\Traits\SessionControllerTrait;
 use SALESmanago\Adapter\CookieManagerAdapter;
@@ -16,7 +16,7 @@ trait TemporaryStorageControllerTrait
     use SessionControllerTrait;
 
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     protected $conf;
 

@@ -4,7 +4,7 @@
 namespace SALESmanago\Services;
 
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Contact;
 use SALESmanago\Entity\Response;
@@ -16,7 +16,7 @@ class CheckIfIgnoredService
         IGNORED_MESSAGE = "Contact was ignored";
 
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $conf;
 

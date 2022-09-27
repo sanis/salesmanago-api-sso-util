@@ -6,12 +6,13 @@ namespace SALESmanago\Entity;
 
 use JsonSerializable;
 use SALESmanago\Entity\ApiDoubleOptIn;
-use SALESmanago\Entity\Reporting\Platform;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\RequestClientConfigurationInterface;
 
-class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, JsonSerializable
+class Configuration
+    extends AbstractEntity
+    implements ConfigurationInterface, ReportConfigurationInterface, JsonSerializable, ApiV3ConfigurationInterface
 {
     const
         ACTIVE                   = 'active',
@@ -209,6 +210,16 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
      * @var RequestClientConfigurationInterface;
      */
     private $RequestClientConf;
+
+    /**
+     * @var string
+     */
+    private $apiKeyV3;
+
+    /**
+     * @var string
+     */
+    private $apiV3Endpoint;
 
     /**
      * @var bool enables retry feature for request which are get timeout
@@ -1049,5 +1060,41 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
     protected function toArray()
     {
         return (array)$this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiKeyV3(): string
+    {
+        return $this->apiKeyV3;
+    }
+
+    /**
+     * @param string $apiKey
+     * @return ApiV3ConfigurationInterface
+     */
+    public function setApiKeyV3(string $apiKey): ApiV3ConfigurationInterface
+    {
+        $this->apiKeyV3 = $apiKey;
+        return $this;
+    }
+
+    /**
+     * @param string $endpoint
+     * @return ApiV3ConfigurationInterface
+     */
+    public function setApiV3Endpoint(string $endpoint): ApiV3ConfigurationInterface
+    {
+        $this->apiV3Endpoint = $endpoint;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiV3Endpoint(): string
+    {
+        return $this->apiV3Endpoint;
     }
 }

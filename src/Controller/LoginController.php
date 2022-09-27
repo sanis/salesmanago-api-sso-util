@@ -3,8 +3,8 @@
 namespace SALESmanago\Controller;
 
 
-use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\ConfigurationInterface;
+use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\Response;
 use SALESmanago\Model\Report\ReportModel;
 use SALESmanago\Services\UserAccountService;

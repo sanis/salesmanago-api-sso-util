@@ -6,7 +6,7 @@ namespace SALESmanago\Model;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\Contact\Options;
 use SALESmanago\Entity\Event\Event;
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Helper\DataHelper;
 
 class EventModel
@@ -23,8 +23,8 @@ class EventModel
     public function getEventForUnionTransfer()
     {
         $eventRequestArray = [
-            Configuration::CLIENT_ID  => $this->conf->getClientId(),
-            Configuration::OWNER      => $this->conf->getOwner(),
+            ConfigurationInterface::CLIENT_ID  => $this->conf->getClientId(),
+            ConfigurationInterface::OWNER      => $this->conf->getOwner(),
             Options::F_OPT_IN    => $this->Event->getForceOptIn(),
             Event::EMAIL         => $this->Event->getEmail(),
             Event::CONTACT_ID    => $this->Event->getContactId(),

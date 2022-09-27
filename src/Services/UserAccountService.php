@@ -51,7 +51,7 @@ class UserAccountService
     public function __construct(ConfigurationInterface $conf)
     {
         $this->UserModel = new UserModel();
-        $this->ConfModel = new ConfModel(Configuration::setInstance($conf));
+        $this->ConfModel = new ConfModel(ConfigurationInterface::setInstance($conf));
         $this->RequestService = new RequestService(Configuration::getInstance());
     }
 
@@ -103,7 +103,7 @@ class UserAccountService
         return $this->RequestService->validateCustomResponse(
             $Response,
             [
-                boolval($Response->getField(Configuration::TOKEN))
+                boolval($Response->getField(ConfigurationInterface::TOKEN))
             ]
         );
     }
@@ -118,8 +118,8 @@ class UserAccountService
         $this->RequestService = new RequestService($this->conf);
 
         $data = [
-            Configuration::TOKEN   => $this->conf->getToken(),
-            Configuration::API_KEY => $this->conf->getApiKey(),
+            ConfigurationInterface::TOKEN   => $this->conf->getToken(),
+            ConfigurationInterface::API_KEY => $this->conf->getApiKey(),
         ];
 
         $Response = $this->RequestService->request(

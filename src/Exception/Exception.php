@@ -2,7 +2,7 @@
 
 namespace SALESmanago\Exception;
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Factories\ReportFactory;
 use SALESmanago\Services\Report\ReportService;
 use SALESmanago\Services\RequestService;

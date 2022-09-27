@@ -10,6 +10,7 @@ use ReflectionMethod;
 use ReflectionException;
 
 use SALESmanago\Controller\LoginController;
+use SALESmanago\Entity\ApiV3ConfigurationInterface;
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\User;
 use SALESmanago\Exception\Exception;
@@ -23,8 +24,8 @@ class TestCaseUnit extends TestCase
      */
     protected function initConf()
     {
-        $userEmail = getenv('userEmail');
-        $userPass = getenv('userPass');
+        $userEmail = 'ruslan.barlozhetskyi@salesmanago.pl'; #getenv('userEmail');
+        $userPass = '04ru06sl94an'; #getenv('userPass');
 
         $conf = Configuration::getInstance();
         $user = new User();
@@ -35,6 +36,21 @@ class TestCaseUnit extends TestCase
 
         $loginController = new LoginController($conf);
         $loginController->login($user);//this one for property configuration create
+
+        return $conf;
+    }
+
+    /**
+     * @return ApiV3ConfigurationInterface
+     */
+    protected function initConfApiV3(): ApiV3ConfigurationInterface
+    {
+        $conf = $this->initConf();
+
+        $conf
+            ->setApiV3Endpoint('https://api.salesmanago.com')
+            ->setEndpoint('https://api.salesmanago.com')
+            ->setApiKeyV3(getenv('API_KEY'));
 
         return $conf;
     }

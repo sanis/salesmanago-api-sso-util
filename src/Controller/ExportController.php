@@ -2,7 +2,7 @@
 
 namespace SALESmanago\Controller;
 
-use SALESmanago\Entity\Configuration;
+use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Entity\ConfigurationInterface;
 use SALESmanago\Model\Collections\Collection;
 use SALESmanago\Model\Collections\ContactsCollection;
@@ -15,7 +15,7 @@ use SALESmanago\Exception\Exception;
 class ExportController
 {
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     protected $conf;
 
@@ -36,7 +36,7 @@ class ExportController
      */
     public function __construct(ConfigurationInterface $conf)
     {
-        Configuration::setInstance($conf);
+        ConfigurationInterface::setInstance($conf);
         $this->conf = $conf;
         $this->service = new ExportService($conf);
         $this->ignoreService = new IgnoreService($this->conf);
