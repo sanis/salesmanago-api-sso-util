@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./vendor/autoload.php" colors="true">
+    <testsuite name="Unit_Test_Suite">
+        <directory suffix="Test.php">./tests/Feature</directory>
+    </testsuite>
+    <php>
+        <env name="ApiV3Endpoint" value="https://api.salesmanago.com" force="true" />
+        <env name="ApiV3Key" value="U4p0LEgwo14q7YFeeeYkmS3JTAwNKGsPz3j3IQVYMdo4TqFk6z5VisewjAJQFjV4" force="true" />
+    </php>
+</phpunit>

@@ -195,29 +195,37 @@ class cURLClient
 
     /**
      * Send data with curl oneway;
-     * @param array $data
+     * @param array|null $data
      * @param bool $toJson
      * @throws Exception
      */
-    public function request($data, $toJson = true)
+    public function request($data = null, $toJson = true)
     {
-        $data = $toJson ? json_encode($data) : $data;
-        $url  = empty($this->host) ? $this->url : $this->host . $this->endpoint;
-        $ch   = curl_init($url);
+        if ($data !== null) {
+            $data = $toJson ? json_encode($data) : $data;
+        }
 
         if (empty($this->headers)) {
-            $this->headers = [
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data)
-            ];
+            $this->headers[] = 'Content-Type: application/json';
+
+            if ($data !== null) {
+                $this->headers[] = 'Content-Length: ' . strlen($data);
+            }
         }
 
         $this->timeOut = (empty($this->timeOut)) ? self::TIMEOUT : $this->timeOut;
         $this->timeOutMs = (empty($this->timeOutMs)) ? self::TIMEOUT_MS : $this->timeOutMs;
         $this->connectTimeOutMs = (empty($this->connectTimeOutMs)) ? self::CONNECTTIMEOUT_MS : $this->connectTimeOutMs;
 
+        $url = empty($this->host) ? $this->url : $this->host . $this->endpoint;
+        $ch = curl_init($url);
+
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->type);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+        if ($data !== null) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        }
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->buildHeaders());
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeOut);

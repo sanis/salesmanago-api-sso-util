@@ -1,8 +1,6 @@
 <?php
 
-
 namespace SALESmanago\Services;
-
 
 use SALESmanago\Entity\Configuration;
 use SALESmanago\Entity\ConfigurationInterface;
@@ -12,7 +10,6 @@ use SALESmanago\Exception\Exception;
 use SALESmanago\Exception\ExceptionCodeResolver;
 use SALESmanago\Factories\ReportFactory;
 use SALESmanago\Helper\ConnectionClients\cURLClient;
-
 
 class RequestService
 {
