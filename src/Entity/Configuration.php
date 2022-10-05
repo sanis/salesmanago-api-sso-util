@@ -3,15 +3,11 @@
 
 namespace SALESmanago\Entity;
 
-
 use JsonSerializable;
-use SALESmanago\Entity\ApiDoubleOptIn;
 use SALESmanago\Entity\Reporting\Platform;
 use SALESmanago\Exception\Exception;
-use SALESmanago\Entity\ConfigurationInterface;
-use SALESmanago\Entity\RequestClientConfigurationInterface;
 
-class Configuration extends AbstractEntity implements ConfigurationInterface, ReportConfigurationInterface, JsonSerializable
+class Configuration extends AbstractConfiguration implements ConfigurationInterface, ReportConfigurationInterface, JsonSerializable
 {
     const
         ACTIVE                   = 'active',
@@ -27,8 +23,6 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
         CONTACT_COOKIE_TTL       = 'contactCookieTtl',
         EVENT_COOKIE_TTL         = 'eventCookieTtl',
         RETRY_REQUEST_IF_TIMEOUT = 'retryRequestIfTimeout';
-
-    private static $instances = [];
 
     /**
      * Flag to detect if module/component/plugin is active on platform;
@@ -210,60 +204,6 @@ class Configuration extends AbstractEntity implements ConfigurationInterface, Re
      */
     private $RequestClientConf;
 
-    /**
-     * @var bool enables retry feature for request which are get timeout
-     */
-    private $retryRequestIfTimeout = false;
-
-    final protected function __construct() {}
-    final protected function __clone() {}
-
-    /**
-     * @throws Exception
-     */
-    public function __wakeup()
-    {
-        throw new Exception("Cannot unserialize a singleton.");
-    }
-
-    /**
-     * @return mixed|static
-     */
-    public static function getInstance()
-    {
-        $cls = static::class;
-        if (!isset(self::$instances[$cls])) {
-            self::$instances[$cls] = new static();
-        }
-
-        return self::$instances[$cls];
-    }
-
-    /**
-     * @param \SALESmanago\Entity\ConfigurationInterface $class
-     * @return mixed
-     */
-    public static function setInstance(ConfigurationInterface $class)
-    {
-        $cls = static::class;
-        if (!isset(self::$instances[$cls])) {
-            self::$instances[$cls] = $class;
-        }
-
-        return self::$instances[$cls];
-    }
-
-    /**
-     * Sets data from array
-     * @param array $data
-     * @return $this;
-     * @throws Exception
-     */
-    public function set($data)
-    {
-        $this->setDataWithSetters($data);
-        return $this;
-    }
 
     /**
      * @return boolean
