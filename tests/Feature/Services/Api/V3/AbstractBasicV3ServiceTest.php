@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Services\API\V3;
+namespace Tests\Feature\Services\Api\V3;
 
 use SALESmanago\Entity\Api\V3\ConfigurationEntity;
 use Tests\Feature\TestCaseUnit;

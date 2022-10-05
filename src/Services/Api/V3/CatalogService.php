@@ -70,17 +70,17 @@ class CatalogService
         return $catalogs;
     }
 
-    /**
-     * @param CatalogEntityInterface $Catalog
-     * @return array|null
-     * @throws ApiV3Exception
-     */
-    public function createCatalog(CatalogEntityInterface $Catalog)
-    {
-        return $this->RequestService->request(
-            self::REQUEST_METHOD_POST,
-            self::API_METHOD_CREATE,
-            json_encode($Catalog)
-        );
-    }
+//    /**
+//     * @param CatalogEntityInterface $Catalog
+//     * @return array|null
+//     * @throws ApiV3Exception
+//     */
+//    public function createCatalog(CatalogEntityInterface $Catalog)
+//    {
+//        return $this->RequestService->request(
+//            self::REQUEST_METHOD_POST,
+//            self::API_METHOD_CREATE,
+//            json_encode($Catalog)
+//        );
+//    }
 }
