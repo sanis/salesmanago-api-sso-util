@@ -29,8 +29,8 @@ class CouponTransferServiceTest extends TestCaseUnit
         $Conf->setRequestClientConf(
             $Conf->getRequestClientConf([
                 cUrlClientConfiguration::HOST               => $Conf->getEndpoint(),
-                cUrlClientConfiguration::TIMEOUT_MS         => 4000,
-                cUrlClientConfiguration::CONNECT_TIMEOUT_MS => 4000
+                cUrlClientConfiguration::TIMEOUT_MS         => 10000,
+                cUrlClientConfiguration::CONNECT_TIMEOUT_MS => 10000
             ])
         );
 
