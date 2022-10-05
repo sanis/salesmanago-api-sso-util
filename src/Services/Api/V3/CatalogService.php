@@ -9,7 +9,6 @@ use SALESmanago\Entity\cUrlClientConfiguration;
 use SALESmanago\Exception\ApiV3Exception;
 use SALESmanago\Exception\Exception;
 
-
 class CatalogService
 {
     const

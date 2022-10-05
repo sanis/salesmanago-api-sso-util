@@ -12,7 +12,7 @@ class AbstractConfiguration extends AbstractEntity
     private static $instances = [];
 
     /**
-     * @var bool enables retry feature for request which are get timeout
+     * @var bool
      */
     private $retryRequestIfTimeout = false;
 

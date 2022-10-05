@@ -6,9 +6,6 @@ use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Helper\DataHelper;
 
-/**
- * Object of this class represents object of api object
- */
 class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
 {
     /**
