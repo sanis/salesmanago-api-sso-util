@@ -204,6 +204,8 @@ class Configuration extends AbstractConfiguration implements ConfigurationInterf
      */
     private $RequestClientConf;
 
+    private $retryRequestIfTimeout;
+
 
     /**
      * @return boolean
