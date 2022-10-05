@@ -29,13 +29,17 @@ class CatalogService
     public function __construct(ConfigurationInterface $ConfigurationV3)
     {
         $cUrlClientConfiguration = new cUrlClientConfiguration(
-            [
-                'host' => $ConfigurationV3->getApiV3Endpoint(),
-                'headers' => [
-                    'Api-KEY' => $ConfigurationV3->getApiV3Key()
-                ]
-            ]
+//            [
+//                'host' => $ConfigurationV3->getApiV3Endpoint(),
+//                'headers' => [
+//                    'API-KEY' => $ConfigurationV3->getApiV3Key()
+//                ]
+//            ]
         );
+
+        $cUrlClientConfiguration
+            ->setHeaders(['API-KEY' => $ConfigurationV3->getApiV3Key()])
+            ->setHost($ConfigurationV3->getApiV3Endpoint());
 
         $this->RequestService = new RequestService($cUrlClientConfiguration);
     }
@@ -59,28 +63,20 @@ class CatalogService
             }
         }
 
-        if (!empty($response['messages']) && !empty($response['reasonCode'])) {
-            $messages = is_array($response['messages'])
-                ? implode(', ', $response['messages'])
-                : $response['messages'];
-
-            throw new ApiV3Exception($messages, $response['reasonCode']);
-        }
-
         return $catalogs;
     }
 
-//    /**
-//     * @param CatalogEntityInterface $Catalog
-//     * @return array|null
-//     * @throws ApiV3Exception
-//     */
-//    public function createCatalog(CatalogEntityInterface $Catalog)
-//    {
-//        return $this->RequestService->request(
-//            self::REQUEST_METHOD_POST,
-//            self::API_METHOD_CREATE,
-//            json_encode($Catalog)
-//        );
-//    }
+    /**
+     * @param CatalogEntityInterface $Catalog
+     * @return array|null
+     * @throws ApiV3Exception
+     */
+    public function createCatalog(CatalogEntityInterface $Catalog)
+    {
+        return $this->RequestService->request(
+            self::REQUEST_METHOD_POST,
+            self::API_METHOD_CREATE,
+            $Catalog//will be encoded to json further in request service
+        );
+    }
 }

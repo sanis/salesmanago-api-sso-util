@@ -32,7 +32,18 @@ class RequestService
                 ->setEndpoint($uri);
 
             $this->connectionClient->request($data);
-            return $this->connectionClient->responseJsonDecode();
+            $response = $this->connectionClient->responseJsonDecode();
+
+            if (!empty($response['messages']) && !empty($response['reasonCode'])) {
+                $messages = is_array($response['messages'])
+                    ? implode(', ', $response['messages'])
+                    : $response['messages'];
+
+                throw new ApiV3Exception($messages, $response['reasonCode']);
+            }
+
+            return $response;
+
         } catch (Exception $e) {
             throw new ApiV3Exception($e->getMessage(), $e->getCode());
         }

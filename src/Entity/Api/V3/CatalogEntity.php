@@ -19,7 +19,7 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     /**
      * @var string
      */
-    private $name;
+    private $catalogName;
 
     /**
      * @var bool
@@ -66,18 +66,18 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     /**
      * @return mixed
      */
-    public function getName()
+    public function getCatalogName()
     {
-        return $this->name;
+        return $this->catalogName;
     }
 
     /**
      * @param string $name
      * @return CatalogEntity
      */
-    public function setName($name)
+    public function setCatalogName($name)
     {
-        $this->name = $name;
+        $this->catalogName = $name;
         return $this;
     }
 
@@ -142,7 +142,7 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     {
         return DataHelper::filterDataArray([
             "catalogId"    => $this->catalogId,
-            "name"         => $this->name,
+            "catalogName"  => $this->catalogName,
             "setAsDefault" => $this->setAsDefault,
             "currency"     => $this->currency,
             "location"     => $this->location
