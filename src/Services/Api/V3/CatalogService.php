@@ -6,6 +6,7 @@ use SALESmanago\Entity\Api\V3\CatalogEntity;
 use SALESmanago\Entity\Api\V3\CatalogEntityInterface;
 use SALESmanago\Entity\Api\V3\ConfigurationInterface;
 use SALESmanago\Entity\cUrlClientConfiguration;
+use SALESmanago\Entity\RequestClientConfigurationInterface;
 use SALESmanago\Exception\ApiV3Exception;
 use SALESmanago\Exception\Exception;
 
@@ -22,25 +23,29 @@ class CatalogService
      */
     protected $RequestService;
 
+    public function __construct(
+        ConfigurationInterface $ConfigurationV3,
+        RequestClientConfigurationInterface $cUrlClientConf = null
+    ) {
+        if ($cUrlClientConf === null) {
+            $cUrlClientConf = $this->setCurlClientConfiguration($ConfigurationV3);
+        }
+
+        $this->RequestService = new RequestService($cUrlClientConf);
+    }
+
     /**
-     * @throws Exception
+     * @param ConfigurationInterface $ConfigurationV3
+     * @return RequestClientConfigurationInterface
      */
-    public function __construct(ConfigurationInterface $ConfigurationV3)
-    {
-        $cUrlClientConfiguration = new cUrlClientConfiguration(
-//            [
-//                'host' => $ConfigurationV3->getApiV3Endpoint(),
-//                'headers' => [
-//                    'API-KEY' => $ConfigurationV3->getApiV3Key()
-//                ]
-//            ]
-        );
+    private function setCurlClientConfiguration(ConfigurationInterface $ConfigurationV3) {
+        $cUrlClientConfiguration = new cUrlClientConfiguration();
 
         $cUrlClientConfiguration
             ->setHeaders(['API-KEY' => $ConfigurationV3->getApiV3Key()])
             ->setHost($ConfigurationV3->getApiV3Endpoint());
 
-        $this->RequestService = new RequestService($cUrlClientConfiguration);
+        return $cUrlClientConfiguration;
     }
 
     /**
@@ -67,7 +72,7 @@ class CatalogService
 
     /**
      * @param CatalogEntityInterface $Catalog
-     * @return array|null
+     * @return array
      * @throws ApiV3Exception
      */
     public function createCatalog(CatalogEntityInterface $Catalog)

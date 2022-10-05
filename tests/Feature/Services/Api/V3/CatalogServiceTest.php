@@ -10,7 +10,7 @@ use SALESmanago\Services\Api\V3\CatalogService;
 use SALESmanago\Entity\Api\V3\ConfigurationEntity;
 use SALESmanago\Entity\Api\V3\CatalogEntity;
 
-class CatalogServiceTest extends AbstractBasicV3ServiceTest
+class CatalogServiceTest extends TestAbstractBasicV3Service
 {
     /**
      * Test get catalog success
@@ -50,20 +50,23 @@ class CatalogServiceTest extends AbstractBasicV3ServiceTest
      */
     public function testCreateCatalogSuccess()
     {
+        //create configuration for request service
         $this->createConfigurationEntity();
 
+        //create & setup CatalogService:
         $CatalogService = new CatalogService(
             ConfigurationEntity::getInstance()//created with $this->createConfigurationEntity()
         );
 
+        //create entity
         $Catalog = $this->createCatalogEntityWithDummyData();
 
-        $Response = $CatalogService->createCatalog($Catalog);
+        //upsert catalog
+        $response = $CatalogService->createCatalog($Catalog);
 
-
-
-        var_dump($Response);
-        die;
+        $this->assertIsArray($response);
+        $this->assertTrue(!empty($response['requestId']));
+        $this->assertTrue(!empty($response['catalogId']));
     }
 
     /**
@@ -75,11 +78,9 @@ class CatalogServiceTest extends AbstractBasicV3ServiceTest
 
         return new CatalogEntity(
             [
-                //"catalogId"    => '',
-                "catalogName"   => 'Catalog ' . $faker->word,
-                //"setAsDefault" => '',
+                "catalogName"  => 'Catalog ' . $faker->word,
                 "currency"     => $faker->currencyCode,
-                "location"     => $faker->word
+                "location"     => 'time'.time()
             ]
         );
     }
