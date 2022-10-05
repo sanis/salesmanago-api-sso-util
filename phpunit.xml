@@ -4,7 +4,7 @@
             <directory suffix="Test.php">./tests/Feature</directory>
     </testsuite>
     <php>
-        <env name="ApiV3Endpoint" value="https://api.salesmanago.com" force="true" />
-        <env name="ApiV3Key" value="U4p0LEgwo14q7YFeeeYkmS3JTAwNKGsPz3j3IQVYMdo4TqFk6z5VisewjAJQFjV4" force="true" />
+        <env name="ApiV3Endpoint" value="" force="true" />
+        <env name="ApiV3Key" value="" force="true" />
     </php>
 </phpunit>

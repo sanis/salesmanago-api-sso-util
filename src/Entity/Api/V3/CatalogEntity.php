@@ -11,8 +11,6 @@ use SALESmanago\Helper\DataHelper;
  */
 class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
 {
-
-
     /**
      * @var string
      */
