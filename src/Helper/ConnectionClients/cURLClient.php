@@ -220,9 +220,6 @@ class cURLClient
         $url = empty($this->host) ? $this->url : $this->host . $this->endpoint;
         $ch = curl_init($url);
 
-//        var_dump($url, $this->type, $data, $this->headers);
-//        die('works from cUrlClient');
-
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->type);
 
         if ($data !== null) {
