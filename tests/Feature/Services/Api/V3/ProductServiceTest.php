@@ -36,9 +36,6 @@ class ProductServiceTest extends TestAbstractBasicV3Service
         $this->createConfigurationEntity();
         $ProductService = new ProductService(ConfigurationEntity::getInstance());
 
-        var_dump($Catalog);
-        die;
-
         $response = $ProductService->upsertProducts($Catalog, $ProductsCollection);
 
         $this->assertArrayNotHasKey('problems', $response);
