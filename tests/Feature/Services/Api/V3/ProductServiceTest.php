@@ -58,15 +58,11 @@ class ProductServiceTest extends TestAbstractBasicV3Service
 
         $catalogsArr = $CatalogService->getCatalogs();
 
-        var_dump('catalogsArr', $catalogsArr);
-
         if (!empty($catalogsArr)) {
-           var_dump('catalogs', $catalogsArr[array_rand($catalogsArr, 1)]);
            return $catalogsArr[array_rand($catalogsArr, 1)];
         }
 
         $Catalog = $this->createCatalog($CatalogService);
-        var_dump('Catalog', $Catalog);
 
         return $Catalog;
     }

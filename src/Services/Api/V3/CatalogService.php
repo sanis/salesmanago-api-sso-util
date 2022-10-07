@@ -24,8 +24,6 @@ class CatalogService extends EntityPassService
             self::API_METHOD_LIST
         );
 
-        var_dump('response', $response);
-
         $catalogs = [];
 
         if (!empty($response['catalogs'])) {
