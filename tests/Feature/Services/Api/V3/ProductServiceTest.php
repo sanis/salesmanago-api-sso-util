@@ -38,6 +38,7 @@ class ProductServiceTest extends TestAbstractBasicV3Service
 
         var_dump($Catalog);
         die;
+
         $response = $ProductService->upsertProducts($Catalog, $ProductsCollection);
 
         $this->assertArrayNotHasKey('problems', $response);
