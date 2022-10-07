@@ -18,7 +18,9 @@ class ProductsModel
         CatalogEntityInterface $Catalog,
         ProductsCollectionInterface $ProductsCollection
     ) {
-        if (empty($Catalog->getCatalogId())) {
+        var_dump('Catalog->getCatalogId', $Catalog);
+        $catalogId = $Catalog->getCatalogId();
+        if (empty($catalogId)) {
             throw new ApiV3Exception('Products model: catalog id is empty', '500');
         }
 
