@@ -9,7 +9,7 @@ pipelines:
             - echo "Start to preparing environment"
             - composer install
             - echo "Run tests"
-            - userEmail=$userEmail userPass=$userPass userPass=$userPass ApiV3Key=ApiV3Key ApiV3Endpoint=$ApiV3Endpoint ./vendor/bin/phpunit tests/Feature --no-coverage
+            - userEmail=$userEmail userPass=$userPass userPass=$userPass ApiV3Key=$ApiV3Key ApiV3Endpoint=$ApiV3Endpoint ./vendor/bin/phpunit tests/Feature --no-coverage
       - step:
           name: PHPStan analyse
           script:
