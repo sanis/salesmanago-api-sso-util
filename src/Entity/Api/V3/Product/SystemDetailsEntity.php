@@ -2,6 +2,8 @@
 
 namespace SALESmanago\Entity\Api\V3\Product;
 
+use SALESmanago\Helper\DataHelper;
+
 class SystemDetailsEntity implements SystemDetailsInterface
 {
     /**
@@ -185,7 +187,7 @@ class SystemDetailsEntity implements SystemDetailsInterface
      */
     public function jsonSerialize()
     {
-        return [
+        return DataHelper::filterDataArray([
             "brand"        => $this->brand,
             "manufacturer" => $this->manufacturer,
             "popularity"   => $this->popularity,
@@ -194,6 +196,6 @@ class SystemDetailsEntity implements SystemDetailsInterface
             "color"        => $this->color,
             "bestseller"   => $this->bestseller,
             "newProduct"   => $this->newProduct
-        ];
+        ]);
     }
 }

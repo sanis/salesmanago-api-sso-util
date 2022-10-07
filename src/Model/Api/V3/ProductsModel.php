@@ -11,7 +11,7 @@ class ProductsModel
     /**
      * @param CatalogEntityInterface $Catalog
      * @param ProductsCollectionInterface $ProductsCollection
-     * @return false|string
+     * @return array
      * @throws ApiV3Exception
      */
     public function getProductsToUpsert(
@@ -24,9 +24,9 @@ class ProductsModel
 
         $productsArray = $ProductsCollection->toArray();
 
-        return json_encode([
+        return [
             CatalogEntityInterface::CATALOG_ID => $Catalog->getCatalogId(),
             ProductsCollectionInterface::PRODUCTS => $productsArray
-        ]);
+        ];
     }
 }

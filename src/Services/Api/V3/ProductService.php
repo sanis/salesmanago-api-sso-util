@@ -17,7 +17,7 @@ class ProductService extends EntityPassService
     const
         REQUEST_METHOD_POST = 'POST',
         REQUEST_METHOD_GET  = 'GET',
-        API_METHOD_UPSERT   = 'v3/product/upsert';
+        API_METHOD_UPSERT   = '/v3/product/upsert';
 
     /**
      * @var RequestService
@@ -54,7 +54,6 @@ class ProductService extends EntityPassService
         CatalogEntityInterface $Catalog,
         ProductsCollectionInterface $ProductsCollection
     ) {
-
         $data = $this->ProductsModel->getProductsToUpsert($Catalog, $ProductsCollection);
 
         return $this->RequestService->request(

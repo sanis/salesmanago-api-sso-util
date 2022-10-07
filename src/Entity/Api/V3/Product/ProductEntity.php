@@ -4,6 +4,7 @@ namespace SALESmanago\Entity\Api\V3\Product;
 
 use SALESmanago\Entity\AbstractEntity;
 use SALESmanago\Entity\DetailsInterface;
+use SALESmanago\Helper\DataHelper;
 
 class ProductEntity extends AbstractEntity implements ProductEntityInterface
 {
@@ -376,8 +377,9 @@ class ProductEntity extends AbstractEntity implements ProductEntityInterface
 
     /**
      * @param DetailsInterface $customDetails
+     * @return ProductEntity
      */
-    public function setCustomDetails($customDetails)
+    public function setCustomDetails(DetailsInterface $customDetails)
     {
         $this->customDetails = $customDetails;
         return $this;
@@ -385,7 +387,7 @@ class ProductEntity extends AbstractEntity implements ProductEntityInterface
 
     public function jsonSerialize(): array
     {
-        return [
+        return DataHelper::filterDataArray([
               "productId"          => $this->productId,
               "name"               => $this->name,
               "mainCategory"       => $this->mainCategory,
@@ -402,10 +404,7 @@ class ProductEntity extends AbstractEntity implements ProductEntityInterface
               "discountPrice"      => $this->discountPrice,
               "unitPrice"          => $this->unitPrice,
               "systemDetails"      => $this->systemDetails,
-              "customDetails" => [//todo
-                "detail1" => "linen",
-                "detail2" => "short"
-              ]
-        ];
+              "customDetails"      => $this->customDetails
+        ]);
     }
 }

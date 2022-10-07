@@ -34,10 +34,10 @@ class CouponTransferServiceTest extends TestCaseUnit
             ])
         );
 
-        $ContactCreatedInApp = self::createNotAsyncContactInSalesmanagoApp($Conf);
-        $Coupon = self::createRandomCouponEntity();
+        $ContactCreatedInApp = $this->createNotAsyncContactInSalesmanagoApp($Conf);
+        $Coupon = $this->createRandomCouponEntity();
 
-        $Response = self::createCouponForContactInSalesmanagoApp($Conf, $ContactCreatedInApp, $Coupon);
+        $Response = $this->createCouponForContactInSalesmanagoApp($Conf, $ContactCreatedInApp, $Coupon);
 
         $this->assertTrue($Response->isSuccess());
         $this->assertEquals($Response->getField('coupon'), $Coupon->getCoupon());
@@ -64,9 +64,9 @@ class CouponTransferServiceTest extends TestCaseUnit
      * @return bool|Contact
      * @throws Exception
      */
-    public static function createNotAsyncContactInSalesmanagoApp(ConfigurationInterface $Config)
+    public function createNotAsyncContactInSalesmanagoApp(ConfigurationInterface $Config)
     {
-        $Contact = self::createRandomContactEntity();
+        $Contact = $this->createRandomContactEntity();
         $TransferService = new ContactAndEventTransferService($Config);
         $Response = $TransferService->transferContact($Contact->setOptions($Contact->getOptions()->setAsync(false)));
 
@@ -81,15 +81,15 @@ class CouponTransferServiceTest extends TestCaseUnit
      * @return Coupon
      * @throws Exception
      */
-    public static function createRandomCouponEntity()
+    public function createRandomCouponEntity()
     {
-        $faker = Faker\Factory::create();
+        $this->faker = Faker\Factory::create();
         return new Coupon(
             [
-                'name' => $faker->word,
-                'length' => $faker->numberBetween(1, 12345),
+                'name' => $this->faker->word,
+                'length' => $this->faker->numberBetween(1, 12345),
                 'valid' => (time() + (60 * 60 * 24 * 360))*1000,
-                'coupon' => $faker->text(30),
+                'coupon' => $this->faker->text(30),
             ]
         );
     }
@@ -98,13 +98,13 @@ class CouponTransferServiceTest extends TestCaseUnit
      * @return Contact
      * @throws Exception
      */
-    public static function createRandomContactEntity()
+    public function createRandomContactEntity()
     {
-        $faker = Faker\Factory::create();
+        $this->faker = Faker\Factory::create();
         $Contact = new Contact();
         return $Contact->set([
-            'name' => $faker->name,
-            'email' => $faker->email,
+            'name' => $this->faker->name,
+            'email' => $this->faker->email,
         ]);
 
     }

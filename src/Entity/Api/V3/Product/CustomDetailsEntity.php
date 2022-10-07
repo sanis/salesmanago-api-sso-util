@@ -64,6 +64,11 @@ class CustomDetailsEntity implements DetailsInterface
         $response = [];
 
         foreach ($this->details as $key => $detail) {
+
+            if ($detail === null || $detail === '') {
+                continue;
+            }
+
             $response['detail' . $key] = $detail;
         }
 
