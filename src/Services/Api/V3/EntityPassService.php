@@ -26,10 +26,7 @@ class EntityPassService
         ConfigurationInterface $ConfigurationV3,
         RequestClientConfigurationInterface $cUrlClientConf = null
     ) {
-        if ($cUrlClientConf === null) {
-            $cUrlClientConf = $this->setCurlClientConfiguration($ConfigurationV3);
-        }
-
+        $cUrlClientConf = $cUrlClientConf ?? $this->setCurlClientConfiguration($ConfigurationV3);
         $this->RequestService = new RequestService($cUrlClientConf);
     }
 
