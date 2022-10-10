@@ -80,7 +80,7 @@ class CatalogService
         return $this->RequestService->request(
             self::REQUEST_METHOD_POST,
             self::API_METHOD_CREATE,
-            $Catalog//will be encoded to json further in request service
+            $Catalog //will be encoded to json further in request service
         );
     }
 }
