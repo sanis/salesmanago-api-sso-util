@@ -20,15 +20,15 @@ interface CatalogEntityInterface extends JsonSerializable
     public function setCatalogId($catalogId);
 
     /**
-     * @return mixed
-     */
-    public function getName();
-
-    /**
      * @param string $name
      * @return CatalogEntityInterface
      */
-    public function setName($name);
+    public function setCatalogName($name);
+
+    /**
+     * @return mixed
+     */
+    public function getCatalogName();
 
     /**
      * @return bool

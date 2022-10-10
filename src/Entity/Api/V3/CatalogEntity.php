@@ -16,6 +16,11 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     /**
      * @var string
      */
+    private $catalogName;
+
+    /**
+     * @var string the same as catalog name TODO must be merge with $catalogName
+     */
     private $name;
 
     /**
@@ -34,12 +39,14 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     private $location;
 
     /**
-     * @param array $data - key => value array, where key is a CatalogEntity attribute;
+     * @param array|null $data - key => value array, where key is a CatalogEntity attribute;
      * @throws Exception
      */
-    public function __construct(array $data)
+    public function __construct($data = null)
     {
-        $this->setDataWithSetters($data);
+        if ($data !== null) {
+            $this->setDataWithSetters($data);
+        }
     }
 
     /**
@@ -63,12 +70,32 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     /**
      * @return mixed
      */
+    public function getCatalogName()
+    {
+        return $this->catalogName;
+    }
+
+    /**
+     * @param string $name
+     * @return CatalogEntity
+     */
+    public function setCatalogName($name)
+    {
+        $this->catalogName = $name;
+        return $this;
+    }
+
+    /**
+     * TODO must be merge with $catalogName
+     * @return mixed
+     */
     public function getName()
     {
         return $this->name;
     }
 
     /**
+     * TODO must be merge with $catalogName
      * @param string $name
      * @return CatalogEntity
      */
@@ -139,7 +166,7 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     {
         return DataHelper::filterDataArray([
             "catalogId"    => $this->catalogId,
-            "name"         => $this->name,
+            "catalogName"  => ($this->catalogName === null) ? $this->name : $this->catalogName,
             "setAsDefault" => $this->setAsDefault,
             "currency"     => $this->currency,
             "location"     => $this->location

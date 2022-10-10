@@ -5,8 +5,9 @@ namespace Tests\Feature\Services\Api\V3;
 use SALESmanago\Entity\Api\V3\ConfigurationEntity;
 use Tests\Feature\TestCaseUnit;
 
-class AbstractBasicV3ServiceTest extends TestCaseUnit
+class TestAbstractBasicV3Service extends TestCaseUnit
 {
+    //create Configuration entity for api v3
     protected function createConfigurationEntity()
     {
         ConfigurationEntity::getInstance()

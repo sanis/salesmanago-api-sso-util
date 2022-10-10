@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Services\Api\V3;
 
-//use Faker;
+use Faker;
 use SALESmanago\Entity\Api\V3\CatalogEntityInterface;
 use SALESmanago\Exception\ApiV3Exception;
 use SALESmanago\Exception\Exception;
 use SALESmanago\Services\Api\V3\CatalogService;
 use SALESmanago\Entity\Api\V3\ConfigurationEntity;
-//use SALESmanago\Entity\Api\V3\CatalogEntity;
+use SALESmanago\Entity\Api\V3\CatalogEntity;
 
-class CatalogServiceTest extends AbstractBasicV3ServiceTest
+class CatalogServiceTest extends TestAbstractBasicV3Service
 {
     /**
      * Test get catalog success
@@ -41,44 +41,47 @@ class CatalogServiceTest extends AbstractBasicV3ServiceTest
         }
     }
 
-//    /**
-//     * Test create catalog success
-//     *
-//     * @return void
-//     * @throws ApiV3Exception
-//     * @throws Exception
-//     */
-//    public function testCreateCatalogSuccess()
-//    {
-//        $this->createConfigurationEntity();
-//
-//        $CatalogService = new CatalogService(
-//            ConfigurationEntity::getInstance()//created with $this->createConfigurationEntity()
-//        );
-//
-//        $Catalog = $this->createCatalogEntityWithDummyData();
-//
-//        $Response = $CatalogService->createCatalog($Catalog);
-//
-//        var_dump($Response);
-//        die;
-//    }
+    /**
+     * Test create catalog success
+     *
+     * @return void
+     * @throws ApiV3Exception
+     * @throws Exception
+     */
+    public function testCreateCatalogSuccess()
+    {
+        //create configuration for request service
+        $this->createConfigurationEntity();
 
-//    /**
-//     * @throws Exception
-//     */
-//    protected function createCatalogEntityWithDummyData()
-//    {
-//        $faker = Faker\Factory::create();
-//
-//        return new CatalogEntity(
-//            [
-//                //"catalogId"    => '',
-//                "name"         => 'Catalog ' . $faker->word,
-//                //"setAsDefault" => '',
-//                "currency"     => $faker->currencyCode,
-//                "location"     => $faker->uuid
-//            ]
-//        );
-//    }
+        //create & setup CatalogService:
+        $CatalogService = new CatalogService(
+            ConfigurationEntity::getInstance()//created with $this->createConfigurationEntity()
+        );
+
+        //create entity
+        $Catalog = $this->createCatalogEntityWithDummyData();
+
+        //upsert catalog
+        $response = $CatalogService->createCatalog($Catalog);
+
+        $this->assertIsArray($response);
+        $this->assertTrue(!empty($response['requestId']));
+        $this->assertTrue(!empty($response['catalogId']));
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function createCatalogEntityWithDummyData()
+    {
+        $this->faker = Faker\Factory::create();
+
+        return new CatalogEntity(
+            [
+                "catalogName"  => 'Catalog ' . $this->faker->word,
+                "currency"     => $this->faker->currencyCode,
+                "location"     => 'time'.time()
+            ]
+        );
+    }
 }

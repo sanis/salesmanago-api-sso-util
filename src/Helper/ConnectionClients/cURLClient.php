@@ -13,7 +13,9 @@ class cURLClient
         DEFAULT_TIME_OUT  = 1000,//@deprecated
         TIMEOUT           = 2,
         TIMEOUT_MS        = 2000,
-        CONNECTTIMEOUT_MS = 2000;
+        CONNECTTIMEOUT_MS = 2000,
+        REQUEST_TYPE_POST = 'POST',
+        REQUEST_TYPE_GET  = 'GET';
 
     /**
      * @var string - request type (GET, PUT, POST, DELETE, etc.);
@@ -167,7 +169,7 @@ class cURLClient
         $preparedHeader = [];
         if (!empty($this->headers)) {
             foreach ($this->headers as $name => $value) {
-                $preparedHeader = array_merge($preparedHeader = [$name.': '. $value]);
+                $preparedHeader = array_merge($preparedHeader, [$name.': '. $value]);
             }
         }
 
@@ -205,11 +207,13 @@ class cURLClient
             $data = $toJson ? json_encode($data) : $data;
         }
 
-        if (empty($this->headers)) {
-            $this->headers[] = 'Content-Type: application/json';
+        if (empty($this->headers)
+            || $this->type === self::REQUEST_TYPE_POST
+        ) {
+            $this->headers['Content-Type'] = 'application/json';
 
             if ($data !== null) {
-                $this->headers[] = 'Content-Length: ' . strlen($data);
+                $this->headers['Content-Length'] = strlen($data);
             }
         }
 
