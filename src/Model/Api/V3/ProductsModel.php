@@ -20,7 +20,7 @@ class ProductsModel
     ) {
         $catalogId = $Catalog->getCatalogId();
         if (empty($catalogId)) {
-            throw new ApiV3Exception('Products model: catalog id is empty', '500');
+            throw new ApiV3Exception('Products model: catalog id is empty', 500);
         }
 
         $productsArray = $ProductsCollection->toArray();
