@@ -74,12 +74,12 @@ class CatalogServiceTest extends TestAbstractBasicV3Service
      */
     protected function createCatalogEntityWithDummyData()
     {
-        $faker = Faker\Factory::create();
+        $this->faker = Faker\Factory::create();
 
         return new CatalogEntity(
             [
-                "catalogName"  => 'Catalog ' . $faker->word,
-                "currency"     => $faker->currencyCode,
+                "catalogName"  => 'Catalog ' . $this->faker->word,
+                "currency"     => $this->faker->currencyCode,
                 "location"     => 'time'.time()
             ]
         );

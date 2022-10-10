@@ -42,6 +42,16 @@ class RequestService
                 throw new ApiV3Exception($messages, $response['reasonCode']);
             }
 
+            if (isset($response['problems'])) {
+                $messages = [];
+                foreach ($response['problems'] as $problem) {
+                    $messages[] = 'reasonCode: ' . $problem['reasonCode'] . ' - message: ' . $problem['message'];
+                }
+
+                $messages = implode('; ', $messages);
+                throw new ApiV3Exception($messages, $response['reasonCode']);
+            }
+
             return $response;
 
         } catch (Exception $e) {

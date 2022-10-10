@@ -22,18 +22,18 @@ class ReportServiceTest extends TestCaseUnit
      */
     public function testReportActionSuccess()
     {
-        $faker = Faker\Factory::create();
+        $this->faker = Faker\Factory::create();
         $conf = $this->initConf();
 
         $conf->setActiveReporting(true)
-            ->setPlatformName($faker->word)
+            ->setPlatformName($this->faker->word)
             ->setPlatformVersion($this->generateVersion())
             ->setVersionOfIntegration($this->generateVersion())
-            ->setPlatformDomain($faker->languageCode)
-            ->setPlatformDomain($faker->url);
+            ->setPlatformDomain($this->faker->languageCode)
+            ->setPlatformDomain($this->faker->url);
 
         $response = ReportService::getInstance($conf)
-            ->reportAction(ReportModel::ACT_TEST, [$faker->text(2000)]);
+            ->reportAction(ReportModel::ACT_TEST, [$this->faker->text(2000)]);
 
         $this->assertTrue($response);
     }
@@ -43,7 +43,7 @@ class ReportServiceTest extends TestCaseUnit
      */
     protected function generateVersion()
     {
-        $faker = Faker\Factory::create();
-        return $faker->numberBetween(1, 10) . '.' . $faker->numberBetween(1, 10) . '.' . $faker->numberBetween(1, 10);
+        $this->faker = Faker\Factory::create();
+        return $this->faker->numberBetween(1, 10) . '.' . $this->faker->numberBetween(1, 10) . '.' . $this->faker->numberBetween(1, 10);
     }
 }
