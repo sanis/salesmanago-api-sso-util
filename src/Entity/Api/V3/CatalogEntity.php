@@ -19,6 +19,11 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     private $catalogName;
 
     /**
+     * @var string the same as catalog name TODO must be merge with $catalogName
+     */
+    private $name;
+
+    /**
      * @var bool
      */
     private $setAsDefault;
@@ -34,12 +39,14 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     private $location;
 
     /**
-     * @param array $data - key => value array, where key is a CatalogEntity attribute;
+     * @param array|null $data - key => value array, where key is a CatalogEntity attribute;
      * @throws Exception
      */
-    public function __construct(array $data)
+    public function __construct($data = null)
     {
-        $this->setDataWithSetters($data);
+        if ($data !== null) {
+            $this->setDataWithSetters($data);
+        }
     }
 
     /**
@@ -75,6 +82,26 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     public function setCatalogName($name)
     {
         $this->catalogName = $name;
+        return $this;
+    }
+
+    /**
+     * TODO must be merge with $catalogName
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * TODO must be merge with $catalogName
+     * @param string $name
+     * @return CatalogEntity
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
         return $this;
     }
 
@@ -139,7 +166,7 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     {
         return DataHelper::filterDataArray([
             "catalogId"    => $this->catalogId,
-            "catalogName"  => $this->catalogName,
+            "catalogName"  => ($this->catalogName === null) ? $this->name : $this->catalogName,
             "setAsDefault" => $this->setAsDefault,
             "currency"     => $this->currency,
             "location"     => $this->location
