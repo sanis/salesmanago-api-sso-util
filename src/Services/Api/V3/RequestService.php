@@ -49,11 +49,10 @@ class RequestService
                 }
 
                 $messages = implode('; ', $messages);
-                throw new ApiV3Exception($messages, $response['reasonCode']);
+                throw new ApiV3Exception($messages);
             }
 
             return $response;
-
         } catch (Exception $e) {
             throw new ApiV3Exception($e->getMessage(), $e->getCode());
         }
