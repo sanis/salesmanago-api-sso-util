@@ -222,7 +222,6 @@ class cURLClient
         $this->connectTimeOutMs = (empty($this->connectTimeOutMs)) ? self::CONNECTTIMEOUT_MS : $this->connectTimeOutMs;
 
         $url = empty($this->host) ? $this->url : $this->host . $this->endpoint;
-
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->type);
