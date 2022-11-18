@@ -23,12 +23,12 @@ class ProductServiceTest extends TestAbstractBasicV3Service
      * @throws Exception
      * @throws ApiV3Exception
      */
-    public function testUpsertProductsSuccess()
+    public function testUpsertProducts()
     {
         $countProds = $this->faker->numberBetween(1, 100);//up to 100 products per request
 
         //create products collection
-        $ProductsCollection = $this->createProductsCollection($countProds);
+        $ProductsCollection = $this->createProductsCollection($countProds, $this->createProduct());
 
         //get or create catalog
         $Catalog = $this->getCatalogToUpsertProducts();
@@ -41,6 +41,55 @@ class ProductServiceTest extends TestAbstractBasicV3Service
         $this->assertArrayNotHasKey('problems', $response);
         $this->assertArrayHasKey('requestId', $response);
         $this->assertArrayHasKey('productIds', $response);
+    }
+
+    /**
+     * Test throwing ApiV3Exception in case of API SM returns response with bad request data validations
+     * @return void
+     * @throws ApiV3Exception
+     * @throws Exception
+     */
+    public function testUpsertProductsFailThrowApiV3ExceptionAfterApiResponse()
+    {
+        $countProds = $this->faker->numberBetween(1, 100);//up to 100 products per request
+
+        //create products collection
+        $ProductsCollection = $this->createProductsCollection($countProds, $this->createBadProduct());
+
+        //get or create catalog
+        $Catalog = $this->getCatalogToUpsertProducts();
+
+        $this->createConfigurationEntity();
+        $ProductService = new ProductService(ConfigurationEntity::getInstance());
+
+        $this->expectException(ApiV3Exception::class);
+        $ProductService->upsertProducts($Catalog, $ProductsCollection);
+    }
+
+    /**
+     * Testing throwing ApiV3Exception with Nullable code for grouped API SM response
+     * @return void
+     * @throws ApiV3Exception
+     * @throws Exception
+     */
+    public function testUpsertProductsFailThrowApiV3ExceptionWithNullErrorCodeAfterApiResponse()
+    {
+        $countProds = $this->faker->numberBetween(1, 100);//up to 100 products per request
+
+        //create products collection
+        $ProductsCollection = $this->createProductsCollection($countProds, $this->createBadProduct());
+
+        //get or create catalog
+        $Catalog = $this->getCatalogToUpsertProducts();
+
+        $this->createConfigurationEntity();
+        $ProductService = new ProductService(ConfigurationEntity::getInstance());
+
+        try {
+            $ProductService->upsertProducts($Catalog, $ProductsCollection);
+        } catch (ApiV3Exception $e) {
+            $this->assertEquals(null, $e->getCode());
+        }
     }
 
     /**
@@ -92,16 +141,56 @@ class ProductServiceTest extends TestAbstractBasicV3Service
      * @param int $numberOfProductsInProducts
      * @return ProductsCollection
      */
-    protected function createProductsCollection($numberOfProductsInProducts = 1)
+    protected function createProductsCollection($numberOfProductsInProducts = 1, $createProductCallback = null)
     {
         $ProductsCollection = new ProductsCollection();
 
+        $createProductCallback = ($createProductCallback !== null) ? $createProductCallback : $this->createProduct();
+
         while ($numberOfProductsInProducts) {
-            $ProductsCollection->addItem($this->createProduct());
+            $ProductsCollection->addItem($createProductCallback);
             --$numberOfProductsInProducts;
         }
 
         return $ProductsCollection;
+    }
+
+    /**
+     * @return ProductEntity
+     */
+    protected function createBadProduct()
+    {
+        $this->faker = Faker\Factory::create();
+        $Product = new ProductEntity();
+
+        //create system details:
+        $SystemDetails = $this->createSystemDetails();
+
+        //create custom details:
+        $CustomDetails = $this->createCustomDetails();
+
+        $productId = hash('sha512', $this->faker->uuid);
+
+        $Product
+            ->setProductId($productId)
+            ->setActive(true)
+            ->setAvailable(true)
+            ->setCategories($this->faker->words($this->faker->numberBetween(1, 5)))
+            ->setCategoryExternalId($this->faker->uuid)
+            ->setCustomDetails($CustomDetails)
+            ->setDescription(implode(', ', $this->faker->words()))
+            ->setDiscountPrice($this->faker->randomNumber())
+            ->setProductUrl($this->faker->words(1)[0])
+            ->setMainImageUrl($this->faker->words(1)[0])
+            ->setImageUrls($this->createImagesUrls())
+            ->setMainCategory($this->faker->words(1)[0])
+            ->setName($this->faker->text(260))
+            ->setPrice($this->faker->randomFloat(6))
+            ->setUnitPrice($this->faker->randomFloat(6))
+            ->setSystemDetails($SystemDetails)
+            ->setQuantity($this->faker->randomFloat(6));
+
+        return $Product;
     }
 
     /**
