@@ -49,7 +49,7 @@ class ProductServiceTest extends TestAbstractBasicV3Service
      * @throws ApiV3Exception
      * @throws Exception
      */
-    public function testUpsertProductsFailTrowApiV3ExceptionAfterApiResponse()
+    public function testUpsertProductsFailThrowApiV3ExceptionAfterApiResponse()
     {
         $countProds = $this->faker->numberBetween(1, 100);//up to 100 products per request
 
@@ -72,7 +72,7 @@ class ProductServiceTest extends TestAbstractBasicV3Service
      * @throws ApiV3Exception
      * @throws Exception
      */
-    public function testUpsertProductsFailTrowApiV3ExceptionWithNullErrorCodeAfterApiResponse()
+    public function testUpsertProductsFailThrowApiV3ExceptionWithNullErrorCodeAfterApiResponse()
     {
         $countProds = $this->faker->numberBetween(1, 100);//up to 100 products per request
 
@@ -90,7 +90,6 @@ class ProductServiceTest extends TestAbstractBasicV3Service
         } catch (ApiV3Exception $e) {
             $this->assertEquals(null, $e->getCode());
         }
-
     }
 
     /**
