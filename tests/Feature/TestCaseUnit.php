@@ -4,6 +4,7 @@
 namespace Tests\Feature;
 
 use PHPUnit\Framework\TestCase;
+use Faker;
 
 use ReflectionClass;
 use ReflectionMethod;
@@ -17,6 +18,17 @@ use SALESmanago\Exception\Exception;
 
 class TestCaseUnit extends TestCase
 {
+    /**
+     * @var Faker\Generator
+     */
+    protected $faker;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->faker = Faker\Factory::create();
+    }
+
     /**
      * @return mixed|Configuration
      * @throws Exception

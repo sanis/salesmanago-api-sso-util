@@ -1,5 +1,9 @@
 SALESmanago library for integrations
 ------------------------------------
+Version 3.1.3 23.12.2022
+- Added method to get product catalogs;
+- Added Product catalogs integration;
+
 Version 3.1.2 01.09.2022
 - add coupons feature support for SALESmanago API;
 
