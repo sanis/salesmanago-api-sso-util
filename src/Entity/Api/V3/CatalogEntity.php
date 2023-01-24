@@ -9,17 +9,26 @@ use SALESmanago\Helper\DataHelper;
 class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
 {
     /**
+     * @deprecated
+     * @see \SALESmanago\Entity\Api\V3\CatalogEntity::$id
      * @var string
      */
     private $catalogId;
 
     /**
+     * @deprecated
+     * @see \SALESmanago\Entity\Api\V3\CatalogEntity::$name
      * @var string
      */
     private $catalogName;
 
     /**
-     * @var string the same as catalog name TODO must be merge with $catalogName
+     * @var string
+     */
+    private $id;
+
+    /**
+     * @var string the same as catalog name
      */
     private $name;
 
@@ -50,43 +59,68 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     }
 
     /**
+     * @deprecated
+     * @see \SALESmanago\Entity\Api\V3\CatalogEntity::getId()
      * @return string
      */
     public function getCatalogId()
     {
-        return $this->catalogId;
+        return $this->id;
     }
 
     /**
-     * @param string $catalogId
+     * @deprecated
+     * @see \SALESmanago\Entity\Api\V3\CatalogEntity::setId()
+     * @param string $id
      * @return CatalogEntity
      */
-    public function setCatalogId($catalogId)
+    public function setCatalogId($id)
     {
-        $this->catalogId = $catalogId;
+        $this->id = $id;
         return $this;
     }
 
     /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     * @return CatalogEntity
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @deprecated
+     * @see \SALESmanago\Entity\Api\V3\CatalogEntity::getName()
      * @return mixed
      */
     public function getCatalogName()
     {
-        return $this->catalogName;
+        return $this->name;
     }
 
     /**
+     * @deprecated
+     * @see \SALESmanago\Entity\Api\V3\CatalogEntity::setName()
      * @param string $name
      * @return CatalogEntity
      */
     public function setCatalogName($name)
     {
-        $this->catalogName = $name;
+        $this->name = $name;
         return $this;
     }
 
     /**
-     * TODO must be merge with $catalogName
      * @return mixed
      */
     public function getName()
@@ -95,7 +129,6 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     }
 
     /**
-     * TODO must be merge with $catalogName
      * @param string $name
      * @return CatalogEntity
      */
@@ -165,8 +198,8 @@ class CatalogEntity extends AbstractEntity implements CatalogEntityInterface
     public function jsonSerialize(): array
     {
         return DataHelper::filterDataArray([
-            "catalogId"    => $this->catalogId,
-            "catalogName"  => ($this->catalogName === null) ? $this->name : $this->catalogName,
+            "catalogId"    => $this->id,
+            "name"         => $this->name,
             "setAsDefault" => $this->setAsDefault,
             "currency"     => $this->currency,
             "location"     => $this->location

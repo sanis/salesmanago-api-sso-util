@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Services\Api\V3;
 
+use Generator;
 use Faker;
 use SALESmanago\Entity\Api\V3\CatalogEntityInterface;
 use SALESmanago\Exception\ApiV3Exception;
@@ -42,13 +43,13 @@ class CatalogServiceTest extends TestAbstractBasicV3Service
     }
 
     /**
-     * Test create catalog success
+     * Checking creation of catalog with different create catalog entity methods
      *
+     * @dataProvider provideCatalogEntityData
      * @return void
      * @throws ApiV3Exception
-     * @throws Exception
      */
-    public function testCreateCatalogSuccess()
+    public function testCreateCatalogSuccess(CatalogEntityInterface $Catalog)
     {
         //create configuration for request service
         $this->createConfigurationEntity();
@@ -58,15 +59,25 @@ class CatalogServiceTest extends TestAbstractBasicV3Service
             ConfigurationEntity::getInstance()//created with $this->createConfigurationEntity()
         );
 
-        //create entity
-        $Catalog = $this->createCatalogEntityWithDummyData();
-
         //upsert catalog
         $response = $CatalogService->createCatalog($Catalog);
 
+        //check
         $this->assertIsArray($response);
         $this->assertTrue(!empty($response['requestId']));
         $this->assertTrue(!empty($response['catalogId']));
+    }
+
+    /**
+     * Provide data for testCreateCatalogSuccess
+     *
+     * @return Generator
+     * @throws Exception
+     */
+    public function provideCatalogEntityData()
+    {
+        yield [$this->createCatalogEntityWithDummyData()];
+        yield [$this->createCatalogEntityThroughtStandardizedMethodsWithDummyData()];
     }
 
     /**
@@ -79,6 +90,22 @@ class CatalogServiceTest extends TestAbstractBasicV3Service
         return new CatalogEntity(
             [
                 "catalogName"  => 'Catalog ' . $this->faker->word,
+                "currency"     => $this->faker->currencyCode,
+                "location"     => 'time'.time()
+            ]
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function createCatalogEntityThroughtStandardizedMethodsWithDummyData()
+    {
+        $this->faker = Faker\Factory::create();
+
+        return new CatalogEntity(
+            [
+                "name"         => 'Catalog ' . $this->faker->word,
                 "currency"     => $this->faker->currencyCode,
                 "location"     => 'time'.time()
             ]
