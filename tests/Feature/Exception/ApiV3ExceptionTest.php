@@ -17,39 +17,16 @@ use SALESmanago\Entity\Api\V3\Product\CustomDetailsEntity;
 use SALESmanago\Exception\ApiV3Exception;
 use SALESmanago\Services\Api\V3\ProductService;
 
-class ProductServiceTest extends TestAbstractBasicV3Service
+class ApiV3ExceptionTest extends TestAbstractBasicV3Service
 {
     /**
-     * @throws Exception
-     * @throws ApiV3Exception
-     */
-    public function testUpsertProductsSuccess()
-    {
-        $countProds = $this->faker->numberBetween(1, 100);//up to 100 products per request
-
-        //create products collection
-        $ProductsCollection = $this->createProductsCollection($countProds, $this->createProduct());
-
-        //get or create catalog
-        $Catalog = $this->getCatalogToUpsertProducts();
-
-        $this->createConfigurationEntity();
-        $ProductService = new ProductService(ConfigurationEntity::getInstance());
-
-        $response = $ProductService->upsertProducts($Catalog, $ProductsCollection);
-
-        $this->assertArrayNotHasKey('problems', $response);
-        $this->assertArrayHasKey('requestId', $response);
-        $this->assertArrayHasKey('productIds', $response);
-    }
-
-    /**
      * Test throwing ApiV3Exception in case of API SM returns response with bad request data validations
+     *
      * @return void
      * @throws ApiV3Exception
      * @throws Exception
      */
-    public function testUpsertProductsFailThrowApiV3ExceptionAfterApiResponse()
+    public function testThrowApiV3ExceptionAfterApiResponseSuccess()
     {
         $countProds = $this->faker->numberBetween(1, 100);//up to 100 products per request
 
@@ -68,11 +45,12 @@ class ProductServiceTest extends TestAbstractBasicV3Service
 
     /**
      * Testing throwing ApiV3Exception with Nullable code for grouped API SM response
+     *
      * @return void
      * @throws ApiV3Exception
      * @throws Exception
      */
-    public function testUpsertProductsFailThrowApiV3ExceptionWithNullErrorCodeAfterApiResponse()
+    public function testThrowApiV3ExceptionAfterUpsertProductsFail()
     {
         $countProds = $this->faker->numberBetween(1, 100);//up to 100 products per request
 
@@ -88,6 +66,9 @@ class ProductServiceTest extends TestAbstractBasicV3Service
         try {
             $ProductService->upsertProducts($Catalog, $ProductsCollection);
         } catch (ApiV3Exception $e) {
+            $this->assertNotEmpty($e->getCombined());
+            $this->assertNotEmpty($e->getCodes());
+            $this->assertNotEmpty($e->getMessages());
             $this->assertEquals(400, $e->getCode());
         }
     }
