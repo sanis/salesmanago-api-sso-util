@@ -1,7 +1,8 @@
 SALESmanago library for integrations
 ------------------------------------
-Version 3.1.4 23.01.2023
+Version 3.1.4 25.01.2023
 - Standardized SALESmanago\Entity\Api\V3\CatalogEntityInterface methods names;
+- Fixed set null while throwing ApiV3Exception;
 
 Version 3.1.3 23.12.2022
 - Added method to get product catalogs;
