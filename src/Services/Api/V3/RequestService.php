@@ -39,22 +39,39 @@ class RequestService
                     ? implode(', ', $response['messages'])
                     : $response['messages'];
 
-                throw new ApiV3Exception($messages, $response['reasonCode']);
+                throw (new ApiV3Exception($messages, $response['reasonCode']))
+                    ->setCodes([$response['reasonCode']])
+                    ->setMessages(is_array($response['messages'])
+                        ? $response['messages']
+                        : [$response['messages']]
+                    );
             }
 
             if (isset($response['problems'])) {
                 $messages = [];
+                $codes    = [];
+                $problems = [];
+
                 foreach ($response['problems'] as $problem) {
+                    $codes[] = $problem['reasonCode'];
+                    $problems[] = $problem['message'];
                     $messages[] = 'reasonCode: ' . $problem['reasonCode'] . ' - message: ' . $problem['message'];
                 }
 
                 $messages = implode('; ', $messages);
-                throw new ApiV3Exception($messages);
+                throw (new ApiV3Exception($messages, 400))
+                    ->setCodes($codes)
+                    ->setMessages($problems);
             }
 
             return $response;
         } catch (Exception $e) {
-            throw new ApiV3Exception($e->getMessage(), $e->getCode());
+            if ($e instanceof ApiV3Exception) {
+                throw $e;
+            }
+            throw (new ApiV3Exception($e->getMessage(), $e->getCode()))
+                ->setCodes([$e->getCode()])
+                ->setMessages([$e->getMessage()]);
         }
     }
 }
